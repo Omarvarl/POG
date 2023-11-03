@@ -1,0 +1,54 @@
+.homePage {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    width: 100vw;
+}
+
+header {
+    display: flex;
+    justify-content: left;
+    width: 100%;
+    height: 40px;
+    background-color:  rgb(72, 147, 222);
+    font-size: large;
+    color: aliceblue;
+}
+
+footer {
+    width: 100%;
+    height: 40px;
+    background-color: rgb(38, 80, 121);
+}
+
+main {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background-color: aliceblue;
+}
+
+.button-panel {
+    width: 25%;
+    /* background: rgb(72, 147, 222); */
+    background: linear-gradient(0deg, rgb(38, 80, 121) 0%,  rgb(72, 147, 222) 100%);
+    height: 100%;
+}
+
+.projects-list {
+    display: flex;
+    
+    height: 100%;
+    width: 75%;
+    background-image: url(../images/logo.svg);
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: center;
+}
+
+label {
+    text-align: center;
+    width: 25%;
+    padding: 5px;
+}
