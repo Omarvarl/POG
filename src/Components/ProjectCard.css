@@ -1,0 +1,27 @@
+.project-card {
+    display: flex;
+    flex-direction: column;
+    max-width: 250px;
+    max-height: 250px;
+    align-items: center;
+    justify-content: space-between;
+    border: 2px solid blue;
+    padding: 5px;
+    margin: 5px;
+    -webkit-user-select: none;
+}
+
+.project-card:hover {
+    cursor: pointer;
+}
+
+label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.project-card-img {
+    display: flex;
+    max-width: 250px;
+}
