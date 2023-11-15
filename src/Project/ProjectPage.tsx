@@ -65,7 +65,7 @@ const ProjectPage = () => {
 
     const changeScale = (e:React.WheelEvent):void => {
 
-        (e.deltaY > 0) ? cursorPos.current.scale /= 1.05 : cursorPos.current.scale *= 1.05
+        (e.deltaY > 0) ? cursorPos.current.scale /= 1.2 : cursorPos.current.scale *= 1.2
 
         const xs = (e.clientX - cursorPos.current.pointX) / cursorPos.current.scale;
         const ys = (e.clientY - cursorPos.current.pointY) / cursorPos.current.scale;
@@ -141,6 +141,8 @@ const ProjectPage = () => {
             transform: `translate(0, 0) scale(1)`
         })
     }
+    const [POLength, setPOLength] = useState<number>(0)
+
 
 
   return (
@@ -158,6 +160,15 @@ const ProjectPage = () => {
                     <option value="A2">A2</option>
                     <option value="A3">A3</option>
                 </select>
+            </label>
+            <label className="PO-length-input">
+                Длина ПО
+                <input
+                    type='number'
+                    defaultValue={POLength}
+                    onBlur={() => setPOLength(1)}
+                >
+                </input>
             </label>
         </div>
         <div className="work-place"
@@ -186,14 +197,122 @@ const ProjectPage = () => {
                             L${realPageSize.current.width - 5} 5
                             L${realPageSize.current.width - 5} ${realPageSize.current.height - 5}
                             L20 ${realPageSize.current.height - 5}Z`}
-                            fill="none" stroke="blue" strokeWidth="2"
+                            fill="none" stroke="blue" strokeWidth="3"
                         />
 
                         <path d={`M${realPageSize.current.width - 5} ${realPageSize.current.height - 5 - 550}
                             L${realPageSize.current.width - 5} ${realPageSize.current.height - 5}
                             L${realPageSize.current.width - 5 - 1850} ${realPageSize.current.height - 5}
                             L${realPageSize.current.width - 5 - 1850} ${realPageSize.current.height - 5 - 550}Z`}
-                            fill="none" stroke="blue" strokeWidth="2"
+                            fill="none" stroke="blue" strokeWidth="3"
+                        />
+
+                        <path d={`M${realPageSize.current.width - 5 - 500 - 700} ${realPageSize.current.height - 5 - 550}
+                            L${realPageSize.current.width - 5 - 500 - 700} ${realPageSize.current.height - 5}`}
+                            fill="none" stroke="blue" strokeWidth="3"
+                        />
+
+                        <path d={`M${realPageSize.current.width - 5 - 500 - 700} ${realPageSize.current.height - 5 - 400}
+                            L${realPageSize.current.width - 5} ${realPageSize.current.height - 5 - 400}`}
+                            fill="none" stroke="blue" strokeWidth="3"
+                        />
+                        <path d={`M${realPageSize.current.width - 5 - 500 - 700} ${realPageSize.current.height - 5 - 150}
+                            L${realPageSize.current.width - 5} ${realPageSize.current.height - 5 - 150}`}
+                            fill="none" stroke="blue" strokeWidth="3"
+                        />
+                        <path d={`M${realPageSize.current.width - 5 - 500} ${realPageSize.current.height - 5 - 400}
+                            L${realPageSize.current.width - 5 - 500} ${realPageSize.current.height - 5}`}
+                            fill="none" stroke="blue" strokeWidth="3"
+                        />
+                        <path d={`M${realPageSize.current.width - 5 - 500} ${realPageSize.current.height - 5 - 350}
+                            L${realPageSize.current.width - 5} ${realPageSize.current.height - 5 - 350}`}
+                            fill="none" stroke="blue" strokeWidth="3"
+                        />
+                        <path d={`M${realPageSize.current.width - 5 - 500} ${realPageSize.current.height - 5 - 200}
+                            L${realPageSize.current.width - 5} ${realPageSize.current.height - 5 - 200}`}
+                            fill="none" stroke="blue" strokeWidth="3"
+                        />
+                        <path d={`M${realPageSize.current.width - 5 - 180} ${realPageSize.current.height - 5 - 400}
+                            L${realPageSize.current.width - 5 - 180} ${realPageSize.current.height - 5 - 200}`}
+                            fill="none" stroke="blue" strokeWidth="3"
+                        />
+                        <path d={`M${realPageSize.current.width - 5 - 180 - 170} ${realPageSize.current.height - 5 - 400}
+                            L${realPageSize.current.width - 5 - 180 - 170} ${realPageSize.current.height - 5 - 200}`}
+                            fill="none" stroke="blue" strokeWidth="3"
+                        />
+                        <path d={`M${realPageSize.current.width - 5 - 180 - 170 - 50} ${realPageSize.current.height - 5 - 350}
+                            L${realPageSize.current.width - 5 - 180 - 170 - 50} ${realPageSize.current.height - 5 - 200}`}
+                            fill="none" stroke="blue" strokeWidth="3"
+                        />
+                        <path d={`M${realPageSize.current.width - 5 - 180 - 170 - 50 - 50} ${realPageSize.current.height - 5 - 350}
+                            L${realPageSize.current.width - 5 - 180 - 170 - 50 - 50} ${realPageSize.current.height - 5 - 200}`}
+                            fill="none" stroke="blue" strokeWidth="3"
+                        />
+
+                        <path d={`M${realPageSize.current.width - 5 - 180 - 170 - 50 - 50 - 50 + 200} ${realPageSize.current.height - 5 - 200}
+                            L${realPageSize.current.width - 5 - 180 - 170 - 50 - 50 - 50 + 200} ${realPageSize.current.height - 5 - 150}`}
+                            fill="none" stroke="blue" strokeWidth="3"
+                        />
+
+                        <path d={`M${realPageSize.current.width - 5 - 1850} ${realPageSize.current.height - 5 - 550 + 50}
+                            L${realPageSize.current.width - 5 - 700 - 500} ${realPageSize.current.height - 5 - 550 + 50}`}
+                            fill="none" stroke="blue" strokeWidth="1"
+                        />
+                        <path d={`M${realPageSize.current.width - 5 - 1850} ${realPageSize.current.height - 5 - 550 + 50 + 50}
+                            L${realPageSize.current.width - 5 - 700 - 500} ${realPageSize.current.height - 5 - 550 + 50 + 50}`}
+                            fill="none" stroke="blue" strokeWidth="1"
+                        />
+
+                        <path d={`M${realPageSize.current.width - 5 - 1850} ${realPageSize.current.height - 5 - 550 + 50 + 50 + 50}
+                            L${realPageSize.current.width - 5 - 700 - 500} ${realPageSize.current.height - 5 - 550 + 50 + 50 + 50}`}
+                            fill="none" stroke="blue" strokeWidth="1"
+                        />
+
+                        <path d={`M${realPageSize.current.width - 5 - 1850} ${realPageSize.current.height - 5 - 550 + 50 + 50 + 50 + 50}
+                            L${realPageSize.current.width - 5 - 700 - 500} ${realPageSize.current.height - 5 - 550 + 50 + 50 + 50 + 50}`}
+                            fill="none" stroke="blue" strokeWidth="3"
+                        />
+                        <path d={`M${realPageSize.current.width - 5 - 1850} ${realPageSize.current.height - 5 - 550 + 50 + 50 + 50 + 50 + 50}
+                            L${realPageSize.current.width - 5 - 700 - 500} ${realPageSize.current.height - 5 - 550 + 50 + 50 + 50 + 50 + 50}`}
+                            fill="none" stroke="blue" strokeWidth="3"
+                        />
+                        <path d={`M${realPageSize.current.width - 5 - 1850} ${realPageSize.current.height - 5 - 550 + 50 + 50 + 50 + 50 + 50 + 50}
+                            L${realPageSize.current.width - 5 - 700 - 500} ${realPageSize.current.height - 5 - 550 + 50 + 50 + 50 + 50 + 50 + 50}`}
+                            fill="none" stroke="blue" strokeWidth="1"
+                        />
+                        <path d={`M${realPageSize.current.width - 5 - 1850} ${realPageSize.current.height - 5 - 550 + 50 + 50 + 50 + 50 + 50 + 50 + 50}
+                            L${realPageSize.current.width - 5 - 700 - 500} ${realPageSize.current.height - 5 - 550 + 50 + 50 + 50 + 50 + 50 + 50 + 50}`}
+                            fill="none" stroke="blue" strokeWidth="1"
+                        />
+                        <path d={`M${realPageSize.current.width - 5 - 1850} ${realPageSize.current.height - 5 - 550 + 50 + 50 + 50 + 50 + 50 + 50 + 50 + 50}
+                            L${realPageSize.current.width - 5 - 700 - 500} ${realPageSize.current.height - 5 - 550 + 50 + 50 + 50 + 50 + 50 + 50 + 50 + 50}`}
+                            fill="none" stroke="blue" strokeWidth="1"
+                        />
+                        <path d={`M${realPageSize.current.width - 5 - 1850} ${realPageSize.current.height - 5 - 550 + 50 + 50 + 50 + 50 + 50 + 50 + 50 + 50 + 50}
+                            L${realPageSize.current.width - 5 - 700 - 500} ${realPageSize.current.height - 5 - 550 + 50 + 50 + 50 + 50 + 50 + 50 + 50 + 50 + 50}`}
+                            fill="none" stroke="blue" strokeWidth="1"
+                        />
+                        <path d={`M${realPageSize.current.width - 5 - 1850} ${realPageSize.current.height - 5 - 550 + 50 + 50 + 50 + 50 + 50 + 50 + 50 + 50 + 50 + 50}
+                            L${realPageSize.current.width - 5 - 700 - 500} ${realPageSize.current.height - 5 - 550 + 50 + 50 + 50 + 50 + 50 + 50 + 50 + 50 + 50 + 50}`}
+                            fill="none" stroke="blue" strokeWidth="1"
+                        />
+
+                        <path d={`M${realPageSize.current.width - 5 - 1850 + 70} ${realPageSize.current.height - 5 - 550}
+                            L${realPageSize.current.width - 5 - 1850 + 70} ${realPageSize.current.height - 5 - 550 + 250}`}
+                            fill="none" stroke="blue" strokeWidth="3"
+                        />
+                        <path d={`M${realPageSize.current.width - 5 - 1850 + 70 + 100} ${realPageSize.current.height - 5 - 550}
+                            L${realPageSize.current.width - 5 - 1850 + 70 + 100} ${realPageSize.current.height - 5}`}
+                            fill="none" stroke="blue" strokeWidth="3"
+                        />
+                        <path d={`M${realPageSize.current.width - 5 - 1850 + 70 + 100 + 230} ${realPageSize.current.height - 5 - 550}
+                            L${realPageSize.current.width - 5 - 1850 + 70 + 100 + 230} ${realPageSize.current.height - 5}`}
+                            fill="none" stroke="blue" strokeWidth="3"
+                        />
+
+                        <path d={`M${realPageSize.current.width - 5 - 1850 + 70 + 100 + 230 + 150} ${realPageSize.current.height - 5 - 550}
+                            L${realPageSize.current.width - 5 - 1850 + 70 + 100 + 230 + 150} ${realPageSize.current.height - 5}`}
+                            fill="none" stroke="blue" strokeWidth="3"
                         />
                     </g>
                 </svg>

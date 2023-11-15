@@ -54,3 +54,13 @@ svg {
     width: 100%;
     height: 100%;
 }
+
+.PO-length-input {
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+}
+
+.PO-length-input > input{
+    max-width: 80%;
+}
