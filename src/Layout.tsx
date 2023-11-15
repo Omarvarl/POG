@@ -1,10 +1,9 @@
 import { Outlet } from "react-router-dom";
-import HomePage from './HomePage/HomePage';
+import './App.css'
 
 const Layout = () => {
   return (
     <main>
-        {/* <HomePage /> */}
         <Outlet />
     </main>
   )

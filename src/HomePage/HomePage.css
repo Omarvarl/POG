@@ -52,3 +52,7 @@ label {
     width: 25%;
     padding: 5px;
 }
+
+a {
+    max-height: 250px;
+}
