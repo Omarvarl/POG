@@ -5,8 +5,8 @@ export interface ICardProject {
 }
 
 export interface IDrawAreaStyles {
-    height: string,
-    width: string,
+    // height: string,
+    // width: string,
     cursor: string,
     transform: string
 }

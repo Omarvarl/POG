@@ -1,36 +1,60 @@
 import './ProjectPage.css'
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import { IDrawAreaStyles, ICursorPosition } from '../Types/Types'
 
 interface IPagedDim {
-    width: string,
-    height: string
+    width: number,
+    height: number
 }
 
 const ProjectPage = () => {
-    const [pageSize, setPageSize] = useState<IPagedDim>({width:'4200', height:'2970'})
+    let startW = 4200
+    let startH = 2970
+    while (window.innerWidth * 0.85 < startW || window.innerHeight < startH) {
+        // console.log(window.innerWidth * 0.85, width)
+        startW /= 1.1;
+        startH /= 1.1;
+    }
+    const [pageSize, setPageSize] = useState<IPagedDim>({width: startW, height: startH})
+    const realPageSize = useRef<IPagedDim>({width: 4200, height: 2970})
 
     const chosePageFormat = (e:React.ChangeEvent<HTMLSelectElement>):void => {
+        let width = 0
+        let height = 0
         if (e.target.value === 'A0') {
-            setPageSize({width:'11890', height:'8410'})
+            width = 11890
+            height = 8410
+            // setPageSize({width: width, height: height})
         } else if (e.target.value === 'A1') {
-            setPageSize({width: '8410', height:'5940'})
+            width = 8410
+            height = 5940
+            // setPageSize({width: width, height: height})
         } else if (e.target.value === 'A2') {
-            setPageSize({width: '5940', height: '4200'})
+            width = 5940
+            height = 4200
+            // setPageSize({width: width, height: height})
         } else if (e.target.value === 'A3') {
-            setPageSize({width: '4200', height: '2970'})
+            width = 4200
+            height = 2970
+            // setPageSize({width: width, height: height})
         }
+        realPageSize.current = {width: width, height: height}
+        while (window.innerWidth * 0.85 < width || window.innerHeight < height) {
+            // console.log(window.innerWidth * 0.85, width)
+            width /= 1.1;
+            height /= 1.1;
+        }
+        console.log(realPageSize.current.width, width)
+        setPageSize({width: width, height: height})
     }
 
 
     const [drawParam, setDrawParam] = useState<IDrawAreaStyles>({
-        height: '100%',
-        width: '100%',
         cursor: 'grab',
         transform: ''
     })
 
-        const cursorPos = useRef({
+        const cursorPos = useRef<ICursorPosition>({
         startX: 0,
         startY: 0,
         pointX: 0,
@@ -48,7 +72,6 @@ const ProjectPage = () => {
 
         cursorPos.current.pointX = e.clientX - xs * cursorPos.current.scale;
         cursorPos.current.pointY = e.clientY - ys * cursorPos.current.scale;
-        console.log(xs)
         
         setDrawParam(
             {
@@ -146,20 +169,35 @@ const ProjectPage = () => {
             <button className="show-all-btn" onClick={showAll}>
                 Показать все
             </button>
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox={`0 0 ${pageSize.width} ${pageSize.height}`}
-                style={drawParam}
+            <div className="draw-page"
+                style={{
+                    ...drawParam,
+                    width: pageSize.width,
+                    height: pageSize.height
+                }}
             >
-                <g key={`ril_0`}>
-                    <path d={`M20 5
-                        L${pageSize.width} 5
-                        L${pageSize.width} ${pageSize.height}
-                        L20 ${pageSize.height}Z`}
-                        fill="none" stroke="blue" strokeWidth="2"
-                    />
-                </g>
-            </svg>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox={`0 0 ${realPageSize.current.width} ${realPageSize.current.height}`}
+                    style={{width: '100%', height: '100%'}}
+                >
+                    <g key={`ril_0`}>
+                        <path d={`M20 5
+                            L${realPageSize.current.width - 5} 5
+                            L${realPageSize.current.width - 5} ${realPageSize.current.height - 5}
+                            L20 ${realPageSize.current.height - 5}Z`}
+                            fill="none" stroke="blue" strokeWidth="2"
+                        />
+
+                        <path d={`M${realPageSize.current.width - 5} ${realPageSize.current.height - 5 - 550}
+                            L${realPageSize.current.width - 5} ${realPageSize.current.height - 5}
+                            L${realPageSize.current.width - 5 - 1850} ${realPageSize.current.height - 5}
+                            L${realPageSize.current.width - 5 - 1850} ${realPageSize.current.height - 5 - 550}Z`}
+                            fill="none" stroke="blue" strokeWidth="2"
+                        />
+                    </g>
+                </svg>
+            </div>
         </div>
     </div>
   )
