@@ -1,6 +1,7 @@
 import Border from "./Border";
 import BaseTable from "./BaseTable";
 import { IPagedDim } from "../../Types/Types";
+import Ground from "./Ground";
 
 export default function Drawing({ width, height }: IPagedDim) {
   return (
@@ -11,6 +12,8 @@ export default function Drawing({ width, height }: IPagedDim) {
     >
       <Border width={width} height={height} />
       <BaseTable width={width} height={height} />
+
+      <Ground />
     </svg>
   );
 }

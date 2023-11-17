@@ -17,3 +17,9 @@ export interface IPagedDim {
     width: number,
     height: number
 }
+
+export interface IExpansionJoints {
+    id: number,
+    position: number,
+    length: number
+}

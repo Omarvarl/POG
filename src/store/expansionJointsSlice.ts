@@ -1,10 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { IExpansionJoints } from '../Types/Types';
 
-interface IExpansionJoints {
-    id: number,
-    position: number,
-    length: number
-}
 
 const initialState:IExpansionJoints[] = []
 

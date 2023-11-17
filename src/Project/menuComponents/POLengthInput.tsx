@@ -6,7 +6,7 @@ export default function POLengthInput() {
     const POLength = useAppSelector(state => state.POLength)
   return (
     <label className="PO-length-input">
-      Длина ПО
+      Длина ПО в мм
       <input
         type="number"
         defaultValue={POLength}
