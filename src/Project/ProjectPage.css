@@ -48,6 +48,7 @@ label{
     align-items: center;
     background-color: white;
     box-shadow: 3px 3px 3px grey;
+    cursor:crosshair;
 }
 
 svg {
@@ -63,4 +64,9 @@ svg {
 
 .PO-length-input > input{
     max-width: 80%;
+}
+
+label {
+    display: flex;
+    flex-direction: column;
 }

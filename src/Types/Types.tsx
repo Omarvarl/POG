@@ -4,13 +4,6 @@ export interface ICardProject {
     imgPath: string
 }
 
-export interface IDrawAreaStyles {
-    // height: string,
-    // width: string,
-    cursor: string,
-    transform: string
-}
-
 export interface ICursorPosition {
     startX: number,
     startY: number,
@@ -18,4 +11,9 @@ export interface ICursorPosition {
     pointY: number,
     scale: number,
     flag: boolean
+}
+
+export interface IPagedDim {
+    width: number,
+    height: number
 }
