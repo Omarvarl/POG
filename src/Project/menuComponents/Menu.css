@@ -1,0 +1,6 @@
+.expansion-joint-input {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid grey;
+    margin: 5px;
+}
