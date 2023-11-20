@@ -1,4 +1,5 @@
 import { IPagedDim } from "../../Types/Types";
+import './Drawing.css'
 
 export default function BaseTable({ width, height }:IPagedDim):JSX.Element {
   return (

@@ -30,3 +30,12 @@ export interface IPOLength {
     screenWidth: number,
     scale: number
 }
+
+export interface IInitCoord {
+    initX: number,
+    initY: number
+}
+
+export interface IProfile extends IInitCoord {
+    length: number
+}
