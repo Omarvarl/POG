@@ -1,10 +1,12 @@
-import { useAppDispatch } from "../../hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import { setPageSize } from "../../store/pageSizeSlice";
+import { setPOLength } from "../../store/POLengthSlice";
 import { setRealPageSize } from "../../store/realPageSizeSlice";
 
 export default function PageFormatSelect():JSX.Element {
 
   const dispatch = useAppDispatch();
+  const POLengthData = useAppSelector(state => state.POLength)
 
   const chosePageFormat = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     let width = 0;
@@ -23,6 +25,7 @@ export default function PageFormatSelect():JSX.Element {
       height = 2970;
     }
     dispatch(setRealPageSize({ width: width, height: height }));
+    dispatch(setPOLength({...POLengthData, screenWidth: width}))
 
     while (window.innerWidth * 0.85 < width || window.innerHeight < height) {
       width /= 1.1;

@@ -23,3 +23,10 @@ export interface IExpansionJoints {
     position: number,
     length: number
 }
+
+export interface IPOLength {
+    POLength: number,
+    scaledPOLength: number,
+    screenWidth: number,
+    scale: number
+}

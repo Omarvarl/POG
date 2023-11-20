@@ -3,35 +3,29 @@ import { useAppSelector } from "../../hooks";
 import { IExpansionJoints } from "../../Types/Types";
 
 export default function Ground() {
-  const POLength = useAppSelector((state) => state.POLength);
-  let scaledPOLength = POLength;
-  const width = useAppSelector((state) => state.realPageSize.width);
+  const POLengthData = useAppSelector((state) => state.POLength);
   const expansionjoints = useAppSelector((state) => state.expansionJoints);
-  const drawScales = [1, 2, 2.5, 4, 5, 10, 15, 20, 25, 40, 50, 75, 100];
-  let i = 1;
-  while (i < drawScales.length && scaledPOLength >= width) {
-    scaledPOLength = POLength / drawScales[i];
-    i++;
-  }
+  const {POLength, scaledPOLength, screenWidth, scale} = POLengthData
+
   let result: JSX.Element = <></>;
   if (POLength < 1000) return result;
-  if (i === drawScales.length && scaledPOLength >= width) {
+  if (scale === 100 && scaledPOLength >= screenWidth) {
     result = <div>TOO BIG</div>;
   } else if (!expansionjoints.length) {
     result = (
       <g>
         <path
-          d={`M${width / 2 - scaledPOLength / 2} ${
-            50 + 1100 / drawScales[i - 1] + 50
+          d={`M${screenWidth / 2 - scaledPOLength / 2} ${
+            50 + 1100 / scale + 50
           }
-                L${width / 2 - scaledPOLength / 2} ${
-                  50 + 1100 / drawScales[i - 1]
+                L${screenWidth / 2 - scaledPOLength / 2} ${
+                  50 + 1100 / scale
                 }
-                L${width / 2 + scaledPOLength / 2} ${
-                  50 + 1100 / drawScales[i - 1]
+                L${screenWidth / 2 + scaledPOLength / 2} ${
+                  50 + 1100 / scale
                 }
-                L${width / 2 + scaledPOLength / 2} ${
-                  50 + 1100 / drawScales[i - 1] + 50
+                L${screenWidth / 2 + scaledPOLength / 2} ${
+                  50 + 1100 / scale + 50
                 }
             `}
           fill="none"
@@ -40,13 +34,13 @@ export default function Ground() {
         />
 
         <path //  PO imitation
-          d={`M${width / 2 - scaledPOLength / 2} ${
-            50 + 1100 / drawScales[i - 1] - 10
+          d={`M${screenWidth / 2 - scaledPOLength / 2} ${
+            50 + 1100 / scale - 10
           }
-                L${width / 2 - scaledPOLength / 2} ${50}
-                L${width / 2 + scaledPOLength / 2} ${50}
-                L${width / 2 + scaledPOLength / 2} ${
-                  50 + 1100 / drawScales[i - 1] - 10
+                L${screenWidth / 2 - scaledPOLength / 2} ${50}
+                L${screenWidth / 2 + scaledPOLength / 2} ${50}
+                L${screenWidth / 2 + scaledPOLength / 2} ${
+                  50 + 1100 / scale - 10
                 }Z
             `}
           fill="none"
@@ -63,7 +57,7 @@ export default function Ground() {
     const arr: IExpansionJoints[] = structuredClone(expansionjoints);
 
     arr.sort((a, b) => a.position - b.position);
-    let startX = width / 2 - scaledPOLength / 2;
+    let startX = screenWidth / 2 - scaledPOLength / 2;
 
     result = (
       <g>
@@ -71,28 +65,28 @@ export default function Ground() {
           const res: JSX.Element = (
             <path
               key={`gj_${ej.id}`}
-              d={`M${startX} ${50 + 1100 / drawScales[i - 1] + 50}
-                L${startX} ${50 + 1100 / drawScales[i - 1]}
-                L${(width / 2 - scaledPOLength / 2) + ej.position / drawScales[i - 1]} ${50 + 1100 / drawScales[i - 1]}
-                L${(width / 2 - scaledPOLength / 2) + ej.position / drawScales[i - 1]} ${50 + 1100 / drawScales[i - 1] + 50}
+              d={`M${startX} ${50 + 1100 / scale + 50}
+                L${startX} ${50 + 1100 / scale}
+                L${(screenWidth / 2 - scaledPOLength / 2) + ej.position / scale} ${50 + 1100 / scale}
+                L${(screenWidth / 2 - scaledPOLength / 2) + ej.position / scale} ${50 + 1100 / scale + 50}
             `}
               fill="none"
               stroke="black"
               strokeWidth="3"
             />
           );
-          startX = (width / 2 - scaledPOLength / 2) + ej.position / drawScales[i - 1] + ej.length / drawScales[i - 1];
+          startX = (screenWidth / 2 - scaledPOLength / 2) + ej.position / scale + ej.length / scale;
 
           return res;
         })}
         <path
-          d={`M${startX} ${50 + 1100 / drawScales[i - 1] + 50}
-                L${startX} ${50 + 1100 / drawScales[i - 1]}
-                L${width / 2 + scaledPOLength / 2} ${
-                  50 + 1100 / drawScales[i - 1]
+          d={`M${startX} ${50 + 1100 / scale + 50}
+                L${startX} ${50 + 1100 / scale}
+                L${screenWidth / 2 + scaledPOLength / 2} ${
+                  50 + 1100 / scale
                 }
-                L${width / 2 + scaledPOLength / 2} ${
-                  50 + 1100 / drawScales[i - 1] + 50
+                L${screenWidth / 2 + scaledPOLength / 2} ${
+                  50 + 1100 / scale + 50
                 }
             `}
           fill="none"
@@ -101,13 +95,13 @@ export default function Ground() {
         />
 
         <path //  PO imitation
-          d={`M${width / 2 - scaledPOLength / 2} ${
-            50 + 1100 / drawScales[i - 1] - 10
+          d={`M${screenWidth / 2 - scaledPOLength / 2} ${
+            50 + 1100 / scale - 10
           }
-                L${width / 2 - scaledPOLength / 2} ${50}
-                L${width / 2 + scaledPOLength / 2} ${50}
-                L${width / 2 + scaledPOLength / 2} ${
-                  50 + 1100 / drawScales[i - 1] - 10
+                L${screenWidth / 2 - scaledPOLength / 2} ${50}
+                L${screenWidth / 2 + scaledPOLength / 2} ${50}
+                L${screenWidth / 2 + scaledPOLength / 2} ${
+                  50 + 1100 / scale - 10
                 }Z
             `}
           fill="none"
