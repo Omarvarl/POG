@@ -21,7 +21,9 @@ export interface IPagedDim {
 export interface IExpansionJoints {
     id: number,
     position: number,
-    length: number
+    length: number,
+    left: number,
+    right: number
 }
 
 export interface IPOLength {
@@ -38,4 +40,22 @@ export interface IInitCoord {
 
 export interface IProfile extends IInitCoord {
     length: number
+}
+
+export interface IComponents {
+    [key: string]: IProfile
+}
+
+export interface IPOParts {
+    startX: number,
+    startY: number,
+    length: number
+}
+
+export interface ISection {
+    name: string,
+    initX: number,
+    initY: number,
+    length: number,
+    key: string
 }

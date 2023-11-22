@@ -1,6 +1,6 @@
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { removeExpansionJoint, setPosition, setLength } from '../../store/expansionJointsSlice'
+import { removeExpansionJoint, setPosition, setLength, setLeft, setRight } from '../../store/expansionJointsSlice'
 import './Menu.css'
 
 interface ID {
@@ -36,7 +36,9 @@ const length = useAppSelector(state => {
                     dispatch(setPosition({
                         id: id,
                         position: Number(posInput.value),
-                        length: -1
+                        length: -1,
+                        left: 250,
+                        right: 250
                     }))
                 }}
             />
@@ -50,7 +52,43 @@ const length = useAppSelector(state => {
                     dispatch(setLength({
                         id: id,
                         position: -1,
-                        length: Number(lenInput.value)
+                        length: Number(lenInput.value),
+                        left: 250,
+                        right: 250
+                    }))
+                }}
+            />
+        </label>
+
+        <label htmlFor="">
+            Мин расстояние от шва до стойки слева
+            <input type="number"
+                defaultValue={250}
+                onBlur={(e:React.FocusEvent<HTMLInputElement>) => {
+                    const left = e.target as HTMLInputElement
+                    dispatch(setLeft({
+                        id: id,
+                        position: -1,
+                        length: -1,
+                        left: Number(left.value),
+                        right: 250
+                    }))
+                }}
+            />
+        </label>
+
+        <label htmlFor="">
+            Мин расстояние от шва до стойки справа
+            <input type="number"
+                defaultValue={250}
+                onBlur={(e:React.FocusEvent<HTMLInputElement>) => {
+                    const right = e.target as HTMLInputElement
+                    dispatch(setRight({
+                        id: id,
+                        position: -1,
+                        length: -1,
+                        left: -1,
+                        right: Number(right.value)
                     }))
                 }}
             />

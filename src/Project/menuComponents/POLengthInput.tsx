@@ -12,6 +12,8 @@ export default function POLengthInput() {
       <input
         type="number"
         defaultValue={POLength.POLength}
+        min={1000}
+        step={100}
         onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
           const input = e.target as HTMLInputElement;
           dispatch(setPOLength({

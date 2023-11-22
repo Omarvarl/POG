@@ -1,19 +1,22 @@
-.base-line-fill {
+/* .base-line-fill {
     fill: white;
     stroke: blue;
     stroke-width: 2;
+    stroke-linecap: round;
 }
 
 .base-line {
     fill: none;
     stroke: blue;
     stroke-width: 2;
-}
+    stroke-linecap: round;
+} */
 
 .base-line-black {
     fill: none;
     stroke: black;
     stroke-width: 2;
+    stroke-linecap: round;
 }
 
 .thin-line {
@@ -27,4 +30,39 @@
     stroke: orangered;
     stroke-width: 1;
     stroke-dasharray: 25,4,3,4;
+}
+
+.r1500 {
+    fill: white;
+    stroke: green;
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+.s1500, .e1500 {
+    fill: white;
+    stroke: blue;
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+.r3000 {
+    fill: white;
+    stroke: red;
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+.r1000 {
+    fill: white;
+    stroke: yellow;
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+.u {
+    fill: white;
+    stroke: rgb(255, 149, 0);
+    stroke-width: 2;
+    stroke-linecap: round;
 }

@@ -20,21 +20,6 @@ export default function StandTube88x58({initX, initY, length}: IProfile) {
                 L${initX} ${initY - length - 5 / scale}
             `}
         />
-
-
-    {/* invisible lines */}
-
-        <path className="thin-line"
-          d={`M${initX - profileWidth / 2 + 6 / scale} ${initY}
-            L${initX - profileWidth / 2  + 6 / scale} ${initY - length}
-            `}
-        />
-
-        <path className="thin-line"
-          d={`M${initX + profileWidth / 2 - 6 / scale} ${initY}
-            L${initX + profileWidth / 2 - 6 / scale} ${initY - length}
-            `}
-        />
     </g>
   )
 }

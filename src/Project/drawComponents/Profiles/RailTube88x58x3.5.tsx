@@ -17,20 +17,6 @@ export default function RailTube88x58({initX, initY, length}: IProfile) {
 
         />
 
-
-    {/* invisible lines */}
-
-        <path className="thin-line"
-          d={`M${initX} ${initY + profileWidth - profileTickness - 6 / scale}
-            L${initX + length} ${initY + profileWidth - profileTickness - 6 / scale}
-            `}
-        />
-
-        <path className="thin-line"
-          d={`M${initX} ${initY - profileTickness + 6 / scale}
-          L${initX + length} ${initY - profileTickness + 6 / scale}
-          `}
-        />
     </g>
   )
 }

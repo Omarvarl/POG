@@ -13,13 +13,17 @@ export const expansionJointsQuantitySlice = createSlice({
                 state.push({
                     id: (state[state.length - 1].id + 1),
                     position: 0,
-                    length: 0
+                    length: 0,
+                    left: 250,
+                    right: 250
                 })
             } else {
                 state.push({
                     id: 1,
                     position: 0,
-                    length: 0
+                    length: 0,
+                    left: 250,
+                    right: 250
                 })
             }
         },
@@ -43,7 +47,18 @@ export const expansionJointsQuantitySlice = createSlice({
             for (let i = 0; i < state.length; i++) {
                 if (state[i].id === action.payload.id) state[i].length = action.payload.length
             }
-            // console.log(current(state))
+            return state
+        },
+        setLeft: (state, action:PayloadAction<IExpansionJoints>) => {
+            for (let i = 0; i < state.length; i++) {
+                if (state[i].id === action.payload.id) state[i].left = action.payload.left
+            }
+            return state
+        },
+        setRight: (state, action:PayloadAction<IExpansionJoints>) => {
+            for (let i = 0; i < state.length; i++) {
+                if (state[i].id === action.payload.id) state[i].right = action.payload.right
+            }
             return state
         }
     }
@@ -54,5 +69,7 @@ export const {
     increaseExpansionJointsQuantity,
     removeExpansionJoint,
     setPosition,
-    setLength
+    setLength,
+    setLeft,
+    setRight
 } = expansionJointsQuantitySlice.actions

@@ -23,15 +23,31 @@ export default function DownFiting({initX, initY }: IInitCoord) {
         />
 
         <path className="base-line"  //  rib left
-          d={`M${initX - (153 / 2 - 35) / scale} ${initY}
+          d={`M${initX - (153 / 2 - 35) / scale} ${initY - 10 /scale}
                 L${initX - (153 / 2 - 35) / scale} ${initY - 137 / scale}
  
             `}
         />
 
+        <path className="base-line"  //  rib left
+          d={`M${initX - (153 / 2 - 45) / scale} ${initY - 10 /scale}
+                L${initX - (153 / 2 - 45) / scale} ${initY - 137 / scale}
+ 
+            `}
+        />
+
+        
+
         <path className="base-line"  //  rib right
-          d={`M${initX + (153 / 2 - 35) / scale} ${initY}
+          d={`M${initX + (153 / 2 - 35) / scale} ${initY - 10 /scale}
                 L${initX + (153 / 2 - 35) / scale} ${initY - 137 / scale}
+ 
+            `}
+        />
+
+        <path className="base-line"  //  rib right
+          d={`M${initX + (153 / 2 - 45) / scale} ${initY - 10 /scale}
+                L${initX + (153 / 2 - 45) / scale} ${initY - 137 / scale}
  
             `}
         />
