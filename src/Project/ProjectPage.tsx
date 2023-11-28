@@ -42,7 +42,7 @@ const ProjectPage = () => {
   };
 
   const fixAreaPoint = (e: React.MouseEvent) => {
-    e.preventDefault();
+    // e.preventDefault();
     if (e.button === 1) {
       cursorPos.current = {
         ...cursorPos.current,

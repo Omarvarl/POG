@@ -9,7 +9,7 @@ import UpFiting from "../Profiles/UpFiting"
 import { IUniqSectionData } from "../../../Types/Types"
 import '../Drawing.css'
 
-export default function UniqSection({initX, initY, length, addedStatePos}:IUniqSectionData) {
+export default function UniqSectionMirror({initX, initY, length, addedStatePos}:IUniqSectionData) {
     const scale = useAppSelector(state => state.POLength.scale)
     const sectionLength = length / scale
 
@@ -37,7 +37,6 @@ export default function UniqSection({initX, initY, length, addedStatePos}:IUniqS
 
         function getTubesPositions (tubesQuantity: number, length: number, addedStand:number) {
             const positions: number[] = []
- 
             const firstPosition = (length - tubesQuantity * tubesInterval) / 2 + 44 / scale
             positions.push(firstPosition)
 
@@ -46,29 +45,24 @@ export default function UniqSection({initX, initY, length, addedStatePos}:IUniqS
             }
     
             positions.forEach(pos => {
-                fillingTubes.push(<FillingTube initX={initX + pos + addedStand} initY={initY - 169 / scale} length={703 / scale} key={`tubes-${pos + addedStand}`}/>)
+                fillingTubes.push(<FillingTube initX={initX - pos - addedStand} initY={initY - 169 / scale} length={703 / scale} key={`tubes-${pos + addedStand}`}/>)
             })
         }
 
         return fillingTubes
     }
 
-    // console.log(initX * scale, addedStatePos, length)
+    
 
-    if (addedStatePos && (addedStatePos > 1500)) {
-        addedStand = <StandTube88x58 initX={initX + 1500 / scale} initY={initY} length={1100 / scale} />
-        addedDownFiting = <DownFiting initX={initX + 1500 / scale} initY={initY} />
-        addedUpFiting = <UpFiting initX={initX + 1500 / scale} initY={initY - 1100 / scale} />
+    if (length > 2000) {
+        addedStand = <StandTube88x58 initX={initX - 1500 / scale} initY={initY} length={1100 / scale} />
+        addedDownFiting = <DownFiting initX={initX - 1500 / scale} initY={initY} />
+        addedUpFiting = <UpFiting initX={initX - 1500 / scale} initY={initY - 1100 / scale} />
         fillingTubes = getFillingTubes(1500 / scale)
-    } else if (addedStatePos && length - addedStatePos >= 500) {
-        addedStand = <StandTube88x58 initX={initX + addedStatePos / scale} initY={initY} length={1100 / scale} />
-        addedDownFiting = <DownFiting initX={initX + addedStatePos / scale} initY={initY} />
-        addedUpFiting = <UpFiting initX={initX + addedStatePos / scale} initY={initY - 1100 / scale} />
-        fillingTubes = getFillingTubes(addedStatePos / scale)
     } else if (length <= 2000 && length > 1500) {
-        addedStand = <StandTube88x58 initX={initX + 1000 / scale} initY={initY} length={1100 / scale} />
-        addedDownFiting = <DownFiting initX={initX + 1000 / scale} initY={initY} />
-        addedUpFiting = <UpFiting initX={initX + 1000 / scale} initY={initY - 1100 / scale} />
+        addedStand = <StandTube88x58 initX={initX - 1000 / scale} initY={initY} length={1100 / scale} />
+        addedDownFiting = <DownFiting initX={initX - 1000 / scale} initY={initY} />
+        addedUpFiting = <UpFiting initX={initX - 1000 / scale} initY={initY - 1100 / scale} />
         fillingTubes = getFillingTubes(1000 / scale)
     } else {
         fillingTubes = getFillingTubes()
@@ -76,18 +70,20 @@ export default function UniqSection({initX, initY, length, addedStatePos}:IUniqS
 
 
   return (
-    <g className="u"> 
+    <g className="ur"> 
         { fillingTubes }
-        <Crossbar initX={initX} initY={initY - 169 / scale} length={sectionLength}/>
-        <Crossbar initX={initX} initY={initY - (169 + 703) / scale} length={sectionLength}/>
+        <Crossbar initX={initX - sectionLength} initY={initY - 169 / scale} length={sectionLength}/>
+        <Crossbar initX={initX - sectionLength} initY={initY - (169 + 703) / scale} length={sectionLength}/>
         <StandTube88x58 initX={initX} initY={initY} length={1100 / scale} />
         { addedStand }
-        <RailTube88x58 initX={initX} initY={initY - 1100 / scale} length={sectionLength} />
+        <RailTube88x58 initX={initX - sectionLength} initY={initY - 1100 / scale} length={sectionLength} />
         <DownFiting initX={initX} initY={initY} />
         <UpFiting initX={initX} initY={initY - 1100 / scale} />
         {addedDownFiting}
         {addedUpFiting}
-
+        <StandTube88x58 initX={initX - sectionLength} initY={initY} length={1100 / scale}/>
+        <UpFiting initX={initX - sectionLength} initY={initY - 1100 / scale} />
+        <DownFiting initX={initX - sectionLength} initY={initY}/>
     </g>
   )
 }

@@ -6,7 +6,10 @@ import './Drawing.css'
 export default function Ground() {
   const POLengthData = useAppSelector((state) => state.POLength);
   const expansionjoints = useAppSelector((state) => state.expansionJoints);
+  const plateJoints = useAppSelector(state => state.plateJoints)
   const {POLength, scaledPOLength, screenWidth, scale} = POLengthData
+
+  const joints = [...expansionjoints, ...plateJoints]
 
   const initX = screenWidth / 2 - scaledPOLength / 2
   const startY = (500 + 1100) / scale
@@ -15,7 +18,7 @@ export default function Ground() {
   if (POLength < 1000) return result;
   if (scale === 100 && scaledPOLength >= screenWidth) {
     result = <div>TOO BIG</div>;
-  } else if (!expansionjoints.length) {
+  } else if (!joints.length) {
     result = (
       <g>
         <path className="base-line-black"
@@ -23,31 +26,16 @@ export default function Ground() {
                 L${initX - 100 / scale} ${startY}
                 L${initX + scaledPOLength + 100 / scale} ${startY}
                 L${initX + scaledPOLength + 100 / scale} ${startY + 50}
-            `}  
-        />
-
-        {/* <path //  PO imitation
-          d={`M${screenWidth / 2 - scaledPOLength / 2} ${
-            50 + 1100 / scale - 10
-          }
-                L${screenWidth / 2 - scaledPOLength / 2} ${50}
-                L${screenWidth / 2 + scaledPOLength / 2} ${50}
-                L${screenWidth / 2 + scaledPOLength / 2} ${
-                  50 + 1100 / scale - 10
-                }Z
             `}
-          fill="none"
-          stroke="blue"
-          strokeWidth="3"
-        /> */}
+        />
       </g>
     );
   } else {
-    expansionjoints.forEach((ej) => {
-      if (ej.position <= 0 || ej.length <= 0) return result;
+    joints.forEach(j => {
+      if (j.position <= 0 || j.length <= 0) return result;
     });
 
-    const arr: IExpansionJoints[] = structuredClone(expansionjoints);
+    const arr: IExpansionJoints[] = structuredClone(joints);
 
     arr.sort((a, b) => a.position - b.position);
     let startX = screenWidth / 2 - scaledPOLength / 2 - 100 / scale;
@@ -55,18 +43,18 @@ export default function Ground() {
 
     result = (
       <g>
-        {expansionjoints.map((ej) => {
+        {arr.map(j => {
           const res: JSX.Element = (
             <path className="base-line-black"
-              key={`gj_${ej.id}`}
+              key={`gj_${j.id}`}
               d={`M${startX} ${startY + 50}
                 L${startX} ${startY}
-                L${(screenWidth / 2 - scaledPOLength / 2) + ej.position / scale} ${startY}
-                L${(screenWidth / 2 - scaledPOLength / 2) + ej.position / scale} ${startY + 50}
+                L${(screenWidth / 2 - scaledPOLength / 2) + j.position / scale} ${startY}
+                L${(screenWidth / 2 - scaledPOLength / 2) + j.position / scale} ${startY + 50}
             `}
             />
           );
-          startX = (screenWidth / 2 - scaledPOLength / 2) + ej.position / scale + ej.length / scale;
+          startX = (screenWidth / 2 - scaledPOLength / 2) + (j.position + j.length) / scale;
 
           return res;
         })}
@@ -77,21 +65,6 @@ export default function Ground() {
                 L${screenWidth / 2 + scaledPOLength / 2 + 100 / scale} ${startY + 50}
             `}
         />
-{/* 
-        <path //  PO imitation
-          d={`M${screenWidth / 2 - scaledPOLength / 2} ${
-            50 + 1100 / scale - 10
-          }
-                L${screenWidth / 2 - scaledPOLength / 2} ${50}
-                L${screenWidth / 2 + scaledPOLength / 2} ${50}
-                L${screenWidth / 2 + scaledPOLength / 2} ${
-                  50 + 1100 / scale - 10
-                }Z
-            `}
-          fill="none"
-          stroke="blue"
-          strokeWidth="3"
-        /> */}
       </g>
     );
   }

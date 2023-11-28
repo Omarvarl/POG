@@ -1,3 +1,4 @@
+import React from "react";
 import { IPagedDim } from "../../Types/Types"
 
 export default function Border({width, height}: IPagedDim) {

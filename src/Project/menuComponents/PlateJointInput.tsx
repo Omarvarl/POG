@@ -1,17 +1,17 @@
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { removeExpansionJoint, setPosition, setLength, setLeft, setRight } from '../../store/expansionJointsSlice'
+import { removePlateJoint, setLeft, setRight, setLength, setPosition } from '../../store/plateJointsSlice'
 import './Menu.css'
 
 interface ID {
     id: number
 }
 
-export default function ExpansionJointInput({id}:ID) {
+export default function PlateJointInput({id}:ID) {
 const dispatch = useAppDispatch()
 const position = useAppSelector(state => {
     let result = 0
-    for (let ej of state.expansionJoints) {
+    for (let ej of state.plateJoints) {
         if (ej.id === id) result = ej.position
     }
     return result
@@ -19,16 +19,16 @@ const position = useAppSelector(state => {
 
 const length = useAppSelector(state => {
     let result = 0
-    for (let ej of state.expansionJoints) {
+    for (let ej of state.plateJoints) {
         if (ej.id === id) result = ej.length
     }
     return result
 })
 
   return (
-    <div className='expansion-joint-input'>
+    <div className='plate-joint-input'>
         <label htmlFor="">
-            Расстояние до шва в мм
+            Расстояние до стыка в мм
             <input type="number"
                 defaultValue={position}
                 min={100}
@@ -46,7 +46,7 @@ const length = useAppSelector(state => {
             />
         </label>
         <label htmlFor="">
-            Размер шва в мм
+            Размер стыка в мм
             <input type="number"
                 defaultValue={length}
                 onBlur={(e:React.FocusEvent<HTMLInputElement>) => {
@@ -63,7 +63,7 @@ const length = useAppSelector(state => {
         </label>
 
         <label htmlFor="">
-            Мин расстояние от шва до стойки слева в мм
+            Мин расстояние от стыка до стойки слева в мм
             <input type="number"
                 defaultValue={250}
                 onBlur={(e:React.FocusEvent<HTMLInputElement>) => {
@@ -80,7 +80,7 @@ const length = useAppSelector(state => {
         </label>
 
         <label htmlFor="">
-            Мин расстояние от шва до стойки справа в мм
+            Мин расстояние от стыка до стойки справа в мм
             <input type="number"
                 defaultValue={250}
                 onBlur={(e:React.FocusEvent<HTMLInputElement>) => {
@@ -97,9 +97,9 @@ const length = useAppSelector(state => {
         </label>
         <button
             className="remove-expansion-joint"
-            onClick={() => dispatch(removeExpansionJoint(id))}
+            onClick={() => dispatch(removePlateJoint(id))}
         >
-            Удалить деф. шов
+            Удалить стык
         </button>
     </div>
   )

@@ -4,6 +4,7 @@ import drawParamSlice from './drawParamSlice';
 import POLengthSlice from './POLengthSlice';
 import realPageSizeSlice from './realPageSizeSlice';
 import expansionJointsSlice from './expansionJointsSlice';
+import plateJointsSlice from './plateJointsSlice';
 
 const store = configureStore({
     reducer: {
@@ -11,7 +12,8 @@ const store = configureStore({
         drawParam: drawParamSlice,
         POLength: POLengthSlice,
         realPageSize: realPageSizeSlice,
-        expansionJoints: expansionJointsSlice
+        expansionJoints: expansionJointsSlice,
+        plateJoints: plateJointsSlice
     }
     
 })

@@ -57,5 +57,11 @@ export interface ISection {
     initX: number,
     initY: number,
     length: number,
+    addedStatePos?: number,
     key: string
 }
+
+export interface IUniqSectionData extends IProfile {
+    addedStatePos?: number
+}
+

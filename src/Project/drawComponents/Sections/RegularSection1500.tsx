@@ -14,18 +14,23 @@ export default function RegularSection1500({initX, initY}:IInitCoord) {
     const sectionLength = 1500 / scale
 
     const getFillingTubes = ():JSX.Element[] => {
-        let fillingTubes:JSX.Element[] = []
-        let center = initX + sectionLength / 2
-        let pos = 181 / scale
-        fillingTubes.push(<FillingTube initX={center} initY={initY - 169 / scale} length={703 / scale} key={`tubes${pos}`}/>)
-    
-        while (center + pos - initX + 32 / scale < sectionLength) {
-            fillingTubes.push(<FillingTube initX={center - pos} initY={initY - 169 / scale} length={703 / scale} key={`tubes-${pos}`}/>)
-            fillingTubes.push(<FillingTube initX={center + pos} initY={initY - 169 / scale} length={703 / scale} key={`tubes+${pos}`}/>)
-            pos += 181 / scale
-        }
-        return fillingTubes
-    }
+      const tubesInterval = 182 / scale
+      const positions: number[] = []
+      let fillingTubes:JSX.Element[] = []
+      let tubesQuantity = Math.floor((sectionLength - 88 / scale) / tubesInterval) - 1
+
+      const firstPosition = (sectionLength - tubesQuantity * tubesInterval) / 2
+
+      positions.push(firstPosition)
+      for (let i = 0; i < tubesQuantity; i++) {
+          positions.push(positions[i] + tubesInterval)
+      }
+
+      positions.forEach(pos => {
+          fillingTubes.push(<FillingTube initX={initX + pos} initY={initY - 169 / scale} length={703 / scale} key={`tubes-${pos}`}/>)
+      })
+      return fillingTubes
+  }
 
 
   return (

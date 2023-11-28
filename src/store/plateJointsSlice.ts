@@ -4,31 +4,20 @@ import { IExpansionJoints } from '../Types/Types';
 
 const initialState:IExpansionJoints[] = []
 
-export const expansionJointsQuantitySlice = createSlice({
-    name: 'expansionJointsQuantity',
+export const plateJointsSlice = createSlice({
+    name: 'plateJoints',
     initialState,
     reducers: {
-        increaseExpansionJointsQuantity: (state) => {
-            if (state.length) {
+        addPlateJoint: (state) => {
                 state.push({
-                    id: (state[state.length - 1].id + 1),
+                    id: state.length + 1000,
                     position: 0,
                     length: 0,
                     left: 250,
                     right: 250
                 })
-            } else {
-                state.push({
-                    id: 1,
-                    position: 0,
-                    length: 0,
-                    left: 250,
-                    right: 250
-                })
-            }
-            return state
         },
-        removeExpansionJoint: (state, action:PayloadAction<number>) => {
+        removePlateJoint: (state, action:PayloadAction<number>) => {
             let index = -1
             for (let i = 0; i < state.length; i++) {
                 if (state[i].id === action.payload) index = i
@@ -65,12 +54,12 @@ export const expansionJointsQuantitySlice = createSlice({
     }
 })
 
-export default expansionJointsQuantitySlice.reducer
+export default plateJointsSlice.reducer
 export const {
-    increaseExpansionJointsQuantity,
-    removeExpansionJoint,
+    addPlateJoint,
+    removePlateJoint,
     setPosition,
     setLength,
     setLeft,
     setRight
-} = expansionJointsQuantitySlice.actions
+} = plateJointsSlice.actions

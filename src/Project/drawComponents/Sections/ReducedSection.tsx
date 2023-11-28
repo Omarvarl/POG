@@ -1,4 +1,3 @@
-// import { IProfile } from "../../../Types/Types"
 import { useAppSelector } from "../../../hooks"
 import StandTube88x58 from "../Profiles/StandTube88x58x3.5"
 import RailTube88x58 from '../Profiles/RailTube88x58x3.5'
@@ -9,7 +8,7 @@ import UpFiting from "../Profiles/UpFiting"
 import { IInitCoord } from "../../../Types/Types"
 import '../Drawing.css'
 
-export default function RegularSection1000({initX, initY}:IInitCoord) {  
+export default function ReducedSection({initX, initY}:IInitCoord) {  
     const scale = useAppSelector(state => state.POLength.scale)
     const sectionLength = 1000 / scale
     const filingInterval = 182 / scale
@@ -44,6 +43,48 @@ export default function RegularSection1000({initX, initY}:IInitCoord) {
         <DownFiting initX={initX} initY={initY} />
         <UpFiting initX={initX} initY={initY - 1100 / scale} />
 
+        <path className="base-line-fill"  //  profile body
+          d={`M${initX + 350 / scale} ${initY + 50 /scale}
+                Q${initX + 410 / scale} ${1200 / scale / 4 * 3 + (initY - 1150 / scale)},
+                ${initX + 350 / scale} ${1200 / scale / 2 + (initY - 1150 / scale)}
+                Q${initX + 290 / scale} ${1200 / scale / 4 + (initY - 1150 / scale)}
+                ${initX + 350 / scale} ${initY - 1150 / scale}
+                L${initX + 650 / scale} ${initY - 1150 / scale}
+
+                Q${initX + 590 / scale} ${1200 / scale / 4 + (initY - 1150 / scale)},
+                ${initX + 650 / scale} ${1200 / scale / 2 + (initY - 1150 / scale)}
+
+                Q${initX + 710 / scale} ${1200 / scale / 4 * 3 + (initY - 1150 / scale)}
+                ${initX + 650 / scale} ${initY + 50 / scale}
+                L${initX + 650 / scale} ${initY + 50 / scale}Z
+            `}
+            stroke='white'
+            strokeWidth='1'
+        />
+
+        
+        {/* <circle
+          cx={initX + 250 / scale} cy={initY + 50 /scale} r="5"
+          fill="none" stroke="red"
+        />
+
+        <circle
+          cx={initX + 310 / scale} cy={1200 / scale / 4 * 3 + (initY - 1150 / scale)} r="5"
+          fill="none" stroke="red"
+        />
+
+        <circle
+          cx={initX + 250 / scale} cy={1200 / scale / 2 + (initY - 1150 / scale)} r="5"
+          fill="none" stroke="red"
+        />
+        <circle
+          cx={initX + 190 / scale} cy={1200 / scale / 4 + (initY - 1150 / scale)} r="5"
+          fill="none" stroke="red"
+        />
+        <circle
+          cx={initX + 250 / scale} cy={initY - 1150 / scale} r="5"
+          fill="none" stroke="red"
+        /> */}
     </g>
   )
 }
