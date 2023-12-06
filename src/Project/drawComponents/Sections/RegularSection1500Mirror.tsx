@@ -9,7 +9,9 @@ import UpFiting from "../Profiles/UpFiting"
 import { IInitCoord } from "../../../Types/Types"
 
 export default function RegularSection1500_mirror({initX, initY}:IInitCoord) {  
-    const scale = useAppSelector(state => state.POLength.scale)
+  const normalScale =  useAppSelector(state => state.POLength.scale)
+  const reducedScale = useAppSelector(state => state.reducedPOLEngth.scale)
+  const scale = (reducedScale === 1) ? normalScale : reducedScale
     const sectionLength = 1500 / scale
 
     const getFillingTubes = ():JSX.Element[] => {

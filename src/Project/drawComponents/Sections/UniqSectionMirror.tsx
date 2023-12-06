@@ -10,7 +10,9 @@ import { IUniqSectionData } from "../../../Types/Types"
 import '../Drawing.css'
 
 export default function UniqSectionMirror({initX, initY, length, addedStatePos}:IUniqSectionData) {
-    const scale = useAppSelector(state => state.POLength.scale)
+    const normalScale =  useAppSelector(state => state.POLength.scale)
+    const reducedScale = useAppSelector(state => state.reducedPOLEngth.scale)
+    const scale = (reducedScale === 1) ? normalScale : reducedScale
     const sectionLength = length / scale
 
     let addedStand:JSX.Element = <></>

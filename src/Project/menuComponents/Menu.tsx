@@ -1,49 +1,66 @@
 import PageFormatSelect from "./PageFormatSelect";
 import POLengthInput from "./POLengthInput";
-import ExpansionJointInput from "./ExpansionJointInput";
-import PlateJointInput from "./PlateJointInput";
+// import ExpansionJointInput from "./ExpansionJointInput";
+// import PlateJointInput from "./PlateJointInput";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { increaseExpansionJointsQuantity } from "../../store/expansionJointsSlice";
-import { addPlateJoint } from "../../store/plateJointsSlice";
+// import { increaseExpansionJointsQuantity } from "../../store/expansionJointsSlice";
+// import { addPlate } from "../../store/platesSlice";
+import './Menu.css'
+import { setViewBreakState } from "../../store/viewBreakSlice";
 
 export default function Menu() {
   const dispatch = useAppDispatch()
-  const expansionJointsQuantity = useAppSelector(state => state.expansionJoints)
-  const plateJointsData = useAppSelector(state => state.plateJoints)
-  const expansionJoints:JSX.Element[] = expansionJointsQuantity.map((ej) => {
-      return <ExpansionJointInput id={ej.id} key={`ej_${ej.id}`} />
-  })
-  const plateJoints:JSX.Element[] = plateJointsData.map((pj) => {
-    return <PlateJointInput id={pj.id} key={`pj_${pj.id}`} />
-})
+  const viewBreak = useAppSelector(state => state.viewBreak)
+  // const expansionJointsQuantity = useAppSelector(state => state.expansionJoints)
+  // const plateJointsData = useAppSelector(state => state.plateJoints)
+  // const expansionJoints:JSX.Element[] = expansionJointsQuantity.map((ej) => {
+  //     return <ExpansionJointInput id={ej.id} key={`ej_${ej.id}`} />
+  // })
+  // const plateJoints:JSX.Element[] = plateJointsData.map((pj) => {
+  //   return <PlateJointInput id={pj.id} key={`pj_${pj.id}`} />
+  // })
   return (
     <div className="project-menu">
       <label htmlFor="" className="project-name">
         projectName
       </label>
         <PageFormatSelect />
-        <POLengthInput />
-        <div className="expansion-joints">
+        {/* <POLengthInput />
+        <label htmlFor="break-view-check"
+          className="view-break"
+            onClick={(e: React.MouseEvent<HTMLLabelElement>) => {
+                let check = e.target as HTMLInputElement
+                dispatch(setViewBreakState(check.checked))
+            }
+          }
+        >
+          <input id="break-view-check" type='checkbox'
+            defaultChecked={viewBreak}
+          />
+          Добавить разрывы вида
+        </label> */}
+
+        {/* <div className="expansion-joints">
           <button
             className="add-expansion-joint"
             onClick={() => dispatch(increaseExpansionJointsQuantity())}
           >
             Добавить деф. шов
           </button>
+
           {
             expansionJoints
           }
-
           <button
             className="add-plate-joint"
-            onClick={() => dispatch(addPlateJoint())}
+            onClick={() => dispatch(addPlate())}
           >
             Добавить стык плит
           </button>
           {
             plateJoints
           }
-        </div>
+        </div> */}
     </div>
   );
 }

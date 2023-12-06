@@ -9,8 +9,11 @@ import UpFiting from "../Profiles/UpFiting"
 import { IInitCoord } from "../../../Types/Types"
 import '../Drawing.css'
 
-export default function RegularSection1000({initX, initY}:IInitCoord) {  
-    const scale = useAppSelector(state => state.POLength.scale)
+export default function RegularSection1000({initX, initY}:IInitCoord) {
+  const normalScale =  useAppSelector(state => state.POLength.scale)
+  const reducedScale = useAppSelector(state => state.reducedPOLEngth.scale)
+  const scale = (reducedScale === 1) ? normalScale : reducedScale
+
     const sectionLength = 1000 / scale
     const filingInterval = 182 / scale
 

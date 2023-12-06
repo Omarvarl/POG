@@ -7,7 +7,9 @@ import End from "./End"
 import UniqSectionMirror from "./UniqSectionMirror"
 
 export default function UniqEndSection({initX, initY, length, addedStatePos}:IUniqSectionData) {
-    const scale = useAppSelector(state => state.POLength.scale)
+  const normalScale =  useAppSelector(state => state.POLength.scale)
+  const reducedScale = useAppSelector(state => state.reducedPOLEngth.scale)
+  const scale = (reducedScale === 1) ? normalScale : reducedScale
 
 
   return (

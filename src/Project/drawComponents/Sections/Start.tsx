@@ -3,7 +3,9 @@ import { IProfile } from '../../../Types/Types'
 import { useAppSelector } from '../../../hooks'
 
 export default function Start({initX, initY, length}:IProfile) {
-    const scale = useAppSelector(state => state.POLength.scale)
+  const normalScale =  useAppSelector(state => state.POLength.scale)
+  const reducedScale = useAppSelector(state => state.reducedPOLEngth.scale)
+  const scale = (reducedScale === 1) ? normalScale : reducedScale
     const profileWidth = 58 / scale
     const profileWidth1 = 88 / scale
     const profileTickness = 3.5 / scale

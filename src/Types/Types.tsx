@@ -15,13 +15,17 @@ export interface ICursorPosition {
 
 export interface IPagedDim {
     width: number,
-    height: number
+    height: number,
+    factor: number
 }
 
-export interface IExpansionJoints {
-    id: number,
+export interface IGround {
+    id: string,
     position: number,
-    length: number,
+    length: number
+}
+
+export interface IExpansionJoints extends IGround {
     left: number,
     right: number
 }
@@ -63,5 +67,15 @@ export interface ISection {
 
 export interface IUniqSectionData extends IProfile {
     addedStatePos?: number
+}
+
+export interface IDimArrow extends IInitCoord {
+    type: {
+        type: string,
+        dir: string
+    },
+    length: number,
+    indent: number,
+    id: string
 }
 

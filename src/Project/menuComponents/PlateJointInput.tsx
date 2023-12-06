@@ -1,17 +1,17 @@
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { removePlateJoint, setLeft, setRight, setLength, setPosition } from '../../store/plateJointsSlice'
+import { setLeft, setRight, setLength, setPosition } from '../../store/platesSlice'
 import './Menu.css'
 
 interface ID {
-    id: number
+    id: string
 }
 
 export default function PlateJointInput({id}:ID) {
 const dispatch = useAppDispatch()
 const position = useAppSelector(state => {
     let result = 0
-    for (let ej of state.plateJoints) {
+    for (let ej of state.plates) {
         if (ej.id === id) result = ej.position
     }
     return result
@@ -19,7 +19,7 @@ const position = useAppSelector(state => {
 
 const length = useAppSelector(state => {
     let result = 0
-    for (let ej of state.plateJoints) {
+    for (let ej of state.plates) {
         if (ej.id === id) result = ej.length
     }
     return result
@@ -97,7 +97,7 @@ const length = useAppSelector(state => {
         </label>
         <button
             className="remove-expansion-joint"
-            onClick={() => dispatch(removePlateJoint(id))}
+            // onClick={() => dispatch(removePlateJoint(id))}
         >
             Удалить стык
         </button>

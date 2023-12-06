@@ -19,6 +19,13 @@ code {
   font-weight: bold;
 }
 
+@font-face {
+  font-family: 'Gost';
+  src: local('Gost_A'),
+    url('./fonts/GOST_A_.ttf') format('truetype');
+  font-weight: bold;
+}
+
 header {
   font-family: "Roboto";
 }

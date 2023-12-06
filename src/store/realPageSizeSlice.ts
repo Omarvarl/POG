@@ -2,8 +2,9 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IPagedDim } from '../Types/Types'
 
 const defaultPageSize:IPagedDim = {
-    width: 4200,
-    height: 2970
+    width: 5940,
+    height: 4200,
+    factor: 1
 }
 
 export const realPageSizeSlice = createSlice({

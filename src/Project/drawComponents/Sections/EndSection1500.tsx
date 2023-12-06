@@ -7,7 +7,9 @@ import StandTube88x58 from "../Profiles/StandTube88x58x3.5"
 import DownFiting from "../Profiles/DownFiting"
 
 export default function EndSection1500({initX, initY}:IInitCoord) {  
-    const scale = useAppSelector(state => state.POLength.scale)
+  const normalScale =  useAppSelector(state => state.POLength.scale)
+  const reducedScale = useAppSelector(state => state.reducedPOLEngth.scale)
+  const scale = (reducedScale === 1) ? normalScale : reducedScale
 
   return (
     <g className="e1500">

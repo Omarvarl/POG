@@ -8,27 +8,11 @@ export const expansionJointsQuantitySlice = createSlice({
     name: 'expansionJointsQuantity',
     initialState,
     reducers: {
-        increaseExpansionJointsQuantity: (state) => {
-            if (state.length) {
-                state.push({
-                    id: (state[state.length - 1].id + 1),
-                    position: 0,
-                    length: 0,
-                    left: 250,
-                    right: 250
-                })
-            } else {
-                state.push({
-                    id: 1,
-                    position: 0,
-                    length: 0,
-                    left: 250,
-                    right: 250
-                })
-            }
+        addExpansionJoin: (state, action:PayloadAction<IExpansionJoints>) => {
+            state.push(action.payload)
             return state
         },
-        removeExpansionJoint: (state, action:PayloadAction<number>) => {
+        removeExpansionJoint: (state, action:PayloadAction<string>) => {
             let index = -1
             for (let i = 0; i < state.length; i++) {
                 if (state[i].id === action.payload) index = i
@@ -67,7 +51,7 @@ export const expansionJointsQuantitySlice = createSlice({
 
 export default expansionJointsQuantitySlice.reducer
 export const {
-    increaseExpansionJointsQuantity,
+    addExpansionJoin,
     removeExpansionJoint,
     setPosition,
     setLength,

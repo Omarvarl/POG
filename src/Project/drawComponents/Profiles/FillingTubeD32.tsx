@@ -3,7 +3,9 @@ import { IProfile } from "../../../Types/Types"
 import '../Drawing.css'
 
 export default function FillingTube({initX, initY, length}: IProfile) {
-  const scale = useAppSelector(state => state.POLength.scale)
+  const normalScale =  useAppSelector(state => state.POLength.scale)
+  const reducedScale = useAppSelector(state => state.reducedPOLEngth.scale)
+  const scale = (reducedScale === 1) ? normalScale : reducedScale
   const profileDiametr = 32 / scale
   return (
     <g>

@@ -1,28 +1,41 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IExpansionJoints } from '../Types/Types';
 
+const initialState:IExpansionJoints[] = [{
+    id: 'plate_0',
+    position: 0,  //  start position in assembley coordinate system
+    length: 10000,
+    left: 250,  //  min distance for first stand
+    right: 250  //  min distance for last stand
+    }
+]
 
-const initialState:IExpansionJoints[] = []
-
-export const plateJointsSlice = createSlice({
-    name: 'plateJoints',
+export const platesSlice = createSlice({
+    name: 'plates',
     initialState,
     reducers: {
-        addPlateJoint: (state) => {
-                state.push({
-                    id: state.length + 1000,
-                    position: 0,
-                    length: 0,
-                    left: 250,
-                    right: 250
-                })
+        addPlate: (state, action:PayloadAction<IExpansionJoints>) => {
+            state.push(action.payload)
+            state.sort((a, b) => a.position - b.position)
+            return state
         },
-        removePlateJoint: (state, action:PayloadAction<number>) => {
-            let index = -1
-            for (let i = 0; i < state.length; i++) {
-                if (state[i].id === action.payload) index = i
-            }
+        removePlate: (state, action:PayloadAction<string>) => {
+            const index = state.findIndex(elm => elm.id === action.payload)
+
             if (index >= 0) {
+                state.splice(index, 1)
+            }
+            return state
+        },
+        connectPlates: (state, action:PayloadAction<string>) => {
+            const index = state.findIndex(elm => elm.id === action.payload)
+            
+            if (index > 0) {
+                state[index - 1].length = state[index].position + state[index].length - state[index - 1].position
+                state.splice(index, 1)
+            } else if (index === 0 && state.length > 1) {
+                state[index + 1].length = state[index + 1].position + state[index + 1].length
+                state[index + 1].position = 0
                 state.splice(index, 1)
             }
             return state
@@ -50,16 +63,17 @@ export const plateJointsSlice = createSlice({
                 if (state[i].id === action.payload.id) state[i].right = action.payload.right
             }
             return state
-        }
+        },
     }
 })
 
-export default plateJointsSlice.reducer
+export default platesSlice.reducer
 export const {
-    addPlateJoint,
-    removePlateJoint,
+    addPlate,
+    removePlate,
     setPosition,
     setLength,
     setLeft,
-    setRight
-} = plateJointsSlice.actions
+    setRight,
+    connectPlates
+} = platesSlice.actions

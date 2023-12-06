@@ -7,7 +7,9 @@ import Start from "./Start"
 import UniqSection from "./UniqSection"
 
 export default function UniqStartSection({initX, initY, length, addedStatePos}:IUniqSectionData) {
-    const scale = useAppSelector(state => state.POLength.scale)
+  const normalScale =  useAppSelector(state => state.POLength.scale)
+  const reducedScale = useAppSelector(state => state.reducedPOLEngth.scale)
+  const scale = (reducedScale === 1) ? normalScale : reducedScale
 
 
   return (

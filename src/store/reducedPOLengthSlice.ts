@@ -2,25 +2,24 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IPOLength } from '../Types/Types';
 
 const initialState:IPOLength = {
-    POLength: 10000,
-    scaledPOLength: 4000,
-    screenWidth: 5940,
-    scale: 2.5
+    POLength: 0,
+    scaledPOLength: 1,
+    screenWidth: 4200,
+    scale: 1
 }
 
 const drawScales = [1, 2, 2.5, 4, 5, 10, 15, 20, 25, 40, 50, 75, 100];
 
-export const POLengthSlice = createSlice({
+export const reducedPOLengthSlice = createSlice({
     name: 'drawParam',
     initialState,
     reducers: {
-        setPOLength: (state, action:PayloadAction<IPOLength>) => {
+        setReducedPOLength: (state, action:PayloadAction<IPOLength>) => {
             const newPOLength = action.payload.POLength
             let scaledPOLength = newPOLength
             const width = action.payload.screenWidth
             let i = 1;
             while (i < drawScales.length && (scaledPOLength + (2500 / drawScales[i]) >= width || scaledPOLength > 5000)) {
-
                 scaledPOLength = newPOLength / drawScales[i];
                 i++;
             }
@@ -30,9 +29,13 @@ export const POLengthSlice = createSlice({
                 screenWidth: width,
                 scale: drawScales[i - 1]
             }
+        },
+        setReducedScale: (state, action: PayloadAction<number>) => {
+            state.scale = action.payload
+            return state
         }
     }
 })
 
-export default POLengthSlice.reducer
-export const { setPOLength } = POLengthSlice.actions
+export default reducedPOLengthSlice.reducer
+export const { setReducedPOLength, setReducedScale } = reducedPOLengthSlice.actions

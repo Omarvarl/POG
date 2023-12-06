@@ -1,16 +1,18 @@
-import React from "react";
-import { IPagedDim } from "../../Types/Types"
+import { useAppSelector } from "../../hooks";
 
-export default function Border({width, height}: IPagedDim) {
+export default function Border() {
+const pageSize = useAppSelector(state => state.realPageSize);
+const width = pageSize.width * pageSize.factor;
+const height = (pageSize.factor === 1) ? pageSize.height : pageSize.height * 2;
   return (
     <g key={`ril_0`}>
     <path
-      d={`M20 5
-                  L${width - 5} 5
-                  L${width - 5} ${
-                    height - 5
+      d={`M200 50
+                  L${width - 50} 50
+                  L${width - 50} ${
+                    height - 50
                   }
-                  L20 ${height - 5}Z`}
+                  L200 ${height - 50}Z`}
       fill="none"
       stroke="blue"
       strokeWidth="3"

@@ -12,6 +12,55 @@
     stroke-linecap: round;
 } */
 
+.drawing {
+    font-family: Gost;
+    font-style: italic;
+}
+
+.dim-arrow {
+    fill: none;
+    stroke: black;
+    stroke-width: 1;
+    fill: black;
+}
+
+.dim-arrow:hover {
+    cursor: pointer;
+    stroke: gold;
+    fill: gold;
+}
+
+.dim-input {
+    position: absolute;
+    width: 100px;
+    background-color: rgb(234, 234, 234);
+    border: none;
+    z-index: 1;
+    font-family: Gost;
+    font-style: italic;
+}
+
+.ground {
+    stroke: grey;
+}
+
+.ground:hover {
+    cursor: pointer;
+    stroke: gold;
+}
+
+.expansion-join:hover {
+    cursor: pointer;
+    stroke: gold;
+    fill: gold;
+}
+
+.pop-up {
+    position: relative;
+    flex-direction: column;
+}
+
+
 .base-line-black {
     fill: none;
     stroke: black;
@@ -55,7 +104,7 @@
 
 .r1000 {
     fill: white;
-    stroke: yellow;
+    stroke: rgb(160, 160, 12);
     stroke-width: 2;
     stroke-linecap: round;
 }

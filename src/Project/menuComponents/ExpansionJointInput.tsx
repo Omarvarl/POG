@@ -4,7 +4,7 @@ import { removeExpansionJoint, setPosition, setLength, setLeft, setRight } from 
 import './Menu.css'
 
 interface ID {
-    id: number
+    id: string
 }
 
 export default function ExpansionJointInput({id}:ID) {

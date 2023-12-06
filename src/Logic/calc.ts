@@ -1,5 +1,6 @@
 import { IPOLength, IExpansionJoints, IPOParts, ISection } from "../Types/Types"
 
+
 const calc = (
     POLengthData:IPOLength,
     expansionJoints:IExpansionJoints[],
@@ -7,8 +8,8 @@ const calc = (
     ):ISection[] => {
     const {POLength, scaledPOLength, screenWidth, scale} = POLengthData
 
-    const startX = (screenWidth - scaledPOLength) / 2
-    const startY = (500 + 1100) / scale
+    const startX = (screenWidth - scaledPOLength) / 2 + 300 / scale
+    const startY = 1100 * 2 / scale
 
     let plateJoints:{ left:number, right:number }[] = plateJointsData.map(pj => {
         return {

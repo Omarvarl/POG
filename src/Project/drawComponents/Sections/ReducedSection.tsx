@@ -9,7 +9,10 @@ import { IInitCoord } from "../../../Types/Types"
 import '../Drawing.css'
 
 export default function ReducedSection({initX, initY}:IInitCoord) {  
-    const scale = useAppSelector(state => state.POLength.scale)
+  const normalScale =  useAppSelector(state => state.POLength.scale)
+  const reducedScale = useAppSelector(state => state.reducedPOLEngth.scale)
+  const scale = (reducedScale === 1) ? normalScale : reducedScale
+  
     const sectionLength = 1000 / scale
     const filingInterval = 182 / scale
 
@@ -34,7 +37,7 @@ export default function ReducedSection({initX, initY}:IInitCoord) {
 
 
   return (
-    <g className="r1500"> 
+    <g className="r1000"> 
         { getFillingTubes() }
         <Crossbar initX={initX} initY={initY - 169 / scale} length={sectionLength}/>
         <Crossbar initX={initX} initY={initY - (169 + 703) / scale} length={sectionLength}/>
@@ -43,7 +46,7 @@ export default function ReducedSection({initX, initY}:IInitCoord) {
         <DownFiting initX={initX} initY={initY} />
         <UpFiting initX={initX} initY={initY - 1100 / scale} />
 
-        <path className="base-line-fill"  //  profile body
+        <path className="base-line-fill"
           d={`M${initX + 350 / scale} ${initY + 50 /scale}
                 Q${initX + 410 / scale} ${1200 / scale / 4 * 3 + (initY - 1150 / scale)},
                 ${initX + 350 / scale} ${1200 / scale / 2 + (initY - 1150 / scale)}
@@ -60,6 +63,24 @@ export default function ReducedSection({initX, initY}:IInitCoord) {
             `}
             stroke='white'
             strokeWidth='1'
+        />
+
+        <path className="thin-line"
+          d={`M${initX + 350 / scale} ${initY + 50 /scale}
+                Q${initX + 410 / scale} ${1200 / scale / 4 * 3 + (initY - 1150 / scale)},
+                ${initX + 350 / scale} ${1200 / scale / 2 + (initY - 1150 / scale)}
+                Q${initX + 290 / scale} ${1200 / scale / 4 + (initY - 1150 / scale)}
+                ${initX + 350 / scale} ${initY - 1150 / scale}
+            `}
+        />
+        <path className="thin-line"
+          d={`M${initX + 650 / scale} ${initY - 1150 / scale}
+                Q${initX + 590 / scale} ${1200 / scale / 4 + (initY - 1150 / scale)},
+                ${initX + 650 / scale} ${1200 / scale / 2 + (initY - 1150 / scale)}
+                Q${initX + 710 / scale} ${1200 / scale / 4 * 3 + (initY - 1150 / scale)}
+                ${initX + 650 / scale} ${initY + 50 / scale}
+                L${initX + 650 / scale} ${initY + 50 / scale}
+            `}
         />
 
         

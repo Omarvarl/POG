@@ -4,7 +4,15 @@ import drawParamSlice from './drawParamSlice';
 import POLengthSlice from './POLengthSlice';
 import realPageSizeSlice from './realPageSizeSlice';
 import expansionJointsSlice from './expansionJointsSlice';
-import plateJointsSlice from './plateJointsSlice';
+import platesSlice from './platesSlice';
+import viewBreakSlice from './viewBreakSlice';
+import reducedPOLengthSlice from './reducedPOLengthSlice';
+import popUpSlice from './popUpSlice';
+import currentPlateSlice from './currentPlateSlice';
+import platesJointsSlice from './platesJointsSlice';
+import inputVisibilitySlice from './inputVisibilitySlice';
+
+
 
 const store = configureStore({
     reducer: {
@@ -13,7 +21,13 @@ const store = configureStore({
         POLength: POLengthSlice,
         realPageSize: realPageSizeSlice,
         expansionJoints: expansionJointsSlice,
-        plateJoints: plateJointsSlice
+        plates: platesSlice,
+        platesJoints: platesJointsSlice,
+        viewBreak: viewBreakSlice,
+        reducedPOLEngth: reducedPOLengthSlice,
+        popUp: popUpSlice,
+        currentPlate: currentPlateSlice,
+        inputVisibility: inputVisibilitySlice
     }
     
 })
