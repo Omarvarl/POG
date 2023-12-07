@@ -9,7 +9,6 @@ export default function DimArrow({initX, initY, type, length, indent, id}:IDimAr
     const normalScale =  useAppSelector(state => state.POLength.scale)
     const reducedScale = useAppSelector(state => state.reducedPOLEngth.scale)
     const POLength = useAppSelector(state => state.POLength.POLength)
-    // const currentPlate = useAppSelector(state => state.currentPlate)
 
     const plates = useAppSelector(state => state.plates)
     const plateJoints = useAppSelector(state => state.platesJoints)
@@ -25,12 +24,10 @@ export default function DimArrow({initX, initY, type, length, indent, id}:IDimAr
     const index = plates.findIndex(elm => elm.id.split('_')[1] === num)
 
     const changeText = (e: React.MouseEvent) => {
-        // console.log(num)
         const target = e.target as HTMLElement
         let draw:HTMLElement | null = target
         let x = draw.getBoundingClientRect().x
         let y = draw.getBoundingClientRect().y
-        console.log(getLength())
 
         while (draw && !draw.classList.contains("draw-page")) {
            draw = draw.parentElement

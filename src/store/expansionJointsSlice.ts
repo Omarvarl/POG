@@ -10,25 +10,24 @@ export const expansionJointsQuantitySlice = createSlice({
     reducers: {
         addExpansionJoin: (state, action:PayloadAction<IExpansionJoints>) => {
             state.push(action.payload)
+            state.sort((a, b) => a.position - b.position)
             return state
         },
         removeExpansionJoint: (state, action:PayloadAction<string>) => {
-            let index = -1
-            for (let i = 0; i < state.length; i++) {
-                if (state[i].id === action.payload) index = i
-            }
+            const index = state.findIndex(elm => elm.id === action.payload)
+
             if (index >= 0) {
                 state.splice(index, 1)
             }
             return state
         },
-        setPosition: (state, action:PayloadAction<IExpansionJoints>) => {
+        setExpansionJointPosition: (state, action:PayloadAction<{id: string, position: number}>) => {
             for (let i = 0; i < state.length; i++) {
                 if (state[i].id === action.payload.id) state[i].position = action.payload.position
             }
             return state
         },
-        setLength: (state, action:PayloadAction<IExpansionJoints>) => {
+        setExpansionJointLength: (state, action:PayloadAction<{id: string, length: number}>) => {
             for (let i = 0; i < state.length; i++) {
                 if (state[i].id === action.payload.id) state[i].length = action.payload.length
             }
@@ -45,6 +44,11 @@ export const expansionJointsQuantitySlice = createSlice({
                 if (state[i].id === action.payload.id) state[i].right = action.payload.right
             }
             return state
+        },
+        setIdExpansionJoint: (state, action:PayloadAction<{id: string, newId: string}>) => {
+            const index = state.findIndex(elm => elm.id === action.payload.id)
+            if(index !== -1) state[index].id = action.payload.newId
+            return state
         }
     }
 })
@@ -53,8 +57,9 @@ export default expansionJointsQuantitySlice.reducer
 export const {
     addExpansionJoin,
     removeExpansionJoint,
-    setPosition,
-    setLength,
+    setExpansionJointPosition,
+    setExpansionJointLength,
     setLeft,
-    setRight
+    setRight,
+    setIdExpansionJoint
 } = expansionJointsQuantitySlice.actions

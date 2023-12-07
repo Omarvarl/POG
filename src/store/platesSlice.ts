@@ -36,6 +36,7 @@ export const platesSlice = createSlice({
             } else if (index === 0 && state.length > 1) {
                 state[index + 1].length = state[index + 1].position + state[index + 1].length
                 state[index + 1].position = 0
+                state[index + 1].id = state[index].id
                 state.splice(index, 1)
             }
             return state

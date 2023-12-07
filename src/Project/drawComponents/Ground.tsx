@@ -2,27 +2,63 @@ import React from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { setCurrentPlate } from "../../store/currentPlateSlice";
 import { setPopUp } from "../../store/popUpSlice";
-// import { IExpansionJoints, IGround } from "../../Types/Types";
 import './Drawing.css'
 import DimArrow from "./DimArrow";
+
 
 export default function Ground() {
   const dispatch = useAppDispatch()
 
   const expansionJoints = useAppSelector((state) => state.expansionJoints);
-
   const plates = useAppSelector(state => state.plates);
-  const plateJoints = useAppSelector(state => state.platesJoints)
-
+  const plateJoints = useAppSelector(state => state.platesJoints);
   const {POLength, scaledPOLength, screenWidth, scale} = useAppSelector((state) => state.POLength);
-
-
   const overallScale = scale
-
   const joints = [...expansionJoints, ...plateJoints]
+  const initX = 200 + 1500 / overallScale
+  const startY = 50 + 1400 * 2 / overallScale
 
-  const initX = 500
-  const startY = 1100 * 3 / overallScale
+  let count = 0
+  
+  const expansionJointsDraw = expansionJoints.map(elm => {
+    count++
+    return (
+      <g
+        className="expansion-join"
+        key={`ej_${count}`}
+      >
+        <path
+          d={`M${elm.position / overallScale + initX} ${startY + 150 / overallScale}
+              L${elm.position / overallScale + initX} ${startY}
+              L${(elm.position + elm.length) / overallScale + initX} ${startY}
+              L${(elm.position + elm.length) / overallScale + initX} ${startY + 150 / overallScale}Z
+            `}
+          fill="white"
+          strokeWidth='3'
+          stroke="white"
+        />
+        <path
+          d={`M${elm.position / overallScale + initX} ${startY + 150 / overallScale}
+              L${elm.position / overallScale + initX} ${startY}
+              L${(elm.position - elm.left) / overallScale + initX} ${startY}
+            `}
+          fill='none'
+          strokeWidth='5'
+        />
+
+        <path
+          d={`M${(elm.position + elm.length) / overallScale + initX} ${startY + 150 / overallScale}
+              L${(elm.position + elm.length) / overallScale + initX} ${startY}
+              L${(elm.position + elm.length + elm.right) / overallScale + initX} ${startY}
+            `}
+          fill='none'
+          strokeWidth='5'
+        />
+
+
+      </g>
+    )
+  })
 
   let result: JSX.Element = <></>;
 
@@ -49,7 +85,7 @@ export default function Ground() {
     result = <div>TOO BIG</div>;
 
   }  else {
-    console.log(plates, plateJoints, expansionJoints)
+    // console.log(plates, plateJoints, expansionJoints)
     let startX = initX;
     result = (
       <g>
@@ -98,25 +134,6 @@ export default function Ground() {
                 id={p.id}
               />
             }
-
-            // const EJs = expansionJoints.filter(ej => ej.id.split('_')[1] === p.id.split('_')[1])
-            // if (EJs.length) {
-            //   EJs.forEach(ej => {
-            //     drawPlates.push(<path
-            //       className="expansion-join"
-            //       onClick={showPop}
-            //       d={`M${ej.position / overallScale + initX} ${startY + 150 / overallScale}
-            //           L${ej.position / overallScale + initX} ${startY}
-            //           L${(ej.position + ej.length) / overallScale + initX} ${startY}
-            //           L${(ej.position + ej.length) / overallScale + initX} ${startY + 150 / overallScale}Z
-            //         `}
-            //       fill="white"
-            //       strokeWidth='3'
-            //       stroke="red"
-            //     />)
-            //   })
-            // }
-
             const res = (
               <g
                 key={`gj_${p.id}`}
@@ -133,9 +150,10 @@ export default function Ground() {
                     <path className="ground" d="M 0 5 L 5 0" fill="none" strokeWidth={1} />
                   </pattern>
                 </defs>
-                  {drawPlates}
+                  { drawPlates }
                   { platesDim }
                   { plateJointDim }
+                  { expansionJointsDraw }
               </g>
               
             );
@@ -151,9 +169,10 @@ export default function Ground() {
             initY={startY}
             type={{type: 'hor', dir: 'up'}}
             length={scaledPOLength}
-            indent={(1100 * 2 / overallScale)}
+            indent={(1000 * 2 / overallScale)}
             id={'POLength_0'}
           />
+          
       </g>
     );
   }

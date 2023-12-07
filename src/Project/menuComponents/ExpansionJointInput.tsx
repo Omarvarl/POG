@@ -1,6 +1,6 @@
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { removeExpansionJoint, setPosition, setLength, setLeft, setRight } from '../../store/expansionJointsSlice'
+import { removeExpansionJoint, setExpansionJointPosition, setExpansionJointLength, setLeft, setRight } from '../../store/expansionJointsSlice'
 import './Menu.css'
 
 interface ID {
@@ -35,12 +35,9 @@ const length = useAppSelector(state => {
                 step={100}
                 onBlur={(e:React.FocusEvent<HTMLInputElement>) => {
                     const posInput = e.target as HTMLInputElement
-                    dispatch(setPosition({
+                    dispatch(setExpansionJointPosition ({
                         id: id,
                         position: Number(posInput.value),
-                        length: -1,
-                        left: 250,
-                        right: 250
                     }))
                 }}
             />
@@ -51,12 +48,9 @@ const length = useAppSelector(state => {
                 defaultValue={length}
                 onBlur={(e:React.FocusEvent<HTMLInputElement>) => {
                     const lenInput = e.target as HTMLInputElement
-                    dispatch(setLength({
+                    dispatch(setExpansionJointLength({
                         id: id,
-                        position: -1,
                         length: Number(lenInput.value),
-                        left: 250,
-                        right: 250
                     }))
                 }}
             />

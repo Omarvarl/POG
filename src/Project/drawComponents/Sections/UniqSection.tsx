@@ -14,6 +14,7 @@ export default function UniqSection({initX, initY, length, addedStatePos}:IUniqS
     const reducedScale = useAppSelector(state => state.reducedPOLEngth.scale)
     const scale = (reducedScale === 1) ? normalScale : reducedScale
     const sectionLength = length / scale
+    // console.log(length)
 
     let addedStand:JSX.Element = <></>
     let addedDownFiting:JSX.Element = <></>

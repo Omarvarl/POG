@@ -49,10 +49,13 @@
     stroke: gold;
 }
 
+.expansion-join {
+    stroke: black;
+}
+
 .expansion-join:hover {
     cursor: pointer;
     stroke: gold;
-    fill: gold;
 }
 
 .pop-up {
