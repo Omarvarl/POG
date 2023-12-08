@@ -461,6 +461,7 @@ const calc = (
             if ((x + 1000 > pj.left && x + 1000 < pj.right && pj.left - x >= 500)
             || (x + 1000 > prev.left && x + 1000 < prev.right && pj.left - x >= 500)
             || (pj.left - x >= 1500 && pj.left - x < 2000)) {
+                console.log(pj.left - x)
             // uniq
             result.push({
                 name: 'UniqSection',
@@ -483,17 +484,6 @@ const calc = (
                 })
                 x += 1000
                 len -= 1000
-                count++
-            } else {
-                result.push({
-                    name: 'UniqSection',
-                    initX: x,
-                    initY: startY,
-                    length: pj.left - x,
-                    key: `uniqSection_${count}`
-                })
-                len -= (pj.left - x)
-                x = pj.left
                 count++
             }
         }

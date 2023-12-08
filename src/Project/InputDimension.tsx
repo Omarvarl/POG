@@ -1,6 +1,6 @@
 import { hideInput } from "../store/inputVisibilitySlice";
 import { setLength, setPosition, setLeft, setRight } from "../store/platesSlice";
-import { setExpansionJointLength, setExpansionJointPosition } from "../store/expansionJointsSlice";
+import { setExpansionJointLength, setExpansionJointPosition, setExpansionJointRight, setExpansionJointLeft } from "../store/expansionJointsSlice";
 import { setPOLength } from "../store/POLengthSlice";
 import { setLengthJoint } from "../store/platesJointsSlice";
 import { useAppDispatch, useAppSelector } from "../hooks";
@@ -113,20 +113,25 @@ export default function InputDimension() {
             length: value - plates[plates.length - 1].position
           }))
         } else if (appointment === 'leftDim') {
+            const ejIndex = expansionJoints.findIndex(elm => elm.id.split('_')[1] === plates[index1 - 1].id.split('_')[1])
 
-            if (value <= 1500) {
-                if (index1 !== 0) {
-                    const middle = plates[index1].position - (plates[index1 - 1].position + plates[index1 - 1].length)
-                    const jointLength = value + plates[index1 - 1].right + middle
-                    if (jointLength > 1500) {
-                        let right = plates[index1 - 1].right - (jointLength - 1500)
-                        if (right < 0) {
-                            const j = plateJoints.findIndex(elm => elm.id.split('_')[1] === plates[index1 - 1].id.split('_')[1])
-                            dispatch(setLength({id: plates[index1 - 1].id, length: plates[index1 - 1].length - right}))
-                            dispatch(setLengthJoint({id: plateJoints[j].id, length: plateJoints[j].length + right }))
-                            right = 0
-                        }  
-                        dispatch(setRight({id: plates[index1 - 1].id, right: right}))
+            if (value <= 1200) {
+                if (ejIndex !== -1) {
+                    dispatch((setExpansionJointRight({id: expansionJoints[ejIndex].id, right: value})))
+                } else {
+                    if (index1 !== 0) {
+                        const middle = plates[index1].position - (plates[index1 - 1].position + plates[index1 - 1].length)
+                        const jointLength = value + plates[index1 - 1].right + middle
+                        if (jointLength > 1200) {
+                            let right = plates[index1 - 1].right - (jointLength - 1200)
+                            if (right < 0) {
+                                const j = plateJoints.findIndex(elm => elm.id.split('_')[1] === plates[index1 - 1].id.split('_')[1])
+                                dispatch(setLength({id: plates[index1 - 1].id, length: plates[index1 - 1].length - right}))
+                                dispatch(setLengthJoint({id: plateJoints[j].id, length: plateJoints[j].length + right }))
+                                right = 0
+                            }  
+                            dispatch(setRight({id: plates[index1 - 1].id, right: right}))
+                        }
                     }
                 }
                 if (value < plates[index1].length) {
@@ -135,20 +140,25 @@ export default function InputDimension() {
             }
 
         } else if (appointment === 'rightDim') {
+            const ejIndex = expansionJoints.findIndex(elm => elm.id.split('_')[1] === plates[index1].id.split('_')[1])
 
-            if (value <= 1500) {
-                if (index1 !== plates.length - 1) {
-                    const middle = plates[index1 + 1].position - (plates[index1].position + plates[index1].length)
-                    const jointLength = value + plates[index1 + 1].left + middle
-                    if (jointLength > 1500) {
-                        let left = plates[index1 + 1].left - (jointLength - 1500)
-                        if (left < 0) {
-                            const j = plateJoints.findIndex(elm => elm.id.split('_')[1] === plates[index1].id.split('_')[1])
-                            dispatch(setLength({id: plates[index1].id, length: plates[index1].length - left}))
-                            dispatch(setLengthJoint({id: plateJoints[j].id, length: plateJoints[j].length + left }))
-                            left = 0
+            if (value <= 1200) {
+                if (ejIndex !== -1) {
+                    dispatch((setExpansionJointLeft({id: expansionJoints[ejIndex].id, left: value})))
+                } else {
+                    if (index1 !== plates.length - 1) {
+                        const middle = plates[index1 + 1].position - (plates[index1].position + plates[index1].length)
+                        const jointLength = value + plates[index1 + 1].left + middle
+                        if (jointLength > 1500) {
+                            let left = plates[index1 + 1].left - (jointLength - 1200)
+                            if (left < 0) {
+                                const j = plateJoints.findIndex(elm => elm.id.split('_')[1] === plates[index1].id.split('_')[1])
+                                dispatch(setLength({id: plates[index1].id, length: plates[index1].length - left}))
+                                dispatch(setLengthJoint({id: plateJoints[j].id, length: plateJoints[j].length + left }))
+                                left = 0
+                            }
+                            dispatch(setLeft({id: plates[index1 + 1].id, left: left}))
                         }
-                        dispatch(setLeft({id: plates[index1 + 1].id, left: left}))
                     }
                 }
                 if (value < plates[index1].length) {

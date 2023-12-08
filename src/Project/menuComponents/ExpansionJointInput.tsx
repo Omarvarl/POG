@@ -64,10 +64,7 @@ const length = useAppSelector(state => {
                     const left = e.target as HTMLInputElement
                     dispatch(setExpansionJointLeft({
                         id: id,
-                        position: -1,
-                        length: -1,
-                        left: Number(left.value),
-                        right: 250
+                        left: Number(left.value)
                     }))
                 }}
             />
@@ -81,9 +78,6 @@ const length = useAppSelector(state => {
                     const right = e.target as HTMLInputElement
                     dispatch(setExpansionJointRight({
                         id: id,
-                        position: -1,
-                        length: -1,
-                        left: -1,
                         right: Number(right.value)
                     }))
                 }}

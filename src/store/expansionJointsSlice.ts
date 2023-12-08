@@ -33,13 +33,13 @@ export const expansionJointsQuantitySlice = createSlice({
             }
             return state
         },
-        setExpansionJointLeft: (state, action:PayloadAction<IExpansionJoints>) => {
+        setExpansionJointLeft: (state, action:PayloadAction<{id: string, left: number}>) => {
             for (let i = 0; i < state.length; i++) {
                 if (state[i].id === action.payload.id) state[i].left = action.payload.left
             }
             return state
         },
-        setExpansionJointRight: (state, action:PayloadAction<IExpansionJoints>) => {
+        setExpansionJointRight: (state, action:PayloadAction<{id: string, right: number}>) => {
             for (let i = 0; i < state.length; i++) {
                 if (state[i].id === action.payload.id) state[i].right = action.payload.right
             }
