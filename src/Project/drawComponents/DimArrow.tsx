@@ -18,7 +18,7 @@ export default function DimArrow({initX, initY, type, length, indent, id}:IDimAr
     let indentLineLength = indent
     let result = <></>
     const fontSize = `${70}px`
-    const [appointment, num] = id.split('_')
+    const [appointment, num, num1] = id.split('_')
     const joints = [...plateJoints, ...expansionJoints]
 
     const index = plates.findIndex(elm => elm.id.split('_')[1] === num)
@@ -41,11 +41,13 @@ export default function DimArrow({initX, initY, type, length, indent, id}:IDimAr
         if (style) {
             scale = Number(style.split('scale')[1].split(')')[0].split('(')[1])
         }
-        if (appointment === 'plate') {
+        if (appointment === 'plate' || appointment === 'leftDim' || appointment === 'rightDim') {
+            const index1 = plates.findIndex(elm => elm.id.split('_')[1] === num1)
+            const i = index !== -1 ? index : index1
             dispatch(setCurrentPlate({
                 id: id,
-                position: plates[index].position,
-                length: plates[index].length
+                position: plates[i].position,
+                length: plates[i].length
             }))
         } else if (appointment === 'pj' || appointment === 'ej') {
             const i = joints.findIndex(elm => elm.id.split('_')[1] === num)
@@ -62,6 +64,7 @@ export default function DimArrow({initX, initY, type, length, indent, id}:IDimAr
                 length: POLength
             }))
         }
+
         dispatch(changeVisibility({left: (e.pageX - x ) / scale - 50, top: (e.pageY - y) / scale - 15}))
     }
 
@@ -126,14 +129,14 @@ export default function DimArrow({initX, initY, type, length, indent, id}:IDimAr
 
                     <path  //  tail
                         d={`M${initX - 45} ${indent}
-                            L${initX - 250} ${indent}
+                            L${initX - 220} ${indent}
                         `}
                     />
 
                     
                     <path  //  tail
                         d={`M${initX + length + 45} ${indent}
-                            L${initX + length + 150} ${indent}
+                            L${initX + length + 100} ${indent}
                         `}
                     />
                 </>
@@ -290,6 +293,9 @@ export default function DimArrow({initX, initY, type, length, indent, id}:IDimAr
             })
         } else if (appointment === 'POLength') {
             result = POLength
+        } else if (appointment === 'leftDim' || appointment === 'rightDim') {
+            const index1 = plates.findIndex(elm => elm.id.split('_')[1] === num1)
+            result = (appointment === 'leftDim') ? plates[index1].left : plates[index1].right
         }
         return result
     }

@@ -24,12 +24,14 @@ export const POLengthSlice = createSlice({
                 scaledPOLength = newPOLength / drawScales[i];
                 i++;
             }
-            return {
-                POLength: newPOLength,
-                scaledPOLength: scaledPOLength,
-                screenWidth: width,
-                scale: drawScales[i - 1]
-            }
+            if (newPOLength >= 5000) {
+                return {
+                    POLength: newPOLength,
+                    scaledPOLength: scaledPOLength,
+                    screenWidth: width,
+                    scale: drawScales[i - 1]
+                }
+            } else return state
         }
     }
 })

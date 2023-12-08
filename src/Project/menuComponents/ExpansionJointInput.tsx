@@ -1,6 +1,6 @@
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { removeExpansionJoint, setExpansionJointPosition, setExpansionJointLength, setLeft, setRight } from '../../store/expansionJointsSlice'
+import { removeExpansionJoint, setExpansionJointPosition, setExpansionJointLength, setExpansionJointLeft, setExpansionJointRight } from '../../store/expansionJointsSlice'
 import './Menu.css'
 
 interface ID {
@@ -62,7 +62,7 @@ const length = useAppSelector(state => {
                 defaultValue={250}
                 onBlur={(e:React.FocusEvent<HTMLInputElement>) => {
                     const left = e.target as HTMLInputElement
-                    dispatch(setLeft({
+                    dispatch(setExpansionJointLeft({
                         id: id,
                         position: -1,
                         length: -1,
@@ -79,7 +79,7 @@ const length = useAppSelector(state => {
                 defaultValue={250}
                 onBlur={(e:React.FocusEvent<HTMLInputElement>) => {
                     const right = e.target as HTMLInputElement
-                    dispatch(setRight({
+                    dispatch(setExpansionJointRight({
                         id: id,
                         position: -1,
                         length: -1,

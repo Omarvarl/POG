@@ -15,8 +15,8 @@ export default function Ground() {
   const {POLength, scaledPOLength, screenWidth, scale} = useAppSelector((state) => state.POLength);
   const overallScale = scale
   const joints = [...expansionJoints, ...plateJoints]
-  const initX = 200 + 1500 / overallScale
-  const startY = 50 + 1400 * 2 / overallScale
+  const initX = 700
+  const startY = 50 + 700
 
   let count = 0
   
@@ -79,7 +79,7 @@ export default function Ground() {
     dispatch(setCurrentPlate({id: ids, position: position, length: length}))
   }
 
-  if (POLength < 1000) return result;
+  if (POLength < 5000) return result;
   
   if (scale === 100 && scaledPOLength >= screenWidth) {
     result = <div>TOO BIG</div>;
@@ -117,7 +117,7 @@ export default function Ground() {
                     initX={startX + len / overallScale}
                     initY={startY} type={{type: 'hor', dir: 'down'}}
                     length={jointLength / overallScale}
-                    indent={400}
+                    indent={360}
                     id={j.id}
                   />
                 } 
@@ -130,7 +130,7 @@ export default function Ground() {
                 initY={startY}
                 type={{type: 'hor', dir: 'down'}}
                 length={len / overallScale}
-                indent={250}
+                indent={500}
                 id={p.id}
               />
             }
@@ -169,7 +169,7 @@ export default function Ground() {
             initY={startY}
             type={{type: 'hor', dir: 'up'}}
             length={scaledPOLength}
-            indent={(1000 * 2 / overallScale)}
+            indent={(600)}
             id={'POLength_0'}
           />
           

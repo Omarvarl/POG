@@ -39,7 +39,8 @@ export interface IPOLength {
 
 export interface IInitCoord {
     initX: number,
-    initY: number
+    initY: number,
+    scale?: number
 }
 
 export interface IProfile extends IInitCoord {
@@ -77,5 +78,12 @@ export interface IDimArrow extends IInitCoord {
     length: number,
     indent: number,
     id: string
+}
+
+export interface IFillingTubesSet {
+    initX: number,
+    initY: number,
+    sectionLength: number,
+    scale: number
 }
 

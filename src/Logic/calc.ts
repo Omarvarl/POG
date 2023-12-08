@@ -1,16 +1,17 @@
-import { IPOLength, IExpansionJoints, IPOParts, ISection } from "../Types/Types"
+import { IExpansionJoints, IPOParts, ISection } from "../Types/Types"
 
 
 const calc = (
-    POLengthData:IPOLength,
+    POLength:number,
     expansionJoints:IExpansionJoints[],
     plateJointsData:{id: string, length: number}[],
     plates: IExpansionJoints[]
     ):ISection[] => {
-    const {POLength, scale} = POLengthData
+
+        // console.log('calc')
 
     const startX = plates[0].left
-    const startY = 50 + 1400 * 2 / scale
+    const startY = 700
     const result: ISection[] = []
 
     const plateJoints = plateJointsData.map(elm => {
@@ -31,7 +32,6 @@ const calc = (
 
     // console.log(plateJoints)
 
-
     const parts:IPOParts[] = []
     if (expansionJoints && expansionJoints.length) {
         parts.push({
@@ -45,7 +45,7 @@ const calc = (
                 parts.push({
                    startX: expansionJoints[i].position + expansionJoints[i].length + expansionJoints[i].right,
                     startY: startY,
-                    length: POLength - plates[plates.length - 1].right - expansionJoints[i].position - expansionJoints[i].length - expansionJoints[i].right
+                    length: POLength - expansionJoints[i].position - expansionJoints[i].length - expansionJoints[i].right
                 })
                 
             } else {
@@ -60,7 +60,7 @@ const calc = (
         parts.push({
             startX: startX,
             startY: startY,
-            length: POLength - plates[plates.length - 1].right - plates[plates.length - 1].left
+            length: POLength - plates[plates.length - 1].right - plates[0].left
         })
     }
 
@@ -181,7 +181,6 @@ const calc = (
         name = 'RegularSection3000'
         if (i !== parts.length - 1) {
             if (parts[i + 1].startX - parts[i].length - parts[i].startX + len > 4000) {
-
                 while (len > 4000) {
                     [x, len] = checkPlateJoints(x, len, 3)
                     if (len > 4000) {
@@ -190,7 +189,7 @@ const calc = (
                             initX: x,
                             initY: startY,
                             length: 3000,
-                            key: `section_${count}`
+                            key: `section3000_${count}`
                         })
                         x += 3000
                         len -= 3000
@@ -201,6 +200,7 @@ const calc = (
         } else {
             if (len >= 4000) {
                 while (len >= 4000) {
+                    // console.log(len);
                     [x, len] = checkPlateJoints(x, len, 3)
                     if (len >= 4000) {
                         result.push({
@@ -208,7 +208,7 @@ const calc = (
                             initX: x,
                             initY: startY,
                             length: 3000,
-                            key: `section_${count}`
+                            key: `section3000_${count}`
                         })
                         x += 3000
                         len -= 3000
@@ -224,7 +224,7 @@ const calc = (
                         initX: x,
                         initY: startY,
                         length: 3000,
-                        key: `section_${count}`
+                        key: `section3000_${count}`
                     })
                     x += 3000
                     len -= 3000
@@ -244,7 +244,7 @@ const calc = (
                             initX: x,
                             initY: startY,
                             length: 1500,
-                            key: `section_${count}`
+                            key: `section1500_${count}`
                         })
                         x += 1500 
                         len -= 1500
@@ -262,7 +262,7 @@ const calc = (
                             initX: x,
                             initY: startY,
                             length: 1500,
-                            key: `section_${count}`
+                            key: `section1500_${count}`
                         })
                         x += 1500
                         len -= 1500
@@ -278,7 +278,7 @@ const calc = (
                         initX: x,
                         initY: startY,
                         length: 1500,
-                        key: `section_${count}`
+                        key: `section1500_${count}`
                     })
                     x += 1500
                     len -= 1500
@@ -298,7 +298,7 @@ const calc = (
                             initX: x,
                             initY: startY,
                             length: 1000,
-                            key: `section_${count}`
+                            key: `section1000_${count}`
                         })
                         x += 1000
                         len -= 1000
@@ -316,7 +316,7 @@ const calc = (
                             initX: x,
                             initY: startY,
                             length: 1000,
-                            key: `section_${count}`
+                            key: `section1000_${count}`
                         })
                         x += 1000
                         len -= 1000
@@ -335,7 +335,7 @@ const calc = (
                         initX: x,
                         initY: startY,
                         length: 1000,
-                        key: `section_${count}`
+                        key: `section1000_${count}`
                     })
                     x += 1000
                     len -= 1000
@@ -354,7 +354,7 @@ const calc = (
                         initY: startY,
                         length: parts[i + 1].startX - parts[i].startX - parts[i].length + len,
                         addedStatePos: len,
-                        key: `section_${count}`
+                        key: `uniqSection_${count}`
                     })
                 }
             } else {
@@ -368,7 +368,7 @@ const calc = (
                         initY: startY,
                         length: len,
                         addedStatePos: 0,
-                        key: `section_${count}`
+                        key: `uniqSection_${count}`
                     })
                 }
             }
@@ -386,11 +386,15 @@ const calc = (
             if (type === 3) {
                 if ((x + 1500 > pj.left && x + 1500 < pj.right)
                 || (x + 3000 > pj.left && x + 3000 < pj.right)) {
-                   setData(pj, prev)
+                    setData(pj, prev)
+                    count++
+                    if (len >= 4000) [x, len] = checkPlateJoints(x, len, 3)
                 }
             } else if (type === 1.5) {
                 if (x + 1500 > pj.left && x + 1500 < pj.right) {
                     setData(pj, prev)
+                    count++
+                    if (len >= 2500) [x, len] = checkPlateJoints(x, len, 1.5)
                 }
             } else if (type === 1) {
                 if (x + 1000 > pj.left && x + 1000 < pj.right) {
@@ -400,7 +404,7 @@ const calc = (
                         initX: x,
                         initY: startY,
                         length: pj.right - x,
-                        key: `section_${count}`
+                        key: `unicSection_${count}`
                     })
                     len -= (pj.right - x)
                     x = pj.right
@@ -412,7 +416,7 @@ const calc = (
                                 initX: x,
                                 initY: startY,
                                 length: 1500,
-                                key: `section_${count}`
+                                key: `section1500_${count}`
                             })
                             x += 1500
                             len -= 1500
@@ -424,7 +428,7 @@ const calc = (
                                 initY: startY,
                                 length: len,
                                 addedStatePos: x,
-                                key: `section_${count}`
+                                key: `uniqSection_${count}`
                             })
                             len = 0
                             x += len
@@ -443,38 +447,53 @@ const calc = (
                         initY: startY,
                         length: rLength,
                         addedStatePos: pj.left - x,
-                        key: `section_${count}`
+                        key: `uniqSection_${count}`
                     })
                     len = 0
+                    count++
                 }
             }
         }
 
         function setData(pj: {left: number, right: number}, prev: {left: number, right: number}) {
-            if ((x + 1000 > pj.left && x + 1000 < pj.right)
-            || (x + 1000 > prev.left && x + 1000 < prev.right)) {
+            // console.log(pj.left, x + 1000, pj.right)
+            console.log(pj.left - x)
+            if ((x + 1000 > pj.left && x + 1000 < pj.right && pj.left - x >= 500)
+            || (x + 1000 > prev.left && x + 1000 < prev.right && pj.left - x >= 500)
+            || (pj.left - x >= 1500 && pj.left - x < 2000)) {
             // uniq
             result.push({
                 name: 'UniqSection',
                 initX: x,
                 initY: startY,
                 length: pj.left - x,
-                key: `section_${count}`
+                key: `uniqSection_${count}`
             })
             len -= (pj.left - x)
             x = pj.left
             count++
-            } else {
+            } else if (pj.left - x >= 1500) {
                 //  push 1000
                 result.push({
                     name: 'RegularSection1000',
                     initX: x,
                     initY: startY,
                     length: 1000,
-                    key: `section_${count}`
+                    key: `section1000_${count}`
                 })
                 x += 1000
                 len -= 1000
+                count++
+            } else {
+                result.push({
+                    name: 'UniqSection',
+                    initX: x,
+                    initY: startY,
+                    length: pj.left - x,
+                    key: `uniqSection_${count}`
+                })
+                len -= (pj.left - x)
+                x = pj.left
                 count++
             }
         }

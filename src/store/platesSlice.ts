@@ -41,25 +41,27 @@ export const platesSlice = createSlice({
             }
             return state
         },
-        setPosition: (state, action:PayloadAction<IExpansionJoints>) => {
+        setPosition: (state, action:PayloadAction<{id: string, position: number}>) => {
             for (let i = 0; i < state.length; i++) {
                 if (state[i].id === action.payload.id) state[i].position = action.payload.position
             }
             return state
         },
-        setLength: (state, action:PayloadAction<IExpansionJoints>) => {
+        setLength: (state, action:PayloadAction<{id: string, length: number}>) => {
             for (let i = 0; i < state.length; i++) {
-                if (state[i].id === action.payload.id) state[i].length = action.payload.length
+                if (state.length > 1 || action.payload.length >= 5000)  {
+                    if (state[i].id === action.payload.id) state[i].length = action.payload.length
+                }
             }
             return state
         },
-        setLeft: (state, action:PayloadAction<IExpansionJoints>) => {
+        setLeft: (state, action:PayloadAction<{id: string, left: number}>) => {
             for (let i = 0; i < state.length; i++) {
                 if (state[i].id === action.payload.id) state[i].left = action.payload.left
             }
             return state
         },
-        setRight: (state, action:PayloadAction<IExpansionJoints>) => {
+        setRight: (state, action:PayloadAction<{id: string, right: number}>) => {
             for (let i = 0; i < state.length; i++) {
                 if (state[i].id === action.payload.id) state[i].right = action.payload.right
             }

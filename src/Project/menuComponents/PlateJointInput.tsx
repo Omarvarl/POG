@@ -37,10 +37,7 @@ const length = useAppSelector(state => {
                     const posInput = e.target as HTMLInputElement
                     dispatch(setPosition({
                         id: id,
-                        position: Number(posInput.value),
-                        length: -1,
-                        left: 250,
-                        right: 250
+                        position: Number(posInput.value)
                     }))
                 }}
             />
@@ -53,10 +50,7 @@ const length = useAppSelector(state => {
                     const lenInput = e.target as HTMLInputElement
                     dispatch(setLength({
                         id: id,
-                        position: -1,
                         length: Number(lenInput.value),
-                        left: 250,
-                        right: 250
                     }))
                 }}
             />
@@ -70,10 +64,7 @@ const length = useAppSelector(state => {
                     const left = e.target as HTMLInputElement
                     dispatch(setLeft({
                         id: id,
-                        position: -1,
-                        length: -1,
-                        left: Number(left.value),
-                        right: 250
+                        left: Number(left.value)
                     }))
                 }}
             />
@@ -87,9 +78,6 @@ const length = useAppSelector(state => {
                     const right = e.target as HTMLInputElement
                     dispatch(setRight({
                         id: id,
-                        position: -1,
-                        length: -1,
-                        left: -1,
                         right: Number(right.value)
                     }))
                 }}

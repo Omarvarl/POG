@@ -13,44 +13,83 @@ import RegularSection1000 from "./Sections/RegularSection1000";
 import UniqSection from "./Sections/UniqSection";
 import UniqStartSection from "./Sections/UniqStartSection";
 import UniqEndSection from "./Sections/UniqEndSection";
+import DimArrow from "./DimArrow";
+import { useMemo } from "react";
 
 
 export default function Drawing() {
     const {width, height, factor} = useAppSelector(state => state.realPageSize);
-    const scale = useAppSelector((state) => state.POLength.scale);
-    const initX = 200 + 1500 / scale
-    // const initY = 1200 * 2 / scale
+    const scale = useAppSelector(state => state.POLength.scale);
+    const initX = 700
+    const initY = 50
 
     const POLengthData = useAppSelector(state => state.POLength)
+    const POLength = POLengthData.POLength
     const expansionJoints = useAppSelector((state) => state.expansionJoints);
     const plateJoints = useAppSelector(state => state.platesJoints)
     const plates = useAppSelector(state => state.plates)
     const expansionsArr:IExpansionJoints[] = structuredClone(expansionJoints);
-    const sections = calc(POLengthData, expansionJoints, plateJoints, plates)
+    const sections = useMemo(() => calc(POLength, expansionJoints, plateJoints, plates), [POLength, expansionJoints, plateJoints, plates])
+
+
+    const jointsDimLeft = useMemo(() => {
+      return plates.map(elm => {
+      let result = <></>
+      sections.forEach(section => {
+        result = <DimArrow
+        initX={initX + elm.position / scale}
+        initY={initY + section.initY}
+        type={{type: 'hor', dir: 'down'}}
+        length={elm.left / scale}
+        indent={260}
+        id={`leftDim_${elm.id}`}
+        key={`leftDim_${elm.id}`}
+      />
+      })
+      return result
+      })
+    }, [plates, scale, sections])
+
+    const jointsDimRight = useMemo(() => {
+      return plates.map(elm => {
+      let result = <></>
+      sections.forEach(section => {
+        result = <DimArrow
+        initX={initX + (elm.position + elm.length - elm.right) / scale}
+        initY={initY + section.initY}
+        type={{type: 'hor', dir: 'down'}}
+        length={elm.right / scale}
+        indent={150}
+        id={`rightDim_${elm.id}`}
+        key={`rightDim_${elm.id}`}
+      />
+      })
+      return result
+      })
+  }, [plates, scale, sections])
 
 
     expansionsArr.sort((a, b) => a.position - b.position)
 
     const drawSections = sections.map(section => {
       if (section.name === 'StartSection1500') {
-        return <StartSection1500 initX={initX + section.initX / scale} initY={section.initY} />
+        return <StartSection1500 initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} key={section.key} />
       } else if (section.name === 'EndSection1500') {
-        return <EndSection1500 initX={initX + section.initX / scale} initY={section.initY} />
+        return <EndSection1500 initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} key={section.key} />
       } else if (section.name === 'RegularSection3000') {
-        return <RegularSection3000 initX={initX + section.initX / scale} initY={section.initY} />
+        return <RegularSection3000 initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} key={section.key} />
       } else if (section.name === 'RegularSection1500') {
-        return <RegularSection1500 initX={initX + section.initX / scale} initY={section.initY} />
+        return <RegularSection1500 initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} key={section.key} />
       } else if (section.name === 'RegularSection1000') {
-        return <RegularSection1000 initX={initX + section.initX / scale} initY={section.initY} />
+        return <RegularSection1000 initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} key={section.key} />
       } else if (section.name === 'UniqSection') {
-        return <UniqSection initX={initX + section.initX / scale} initY={section.initY} length={section.length} addedStatePos={section.addedStatePos} />
+        return <UniqSection initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
       } else if (section.name === 'UniqStartSection') {
-        return <UniqStartSection initX={initX + section.initX / scale} initY={section.initY} length={section.length} addedStatePos={section.addedStatePos} />
+        return <UniqStartSection initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
       } else if (section.name === 'UniqEndSection') {
-        return <UniqEndSection initX={initX + section.initX / scale} initY={section.initY} length={section.length} addedStatePos={section.addedStatePos} />
+        return <UniqEndSection initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
       }
     })
-
 
 
   return (
@@ -68,6 +107,8 @@ export default function Drawing() {
 
         <Ground />
         { drawSections }
+        { jointsDimLeft }
+        { jointsDimRight }
 
 
       </svg>

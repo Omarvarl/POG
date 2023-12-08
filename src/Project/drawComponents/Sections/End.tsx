@@ -1,11 +1,12 @@
 import '../Drawing.css'
 import { IProfile } from '../../../Types/Types'
-import { useAppSelector } from '../../../hooks'
+// import { useAppSelector } from '../../../hooks'
 
-export default function Start({initX, initY, length}:IProfile) {
-    const normalScale =  useAppSelector(state => state.POLength.scale)
-    const reducedScale = useAppSelector(state => state.reducedPOLEngth.scale)
-    const scale = (reducedScale === 1) ? normalScale : reducedScale
+export default function Start({initX, initY, scale, length}:IProfile) {
+    // const normalScale =  useAppSelector(state => state.POLength.scale)
+    // const reducedScale = useAppSelector(state => state.reducedPOLEngth.scale)
+    // const scale = (reducedScale === 1) ? normalScale : reducedScale
+    if (!scale) scale = 1
     
     const profileWidth = 58 / scale
     const profileWidth1 = 88 / scale

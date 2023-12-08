@@ -1,5 +1,4 @@
-// import { IProfile } from "../../../Types/Types"
-import { useAppSelector } from "../../../hooks"
+// import { useAppSelector } from "../../../hooks"
 import StandTube88x58 from "../Profiles/StandTube88x58x3.5"
 import RailTube88x58 from '../Profiles/RailTube88x58x3.5'
 import Crossbar from "../Profiles/CrossbarTube40x40x3"
@@ -9,10 +8,11 @@ import UpFiting from "../Profiles/UpFiting"
 import { IUniqSectionData } from "../../../Types/Types"
 import '../Drawing.css'
 
-export default function UniqSection({initX, initY, length, addedStatePos}:IUniqSectionData) {
-    const normalScale =  useAppSelector(state => state.POLength.scale)
-    const reducedScale = useAppSelector(state => state.reducedPOLEngth.scale)
-    const scale = (reducedScale === 1) ? normalScale : reducedScale
+export default function UniqSection({initX, initY, length, addedStatePos, scale}:IUniqSectionData) {
+    // const normalScale =  useAppSelector(state => state.POLength.scale)
+    // const reducedScale = useAppSelector(state => state.reducedPOLEngth.scale)
+    // const scale = (reducedScale === 1) ? normalScale : reducedScale
+    if (!scale) scale = 1
     const sectionLength = length / scale
     // console.log(length)
 
@@ -23,6 +23,7 @@ export default function UniqSection({initX, initY, length, addedStatePos}:IUniqS
     let fillingTubes:JSX.Element[] = []
 
     const getFillingTubes = (addedStand?: number):JSX.Element[] => {
+        if (!scale) scale = 1
         const tubesInterval = 182 / scale
         let fillingTubes:JSX.Element[] = []
         if (addedStand) {
@@ -39,6 +40,7 @@ export default function UniqSection({initX, initY, length, addedStatePos}:IUniqS
         }
 
         function getTubesPositions (tubesQuantity: number, length: number, addedStand:number) {
+            if (!scale) scale = 1
             const positions: number[] = []
  
             const firstPosition = (length - tubesQuantity * tubesInterval) / 2 + 44 / scale
@@ -49,6 +51,7 @@ export default function UniqSection({initX, initY, length, addedStatePos}:IUniqS
             }
     
             positions.forEach(pos => {
+                if (!scale) scale = 1
                 fillingTubes.push(<FillingTube initX={initX + pos + addedStand} initY={initY - 169 / scale} length={703 / scale} key={`tubes-${pos + addedStand}`}/>)
             })
         }

@@ -9,10 +9,11 @@ import UpFiting from "../Profiles/UpFiting"
 import { IUniqSectionData } from "../../../Types/Types"
 import '../Drawing.css'
 
-export default function UniqSectionMirror({initX, initY, length, addedStatePos}:IUniqSectionData) {
-    const normalScale =  useAppSelector(state => state.POLength.scale)
-    const reducedScale = useAppSelector(state => state.reducedPOLEngth.scale)
-    const scale = (reducedScale === 1) ? normalScale : reducedScale
+export default function UniqSectionMirror({initX, initY, length, addedStatePos, scale}:IUniqSectionData) {
+    // const normalScale =  useAppSelector(state => state.POLength.scale)
+    // const reducedScale = useAppSelector(state => state.reducedPOLEngth.scale)
+    // const scale = (reducedScale === 1) ? normalScale : reducedScale
+    if (!scale) scale = 1
     const sectionLength = length / scale
 
     let addedStand:JSX.Element = <></>
@@ -22,6 +23,7 @@ export default function UniqSectionMirror({initX, initY, length, addedStatePos}:
     let fillingTubes:JSX.Element[] = []
 
     const getFillingTubes = (addedStand?: number):JSX.Element[] => {
+        if (!scale) scale = 1
         const tubesInterval = 182 / scale
         let fillingTubes:JSX.Element[] = []
         if (addedStand) {
@@ -38,6 +40,7 @@ export default function UniqSectionMirror({initX, initY, length, addedStatePos}:
         }
 
         function getTubesPositions (tubesQuantity: number, length: number, addedStand:number) {
+            if (!scale) scale = 1
             const positions: number[] = []
             const firstPosition = (length - tubesQuantity * tubesInterval) / 2 + 44 / scale
             positions.push(firstPosition)
@@ -47,6 +50,7 @@ export default function UniqSectionMirror({initX, initY, length, addedStatePos}:
             }
     
             positions.forEach(pos => {
+                if (!scale) scale = 1
                 fillingTubes.push(<FillingTube initX={initX - pos - addedStand} initY={initY - 169 / scale} length={703 / scale} key={`tubes-${pos + addedStand}`}/>)
             })
         }
