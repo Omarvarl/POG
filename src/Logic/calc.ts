@@ -45,7 +45,7 @@ const calc = (
                 parts.push({
                    startX: expansionJoints[i].position + expansionJoints[i].length + expansionJoints[i].right,
                     startY: startY,
-                    length: POLength - expansionJoints[i].position - expansionJoints[i].length - expansionJoints[i].right
+                    length: POLength - expansionJoints[i].position - expansionJoints[i].length - expansionJoints[i].right - plates[plates.length - 1].right
                 })
                 
             } else {
@@ -76,29 +76,34 @@ const calc = (
 
         if (i === 0) {
             if (i !== parts.length - 1) {
-                if (parts[i + 1].startX - parts[i].length - parts[i].startX + len > 2500) {
-
-                    result.push({
-                        name: 'StartSection1500',
-                        initX: x,
-                        initY: startY,
-                        length: 1500,
-                        key: `section_start`
-                    })
-                    x += 1500
-                    len -= 1500
-                } else {
-                    result.push({
-                        name: 'UniqStartSection',
-                        initX: x,
-                        initY: startY,
-                        length: parts[i + 1].startX - parts[i].startX - parts[i].length + len,
-                        addedStatePos: len,
-                        key: `section_start`
-                    })
-                    x += parts[i + 1].startX - parts[i].startX - parts[i].length + len
-                    len -= parts[i + 1].startX - parts[i].startX - parts[i].length + len
+                const oldX = x;
+                [x, len] = checkPlateJoints(x, len, 4)
+                
+                if (oldX === x) {
+                    if (parts[i + 1].startX - parts[i].length - parts[i].startX + len > 2500) {
+                        result.push({
+                            name: 'StartSection1500',
+                            initX: x,
+                            initY: startY,
+                            length: 1500,
+                            key: `section_start`
+                        })
+                        x += 1500
+                        len -= 1500
+                    } else {
+                        result.push({
+                            name: 'UniqStartSection',
+                            initX: x,
+                            initY: startY,
+                            length: parts[i + 1].startX - parts[i].startX - parts[i].length + len,
+                            addedStatePos: len,
+                            key: `section_start`
+                        })
+                        x += parts[i + 1].startX - parts[i].startX - parts[i].length + len
+                        len -= parts[i + 1].startX - parts[i].startX - parts[i].length + len
+                    }
                 }
+
             } else {
                 if (len > 2500 || len === 1500) {
                     let mark = 1
@@ -390,6 +395,19 @@ const calc = (
                     count++
                     if (len >= 4000) [x, len] = checkPlateJoints(x, len, 3)
                 }
+            } if (type === 4) {
+                if (x + 1500 > pj.left && x + 1500 < pj.right) {
+                    result.push({
+                        name: 'UniqStartSection',
+                        initX: x,
+                        initY: startY,
+                        length: pj.left - x,
+                        key: `section_start`
+                    })
+                    x += pj.left - x
+                    len -= (pj.left - x)
+                    count++
+                }
             } else if (type === 1.5) {
                 if (x + 1500 > pj.left && x + 1500 < pj.right) {
                     setData(pj, prev)
@@ -456,12 +474,11 @@ const calc = (
         }
 
         function setData(pj: {left: number, right: number}, prev: {left: number, right: number}) {
-            // console.log(pj.left, x + 1000, pj.right)
-            console.log(pj.left - x)
-            if ((x + 1000 > pj.left && x + 1000 < pj.right && pj.left - x >= 500)
-            || (x + 1000 > prev.left && x + 1000 < prev.right && pj.left - x >= 500)
-            || (pj.left - x >= 1500 && pj.left - x < 2000)) {
-                console.log(pj.left - x)
+
+            if ((x + 1000 > pj.left && x + 1000 < pj.right)
+            || (x + 1000 > prev.left && x + 1000 < prev.right)
+            || (pj.left - x >= 1000 && pj.left - x < 1500)) {
+
             // uniq
             result.push({
                 name: 'UniqSection',

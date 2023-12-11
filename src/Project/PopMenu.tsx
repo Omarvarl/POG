@@ -1,7 +1,7 @@
 import { hidePopUp } from "../store/popUpSlice";
 import { addPlate, connectPlates, removePlate } from "../store/platesSlice";
 import { addPlateJoint, removePlateJoint, setIDJoint } from "../store/platesJointsSlice";
-import { addExpansionJoin, removeExpansionJoint, setIdExpansionJoint, setExpansionJointPosition } from "../store/expansionJointsSlice";
+import { addExpansionJoin, removeExpansionJoint, setIdExpansionJoint } from "../store/expansionJointsSlice";
 import { useAppDispatch, useAppSelector } from "../hooks";
 
 export default function PopMenu() {
@@ -9,8 +9,8 @@ export default function PopMenu() {
     const visibility = useAppSelector(state => state.popUp)
     const currentPlate = useAppSelector(state => state.currentPlate)
     const plates = useAppSelector(state => state.plates)
-    const plateJoints = useAppSelector(state => state.platesJoints)
-    const expansionJoints = useAppSelector(state => state.expansionJoints)
+    // const plateJoints = useAppSelector(state => state.platesJoints)
+    // const expansionJoints = useAppSelector(state => state.expansionJoints)
 
     function addExpansionJoinToPlate() {
         const leftPlate = createNewPlate()[0]

@@ -13,8 +13,8 @@ export default function UniqStartSection({initX, initY, length, addedStatePos, s
 
   return (
     <g className="us"> 
-        <UniqSection initX={initX} initY={initY} length={length} addedStatePos={addedStatePos} />
-        <Start initX={initX} initY={initY - 169 / scale} length={250 / scale}/>
+        <UniqSection initX={initX} initY={initY} length={length} addedStatePos={addedStatePos} scale={scale} />
+        <Start initX={initX} initY={initY - 169 / scale} length={250 / scale} scale={scale} />
         <UpFiting initX={initX} initY={initY - 1100 / scale} />
     </g>
   )

@@ -81,27 +81,62 @@ export default function InputDimension() {
         } else if (appointment === 'pj' || appointment === 'ej') {
           const i = plateJoints.findIndex(elm => elm.id.split('_')[1] === plates[index].id.split('_')[1])
           const ej = expansionJoints.findIndex(elm => elm.id.split('_')[1] === plates[index].id.split('_')[1])
-
-            if (appointment === 'pj') {
-                if (value < plates[index].length - 500) {
-                    dispatch(setLength({
-                      id: plates[index].id,
-                      length: plates[index].length - (value - plateJoints[i].length),
+          if (value <= 1200) {
+            if (value < plates[index].length - 500) {
+                const jointLength = plates[index].right + plates[index + 1].left + value
+                if (jointLength > 1200) {
+                    let delta = jointLength - 1200
+                    if (delta > plates[index].right) {
+                        delta -= plates[index].right
+                        dispatch(setRight({id: plates[index].id, right: 0}))
+                        dispatch(setLeft({id: plates[index + 1].id, left: plates[index + 1].left - delta}))
+                        if (ej !== -1) {
+                            dispatch(setExpansionJointLeft({id: expansionJoints[ej].id, left: 0}))
+                            dispatch(setExpansionJointRight({id: expansionJoints[ej].id, right: expansionJoints[ej].right - delta}))
+                        }
+                    } else {
+                        dispatch(setRight({id: plates[index].id, right: plates[index].right - delta}))
+                        if (ej !== -1) {
+                            dispatch(setExpansionJointLeft({id: expansionJoints[ej].id, left: expansionJoints[ej].left - delta}))
+                        }
+                    }
+                }
+                if (i !== -1) dispatch(setLength({
+                  id: plates[index].id,
+                  length: plates[index].length - (value - plateJoints[i].length),
+                }))
+                if (appointment === 'pj') {
+                    dispatch(setLengthJoint({id: plateJoints[i].id, length: value}))
+                } else {
+                    const oldPosition = expansionJoints[ej].position
+                    const oldLength = expansionJoints[ej].length
+                    if (value < plates[index].length - 500) {
+                        dispatch(setLength({
+                            id: plates[index].id,
+                            length: plates[index].length - (value - expansionJoints[ej].length),
+                          }))
+                    }
+                    dispatch(setExpansionJointPosition({id: expansionJoints[ej].id, position: oldPosition + oldLength - value}))
+                    dispatch(setExpansionJointLength({id: expansionJoints[ej].id, length: value}))
+                }
+            } else {
+                let delta = value - (plates[index + 1].position - plates[index].position - plates[index].right - plates[index].length)
+                dispatch(setPosition({id: plates[index + 1].id, position: plates[index + 1].position + delta}))
+                dispatch(setLength({id: plates[index + 1].id, length: plates[index + 1].length - delta}))
+                dispatch(setLeft({id: plates[index + 1].id, left: plates[index + 1].left - delta}))
+                if (ej !== -1) {
+                    dispatch(setExpansionJointRight({id: expansionJoints[ej].id, right: expansionJoints[ej].right - delta}))
+                    console.log(delta, ej)
+                    dispatch(setExpansionJointLength({id: expansionJoints[ej].id, length: expansionJoints[ej].length + delta}))
+                }
+                if (value < plates[index + 1].length - 500) {
+                    dispatch(setPosition({
+                        id: plates[index + 1].id,
+                        position: plates[index + 1].position + delta,
                     }))
                 }
-                dispatch(setLengthJoint({id: plateJoints[i].id, length: value}))
-              } else {
-                const oldPosition = expansionJoints[ej].position
-                const oldLength = expansionJoints[ej].length
-                if (value < plates[index].length - 500) {
-                    dispatch(setLength({
-                        id: plates[index].id,
-                        length: plates[index].length - (value - expansionJoints[ej].length),
-                      }))
-                }
-                dispatch(setExpansionJointPosition({id: expansionJoints[ej].id, position: oldPosition + oldLength - Number(target.value)}))
-                dispatch(setExpansionJointLength({id: expansionJoints[ej].id, length: value}))
             }
+          }
       
         } else if (appointment === 'POLength') {
           dispatch(setPOLength({
@@ -115,9 +150,27 @@ export default function InputDimension() {
         } else if (appointment === 'leftDim') {
             const ejIndex = expansionJoints.findIndex(elm => elm.id.split('_')[1] === plates[index1 - 1].id.split('_')[1])
 
-            if (value <= 1200) {
+            if (value <= 1200) {   //  join less than 1200 mm
                 if (ejIndex !== -1) {
+                    const ejJointLength = expansionJoints[ejIndex].left + expansionJoints[ejIndex].length + value
+
+                    if (ejJointLength > 1200) {
+                        let delta = ejJointLength - 1200
+                        if (delta > expansionJoints[ejIndex].left) {
+                            delta -= expansionJoints[ejIndex].left
+                            
+                            dispatch(setExpansionJointLeft({id: expansionJoints[ejIndex].id, left: 0}))
+                            dispatch(setRight({id:plates[index1 - 1].id, right: 0}))
+                            dispatch(setExpansionJointLength({id: expansionJoints[ejIndex].id, length: expansionJoints[ejIndex].length - delta}))
+                            dispatch(setExpansionJointPosition({id: expansionJoints[ejIndex].id, position: expansionJoints[ejIndex].position + delta}))
+                            dispatch(setLength({id: plates[index1 - 1].id, length: plates[index1 - 1].length + delta}))
+                        } else {
+                            dispatch(setRight({id:plates[index1 - 1].id, right: plates[index1 - 1].right - delta}))
+                            dispatch(setExpansionJointLeft({id: expansionJoints[ejIndex].id, left: expansionJoints[ejIndex].left - delta}))
+                        }
+                    }
                     dispatch((setExpansionJointRight({id: expansionJoints[ejIndex].id, right: value})))
+
                 } else {
                     if (index1 !== 0) {
                         const middle = plates[index1].position - (plates[index1 - 1].position + plates[index1 - 1].length)
@@ -143,13 +196,32 @@ export default function InputDimension() {
             const ejIndex = expansionJoints.findIndex(elm => elm.id.split('_')[1] === plates[index1].id.split('_')[1])
 
             if (value <= 1200) {
+                
                 if (ejIndex !== -1) {
+                    const ejJointLength = expansionJoints[ejIndex].right + expansionJoints[ejIndex].length + value
+
+                    if (ejJointLength > 1200) {
+                        let delta = ejJointLength - 1200
+                        if (delta > expansionJoints[ejIndex].right) {
+                            delta -= expansionJoints[ejIndex].right
+                            
+                            dispatch(setExpansionJointRight({id: expansionJoints[ejIndex].id, right: 0}))
+                            dispatch(setLeft({id:plates[index1 + 1].id, left: 0}))
+                            dispatch(setExpansionJointLength({id: expansionJoints[ejIndex].id, length: expansionJoints[ejIndex].length - delta}))
+                            dispatch(setExpansionJointPosition({id: expansionJoints[ejIndex].id, position: expansionJoints[ejIndex].position + delta}))
+                            dispatch(setLength({id: plates[index1].id, length: plates[index1].length + delta}))
+                        } else {
+                            dispatch(setLeft({id:plates[index1 + 1].id, left: plates[index1 + 1].left - delta}))
+                            dispatch(setExpansionJointRight({id: expansionJoints[ejIndex].id, right: expansionJoints[ejIndex].right - delta}))
+                        }
+                    }
                     dispatch((setExpansionJointLeft({id: expansionJoints[ejIndex].id, left: value})))
+
                 } else {
                     if (index1 !== plates.length - 1) {
                         const middle = plates[index1 + 1].position - (plates[index1].position + plates[index1].length)
                         const jointLength = value + plates[index1 + 1].left + middle
-                        if (jointLength > 1500) {
+                        if (jointLength > 1200) {
                             let left = plates[index1 + 1].left - (jointLength - 1200)
                             if (left < 0) {
                                 const j = plateJoints.findIndex(elm => elm.id.split('_')[1] === plates[index1].id.split('_')[1])
