@@ -2,15 +2,19 @@ import PageFormatSelect from "./PageFormatSelect";
 // import POLengthInput from "./POLengthInput";
 // import ExpansionJointInput from "./ExpansionJointInput";
 // import PlateJointInput from "./PlateJointInput";
-// import { useAppDispatch, useAppSelector } from "../../hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 // import { increaseExpansionJointsQuantity } from "../../store/expansionJointsSlice";
 // import { addPlate } from "../../store/platesSlice";
 import './Menu.css'
-// import { setViewBreakState } from "../../store/viewBreakSlice";
+import { setViewBreakState } from "../../store/viewBreakSlice";
+import { setReducedPOLength } from "../../store/reducedPOLengthSlice";
 
 export default function Menu() {
-  // const dispatch = useAppDispatch()
-  // const viewBreak = useAppSelector(state => state.viewBreak)
+  const dispatch = useAppDispatch()
+  const viewBreak = useAppSelector(state => state.viewBreak)
+  const POLengthData = useAppSelector(state => state.POLength) 
+  const reducedPOLEngth = useAppSelector(state => state.reducedPOLEngth)
+  const reducedScale = reducedPOLEngth.scale
   // const expansionJointsQuantity = useAppSelector(state => state.expansionJoints)
   // const plateJointsData = useAppSelector(state => state.plateJoints)
   // const expansionJoints:JSX.Element[] = expansionJointsQuantity.map((ej) => {
@@ -25,12 +29,13 @@ export default function Menu() {
         projectName
       </label>
         <PageFormatSelect />
-        {/* <POLengthInput />
+        {/* <POLengthInput /> */}
         <label htmlFor="break-view-check"
           className="view-break"
             onClick={(e: React.MouseEvent<HTMLLabelElement>) => {
                 let check = e.target as HTMLInputElement
                 dispatch(setViewBreakState(check.checked))
+                if (reducedScale > 1) dispatch(setReducedPOLength(POLengthData))
             }
           }
         >
@@ -38,7 +43,7 @@ export default function Menu() {
             defaultChecked={viewBreak}
           />
           Добавить разрывы вида
-        </label> */}
+        </label>
 
         {/* <div className="expansion-joints">
           <button

@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IExpansionJoints } from '../Types/Types';
+import { IExpansionJoints, ISection } from '../Types/Types';
 
 const initialState:IExpansionJoints[] = [{
     id: 'plate_0',
     position: 0,  //  start position in assembley coordinate system
-    length: 10000,
+    length: 10000,  //  real length of plate
+    reducedLength: 10000,  //  reduced length of plate for reduced dtawing view
     left: 250,  //  min distance for first stand
     right: 250  //  min distance for last stand
     }
@@ -55,6 +56,14 @@ export const platesSlice = createSlice({
             }
             return state
         },
+        setReducedLength: (state, action:PayloadAction<{id: string, reducedLength: number}>) => {
+            for (let i = 0; i < state.length; i++) {
+                if (state.length > 1 || action.payload.reducedLength >= 5000)  {
+                    if (state[i].id === action.payload.id) state[i].length = action.payload.reducedLength
+                }
+            }
+            return state
+        },
         setLeft: (state, action:PayloadAction<{id: string, left: number}>) => {
             for (let i = 0; i < state.length; i++) {
                 if (state[i].id === action.payload.id) state[i].left = action.payload.left
@@ -78,5 +87,6 @@ export const {
     setLength,
     setLeft,
     setRight,
-    connectPlates
+    connectPlates,
+    setReducedLength
 } = platesSlice.actions

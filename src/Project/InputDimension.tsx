@@ -58,8 +58,8 @@ export default function InputDimension() {
                 id: plates[index - 1].id,
                 length: plates[index - 1].length + (plates[index].length - value)
               }))
-
-              let exIndex = expansionJoints.findIndex(elm => elm.id === `ej_${Number(num) - 1}`)
+              
+              let exIndex = expansionJoints.findIndex(elm => elm.id === `ej_${plates[index - 1].id.split('_')[1]}`)
               if (exIndex !== -1)
               dispatch(setExpansionJointPosition({
                 id: expansionJoints[exIndex].id,
@@ -139,6 +139,7 @@ export default function InputDimension() {
           }
       
         } else if (appointment === 'POLength') {
+
           dispatch(setPOLength({
             ...POLengthData,
             POLength: value
@@ -147,6 +148,8 @@ export default function InputDimension() {
             id: plates[plates.length - 1].id,
             length: value - plates[plates.length - 1].position
           }))
+
+
         } else if (appointment === 'leftDim') {
             const ejIndex = expansionJoints.findIndex(elm => elm.id.split('_')[1] === plates[index1 - 1].id.split('_')[1])
 

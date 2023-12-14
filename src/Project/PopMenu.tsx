@@ -3,6 +3,7 @@ import { addPlate, connectPlates, removePlate } from "../store/platesSlice";
 import { addPlateJoint, removePlateJoint, setIDJoint } from "../store/platesJointsSlice";
 import { addExpansionJoin, removeExpansionJoint, setIdExpansionJoint } from "../store/expansionJointsSlice";
 import { useAppDispatch, useAppSelector } from "../hooks";
+import { removeSection } from "../store/drawPlatesSlice";
 
 export default function PopMenu() {
     const dispatch = useAppDispatch();
@@ -87,18 +88,21 @@ export default function PopMenu() {
       </button>
       <button
         onClick={() => {
-            const index = plates.findIndex(elm => elm.id === currentPlate.id)
-            let number = Number(currentPlate.id.split('_')[1])
-            let newNumber = index !== 0 ? Number(plates[index - 1].id.split('_')[1]) : number
-
-            if (index === 0) number = Number(plates[index + 1].id.split('_')[1])
-
-            dispatch(connectPlates(currentPlate.id))
-
-            dispatch(removePlateJoint(`pj_${newNumber}`))
-            dispatch(setIDJoint({id: `pj_${number}`, newId: `pj_${newNumber}`}))
-            dispatch(removeExpansionJoint(`ej_${newNumber}`))
-            dispatch(setIdExpansionJoint({id: `ej_${number}`, newId: `ej_${newNumber}`}))
+            if (plates.length > 1) {
+                const index = plates.findIndex(elm => elm.id === currentPlate.id)
+                let number = Number(currentPlate.id.split('_')[1])
+                let newNumber = index !== 0 ? Number(plates[index - 1].id.split('_')[1]) : number
+    
+                if (index === 0) number = Number(plates[index + 1].id.split('_')[1])
+    
+                dispatch(connectPlates(currentPlate.id))
+    
+                dispatch(removePlateJoint(`pj_${newNumber}`))
+                dispatch(removeSection(currentPlate.id))
+                dispatch(setIDJoint({id: `pj_${number}`, newId: `pj_${newNumber}`}))
+                dispatch(removeExpansionJoint(`ej_${newNumber}`))
+                dispatch(setIdExpansionJoint({id: `ej_${number}`, newId: `ej_${newNumber}`}))
+            }
         }}
       >
         Удалить плиту

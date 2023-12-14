@@ -10,17 +10,24 @@ export default function Ground() {
   const dispatch = useAppDispatch()
 
   const expansionJoints = useAppSelector((state) => state.expansionJoints);
+  const reducedPOLength = useAppSelector(state => state.reducedPOLEngth)
   const plates = useAppSelector(state => state.plates);
   const plateJoints = useAppSelector(state => state.platesJoints);
-  const {POLength, scaledPOLength, screenWidth, scale} = useAppSelector((state) => state.POLength);
-  const overallScale = scale
+  let {POLength, screenWidth, scale} = useAppSelector((state) => state.POLength);
+  let overallScale = scale
   const joints = [...expansionJoints, ...plateJoints]
   const initX = 700
-  const startY = 50 + 700
+  const startY = 850
+  
+  if (reducedPOLength.scale > 1) {
+    overallScale = reducedPOLength.scale
+    POLength = reducedPOLength.POLength
+  }
 
   let count = 0
   
   const expansionJointsDraw = expansionJoints.map(elm => {
+    const reducedLength = elm.reducedLength ? elm.reducedLength : elm.length
     count++
     return (
       <g
@@ -30,8 +37,8 @@ export default function Ground() {
         <path
           d={`M${elm.position / overallScale + initX} ${startY + 150 / overallScale}
               L${elm.position / overallScale + initX} ${startY}
-              L${(elm.position + elm.length) / overallScale + initX} ${startY}
-              L${(elm.position + elm.length) / overallScale + initX} ${startY + 150 / overallScale}Z
+              L${(elm.position + reducedLength) / overallScale + initX} ${startY}
+              L${(elm.position + reducedLength) / overallScale + initX} ${startY + 150 / overallScale}Z
             `}
           fill="white"
           strokeWidth='3'
@@ -47,15 +54,13 @@ export default function Ground() {
         />
 
         <path
-          d={`M${(elm.position + elm.length) / overallScale + initX} ${startY + 150 / overallScale}
-              L${(elm.position + elm.length) / overallScale + initX} ${startY}
-              L${(elm.position + elm.length + elm.right) / overallScale + initX} ${startY}
+          d={`M${(elm.position + reducedLength) / overallScale + initX} ${startY + 150 / overallScale}
+              L${(elm.position + reducedLength) / overallScale + initX} ${startY}
+              L${(elm.position + reducedLength + elm.right) / overallScale + initX} ${startY}
             `}
           fill='none'
           strokeWidth='5'
         />
-
-
       </g>
     )
   })
@@ -81,7 +86,7 @@ export default function Ground() {
 
   if (POLength < 5000) return result;
   
-  if (scale === 100 && scaledPOLength >= screenWidth) {
+  if (scale === 100 && POLength / overallScale >= screenWidth) {
     result = <div>TOO BIG</div>;
 
   }  else {
@@ -168,8 +173,8 @@ export default function Ground() {
             initX={initX}
             initY={startY}
             type={{type: 'hor', dir: 'up'}}
-            length={scaledPOLength}
-            indent={(600)}
+            length={POLength / overallScale}
+            indent={(700)}
             id={'POLength_0'}
           />
           

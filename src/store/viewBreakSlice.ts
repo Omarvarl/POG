@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = true
+const initialState = false
 
 export const viewBreakSlice = createSlice({
     name: 'viewBreak',

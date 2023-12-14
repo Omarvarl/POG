@@ -26,26 +26,26 @@ export default function ReducedSection({initX, initY, scale}:IInitCoord) {
         <UpFiting initX={initX} initY={initY - 1100 / scale} />
 
         <path className="base-line-fill"
-          d={`M${initX + 350 / scale} ${initY + 50 /scale}
+          d={`M${initX + 350 / scale} ${initY + 150 /scale}
                 Q${initX + 410 / scale} ${1200 / scale / 4 * 3 + (initY - 1150 / scale)},
                 ${initX + 350 / scale} ${1200 / scale / 2 + (initY - 1150 / scale)}
                 Q${initX + 290 / scale} ${1200 / scale / 4 + (initY - 1150 / scale)}
                 ${initX + 350 / scale} ${initY - 1150 / scale}
-                L${initX + 650 / scale} ${initY - 1150 / scale}
+                L${initX + 550 / scale} ${initY - 1150 / scale}
 
-                Q${initX + 590 / scale} ${1200 / scale / 4 + (initY - 1150 / scale)},
-                ${initX + 650 / scale} ${1200 / scale / 2 + (initY - 1150 / scale)}
+                Q${initX + 490 / scale} ${1200 / scale / 4 + (initY - 1150 / scale)},
+                ${initX + 550 / scale} ${1200 / scale / 2 + (initY - 1150 / scale)}
 
-                Q${initX + 710 / scale} ${1200 / scale / 4 * 3 + (initY - 1150 / scale)}
-                ${initX + 650 / scale} ${initY + 50 / scale}
-                L${initX + 650 / scale} ${initY + 50 / scale}Z
+                Q${initX + 610 / scale} ${1200 / scale / 4 * 3 + (initY - 1150 / scale)}
+                ${initX + 550 / scale} ${initY + 150 / scale}
+                L${initX + 550 / scale} ${initY + 150 / scale}Z
             `}
             stroke='white'
             strokeWidth='1'
         />
 
         <path className="thin-line"
-          d={`M${initX + 350 / scale} ${initY + 50 /scale}
+          d={`M${initX + 350 / scale} ${initY + 150 /scale}
                 Q${initX + 410 / scale} ${1200 / scale / 4 * 3 + (initY - 1150 / scale)},
                 ${initX + 350 / scale} ${1200 / scale / 2 + (initY - 1150 / scale)}
                 Q${initX + 290 / scale} ${1200 / scale / 4 + (initY - 1150 / scale)}
@@ -53,12 +53,12 @@ export default function ReducedSection({initX, initY, scale}:IInitCoord) {
             `}
         />
         <path className="thin-line"
-          d={`M${initX + 650 / scale} ${initY - 1150 / scale}
-                Q${initX + 590 / scale} ${1200 / scale / 4 + (initY - 1150 / scale)},
-                ${initX + 650 / scale} ${1200 / scale / 2 + (initY - 1150 / scale)}
-                Q${initX + 710 / scale} ${1200 / scale / 4 * 3 + (initY - 1150 / scale)}
-                ${initX + 650 / scale} ${initY + 50 / scale}
-                L${initX + 650 / scale} ${initY + 50 / scale}
+          d={`M${initX + 550 / scale} ${initY - 1150 / scale}
+                Q${initX + 490 / scale} ${1200 / scale / 4 + (initY - 1150 / scale)},
+                ${initX + 550 / scale} ${1200 / scale / 2 + (initY - 1150 / scale)}
+                Q${initX + 610 / scale} ${1200 / scale / 4 * 3 + (initY - 1150 / scale)}
+                ${initX + 550 / scale} ${initY + 150 / scale}
+                L${initX + 550 / scale} ${initY + 150 / scale}
             `}
         />
 

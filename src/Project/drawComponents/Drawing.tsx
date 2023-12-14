@@ -1,8 +1,8 @@
 import Border from "./Border";
 import BaseTable from "./BaseTable";
-import { IExpansionJoints } from "../../Types/Types";
+import { IExpansionJoints, ISection } from "../../Types/Types";
 import Ground from "./Ground";
-import { useAppSelector } from "../../hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import './Drawing.css'
 import calc from "../../Logic/calc";
 import StartSection1500 from "./Sections/StartSection1500";
@@ -14,23 +14,44 @@ import UniqSection from "./Sections/UniqSection";
 import UniqStartSection from "./Sections/UniqStartSection";
 import UniqEndSection from "./Sections/UniqEndSection";
 import DimArrow from "./DimArrow";
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
+import ReducedSection from "./Sections/ReducedSection";
+import { setReducedPOLength } from "../../store/reducedPOLengthSlice";
+import { addSection, clearSections } from "../../store/drawPlatesSlice";
 
 
 export default function Drawing() {
+    const dispatch = useAppDispatch()
     const {width, height, factor} = useAppSelector(state => state.realPageSize);
-    const scale = useAppSelector(state => state.POLength.scale);
     const initX = 700
     const initY = 50
 
     const POLengthData = useAppSelector(state => state.POLength)
     const POLength = POLengthData.POLength
+    let scale = POLengthData.scale
+    const reducedScale = useAppSelector(state => state.reducedPOLEngth.scale)
     const expansionJoints = useAppSelector((state) => state.expansionJoints);
     const plateJoints = useAppSelector(state => state.platesJoints)
     const plates = useAppSelector(state => state.plates)
     const expansionsArr:IExpansionJoints[] = structuredClone(expansionJoints);
     const sections = useMemo(() => calc(POLength, expansionJoints, plateJoints, plates), [POLength, expansionJoints, plateJoints, plates])
+    const viewBreak = useAppSelector(state => state.viewBreak)
+    const drawPlates = useAppSelector(state => state.drawPlates)
 
+    useEffect(() => {
+      // console.log(sections)
+      plates.forEach(plate => {
+        dispatch(clearSections(plate.id))
+        sections.forEach(section => {
+          if (section.initX >= plate.position
+            && section.initX <= plate.position + plate.length) {
+              // console.log(plate.id, plate.position, section.initX, plate.position + plate.length)
+              dispatch(addSection({id: plate.id, section}))
+            }
+        })
+      })
+      // console.log(drawPlates)
+    }, [dispatch, plates, sections])
 
     const jointsDimLeft = useMemo(() => {
       return plates.map(elm => {
@@ -70,27 +91,77 @@ export default function Drawing() {
 
 
     expansionsArr.sort((a, b) => a.position - b.position)
+    let arr: ISection[] = []
+    let len = 0
+    // console.log(sections)
+    if (viewBreak) {
+      let currentName = ''
+      for (let i = 0; i < sections.length; i++) {
+        if (sections[i].name === currentName && i + 2 < sections.length - 1) {
 
-    const drawSections = sections.map(section => {
-      if (section.name === 'StartSection1500') {
-        return <StartSection1500 initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} key={section.key} />
-      } else if (section.name === 'EndSection1500') {
-        return <EndSection1500 initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} key={section.key} />
-      } else if (section.name === 'RegularSection3000') {
-        return <RegularSection3000 initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} key={section.key} />
-      } else if (section.name === 'RegularSection1500') {
-        return <RegularSection1500 initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} key={section.key} />
-      } else if (section.name === 'RegularSection1000') {
-        return <RegularSection1000 initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} key={section.key} />
-      } else if (section.name === 'UniqSection') {
-        return <UniqSection initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
-      } else if (section.name === 'UniqStartSection') {
-        return <UniqStartSection initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
-      } else if (section.name === 'UniqEndSection') {
-        return <UniqEndSection initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
+          if (sections[i + 1].name === currentName) {
+
+            // len = sections[i + 1].length
+            arr.push({
+              ...sections[i],
+              name: 'ReducedSection',
+              length: 1000
+            })
+            len -= 1000
+            while (sections[i].name === currentName) {
+              len += sections[i].length
+              i++
+            }
+            i--
+          }
+        } else {
+
+          currentName = sections[i].name
+          arr.push({
+            ...sections[i],
+            initX: sections[i].initX - len
+          })
+        }
+      }
+      dispatch(setReducedPOLength({
+        ...POLengthData,
+        POLength: POLength - len
+      }))
+
+    } else {
+      arr = structuredClone(sections)
+    }
+
+    if (reducedScale > 1) scale = reducedScale
+
+    const drawSections = drawPlates.map(plate => {
+      if (plate.sections && plate.sections.length > 0) {
+        return plate.sections.map(section => {
+          if (section.name === 'StartSection1500') {
+            return <StartSection1500 initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} key={section.key} />
+          } else if (section.name === 'EndSection1500') {
+            return <EndSection1500 initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} key={section.key} />
+          } else if (section.name === 'RegularSection3000') {
+            return <RegularSection3000 initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} key={section.key} />
+          } else if (section.name === 'RegularSection1500') {
+            return <RegularSection1500 initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} key={section.key} />
+          } else if (section.name === 'RegularSection1000') {
+            return <RegularSection1000 initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} key={section.key} />
+          } else if (section.name === 'UniqSection') {
+            return <UniqSection initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
+          } else if (section.name === 'UniqStartSection') {
+            return <UniqStartSection initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
+          } else if (section.name === 'UniqEndSection') {
+            return <UniqEndSection initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
+          } else if (section.name === 'ReducedSection') {
+            return <ReducedSection initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} key={section.key} />
+          } else return <></>
+        })
+      } else {
+        return []
       }
     })
-
+    console.log(drawPlates)
 
   return (
     <div

@@ -25,9 +25,26 @@ export interface IGround {
     length: number
 }
 
+export interface ISection {
+    name: string,
+    initX: number,
+    initY: number,
+    length: number,
+    addedStatePos?: number,
+    key: string
+}
+
 export interface IExpansionJoints extends IGround {
     left: number,
-    right: number
+    right: number,
+    reducedLength?: number,
+    sections?: ISection[]
+}
+
+export interface IDrawPlates {
+    id: string,
+    reducedLength: number,
+    sections: ISection[]
 }
 
 export interface IPOLength {
@@ -55,15 +72,6 @@ export interface IPOParts {
     startX: number,
     startY: number,
     length: number
-}
-
-export interface ISection {
-    name: string,
-    initX: number,
-    initY: number,
-    length: number,
-    addedStatePos?: number,
-    key: string
 }
 
 export interface IUniqSectionData extends IProfile {

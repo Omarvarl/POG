@@ -7,6 +7,7 @@ import DownFiting from "../Profiles/DownFiting"
 import UpFiting from "../Profiles/UpFiting"
 import { IUniqSectionData } from "../../../Types/Types"
 import '../Drawing.css'
+import { useAppSelector } from "../../../hooks"
 
 export default function UniqSection({initX, initY, length, addedStatePos, scale}:IUniqSectionData) {
     // const normalScale =  useAppSelector(state => state.POLength.scale)
@@ -14,7 +15,9 @@ export default function UniqSection({initX, initY, length, addedStatePos, scale}
     // const scale = (reducedScale === 1) ? normalScale : reducedScale
     if (!scale) scale = 1
     const sectionLength = length / scale
+    const expansionJoints = useAppSelector(state => state.expansionJoints)
     // console.log(length)
+    const startX = 700
 
     let addedStand:JSX.Element = <></>
     let addedDownFiting:JSX.Element = <></>
@@ -61,21 +64,40 @@ export default function UniqSection({initX, initY, length, addedStatePos, scale}
 
     // console.log(initX * scale, addedStatePos, length)
 
+    function checkAddedPos(pos:number) {
+        let result = pos
+        // console.log(expansionJoints)
+
+        expansionJoints.forEach(elm => {
+            if (!scale) scale = 1
+            // console.log(elm.position, pos + (initX - startX) * scale, elm.position - elm.left, elm.position - elm.left - (initX - startX) * scale )
+            if (pos + (initX - startX) * scale > elm.position - elm.left && pos + (initX - startX) * scale < elm.position) {
+                result = elm.position - elm.left - (initX - startX) * scale
+            } else if (pos + (initX - startX) * scale < elm.position + elm.length + elm.right && pos + (initX - startX) * scale > elm.position) {
+                result = elm.position + elm.length + elm.right - (initX - startX) * scale
+            }
+        })
+        return result
+    }
+
     if (addedStatePos && (addedStatePos > 1500)) {
-        addedStand = <StandTube88x58 initX={initX + 1500 / scale} initY={initY} length={1100 / scale} />
-        addedDownFiting = <DownFiting initX={initX + 1500 / scale} initY={initY} />
-        addedUpFiting = <UpFiting initX={initX + 1500 / scale} initY={initY - 1100 / scale} />
-        fillingTubes = getFillingTubes(1500 / scale)
+        let pos = checkAddedPos(1500)
+        addedStand = <StandTube88x58 initX={initX + pos / scale} initY={initY} length={1100 / scale} />
+        addedDownFiting = <DownFiting initX={initX + pos / scale} initY={initY} />
+        addedUpFiting = <UpFiting initX={initX + pos / scale} initY={initY - 1100 / scale} />
+        fillingTubes = getFillingTubes(pos / scale)
     } else if (addedStatePos && length - addedStatePos >= 500) {
-        addedStand = <StandTube88x58 initX={initX + addedStatePos / scale} initY={initY} length={1100 / scale} />
-        addedDownFiting = <DownFiting initX={initX + addedStatePos / scale} initY={initY} />
-        addedUpFiting = <UpFiting initX={initX + addedStatePos / scale} initY={initY - 1100 / scale} />
-        fillingTubes = getFillingTubes(addedStatePos / scale)
+        let pos = checkAddedPos(addedStatePos)
+        addedStand = <StandTube88x58 initX={initX + pos / scale} initY={initY} length={1100 / scale} />
+        addedDownFiting = <DownFiting initX={initX + pos / scale} initY={initY} />
+        addedUpFiting = <UpFiting initX={initX + pos / scale} initY={initY - 1100 / scale} />
+        fillingTubes = getFillingTubes(pos / scale)
     } else if (length <= 2000 && length > 1500) {
-        addedStand = <StandTube88x58 initX={initX + 1000 / scale} initY={initY} length={1100 / scale} />
-        addedDownFiting = <DownFiting initX={initX + 1000 / scale} initY={initY} />
-        addedUpFiting = <UpFiting initX={initX + 1000 / scale} initY={initY - 1100 / scale} />
-        fillingTubes = getFillingTubes(1000 / scale)
+        let pos = checkAddedPos(1000)
+        addedStand = <StandTube88x58 initX={initX + pos / scale} initY={initY} length={1100 / scale} />
+        addedDownFiting = <DownFiting initX={initX + pos / scale} initY={initY} />
+        addedUpFiting = <UpFiting initX={initX + pos / scale} initY={initY - 1100 / scale} />
+        fillingTubes = getFillingTubes(pos / scale)
     } else {
         fillingTubes = getFillingTubes()
     }

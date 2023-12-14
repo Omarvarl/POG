@@ -11,7 +11,7 @@ const calc = (
         // console.log('calc')
 
     const startX = plates[0].left
-    const startY = 700
+    const startY = 800
     const result: ISection[] = []
 
     const plateJoints = plateJointsData.map(elm => {
@@ -43,7 +43,7 @@ const calc = (
         for(let i = 0; i < expansionJoints.length; i++) {
             if (i === expansionJoints.length - 1) {
                 parts.push({
-                   startX: expansionJoints[i].position + expansionJoints[i].length + expansionJoints[i].right,
+                    startX: expansionJoints[i].position + expansionJoints[i].length + expansionJoints[i].right,
                     startY: startY,
                     length: POLength - expansionJoints[i].position - expansionJoints[i].length - expansionJoints[i].right - plates[plates.length - 1].right
                 })
@@ -64,9 +64,6 @@ const calc = (
         })
     }
 
-    let count = 1
-
-
     let name = 'RegularSection3000'
 
     for (let i = 0; i < parts.length; i++) {
@@ -78,9 +75,9 @@ const calc = (
             if (i !== parts.length - 1) {
                 const oldX = x;
                 [x, len] = checkPlateJoints(x, len, 4)
-                
+
                 if (oldX === x) {
-                    if (parts[i + 1].startX - parts[i].length - parts[i].startX + len > 2500) {
+                    if (len >= 2500) {
                         result.push({
                             name: 'StartSection1500',
                             initX: x,
@@ -185,7 +182,7 @@ const calc = (
 
         name = 'RegularSection3000'
         if (i !== parts.length - 1) {
-            if (parts[i + 1].startX - parts[i].length - parts[i].startX + len > 4000) {
+            if (parts[i + 1].startX + len - parts[i].startX - parts[i].length > 4000) {
                 while (len > 4000) {
                     [x, len] = checkPlateJoints(x, len, 3)
                     if (len > 4000) {
@@ -194,18 +191,16 @@ const calc = (
                             initX: x,
                             initY: startY,
                             length: 3000,
-                            key: `section3000_${count}`
+                            key: `section3000_${x}`
                         })
                         x += 3000
                         len -= 3000
-                        count++
                     }
                 }
             }
         } else {
-            if (len >= 4000) {
-                while (len >= 4000) {
-                    // console.log(len);
+            if (len > 4000) {
+                while (len > 4000) {
                     [x, len] = checkPlateJoints(x, len, 3)
                     if (len >= 4000) {
                         result.push({
@@ -213,11 +208,10 @@ const calc = (
                             initX: x,
                             initY: startY,
                             length: 3000,
-                            key: `section3000_${count}`
+                            key: `section3000_${x}`
                         })
                         x += 3000
                         len -= 3000
-                        count++
                     }
                 }
             }
@@ -229,18 +223,17 @@ const calc = (
                         initX: x,
                         initY: startY,
                         length: 3000,
-                        key: `section3000_${count}`
+                        key: `section3000_${x}`
                     })
                     x += 3000
                     len -= 3000
-                    count++
                 }
             }
         }
 
         name = 'RegularSection1500'
         if (i !== parts.length - 1) {
-            if (parts[i + 1].startX + len - parts[i].startX - parts[i].length > 2500) {
+            if (parts[i + 1].startX + len - parts[i].startX - parts[i].length > 2000) {
                 while (len > 2500) {
                     [x, len] = checkPlateJoints(x, len, 1.5)
                     if (len > 2500) {
@@ -249,29 +242,27 @@ const calc = (
                             initX: x,
                             initY: startY,
                             length: 1500,
-                            key: `section1500_${count}`
+                            key: `section1500_${x}e`
                         })
                         x += 1500 
                         len -= 1500
-                        count++
                     }
                 }
             }
         } else {
-            if (len >= 2500) {
-                while (len >= 2500) {
+            if (len > 2500) {
+                while (len > 2500) {
                     [x, len] = checkPlateJoints(x, len, 1.5)
-                    if (len >= 2500) {
+                    if (len > 2500) {
                         result.push({
                             name: name,
                             initX: x,
                             initY: startY,
                             length: 1500,
-                            key: `section1500_${count}`
+                            key: `section1500_${x}d`
                         })
                         x += 1500
                         len -= 1500
-                        count++
                     }
                 }
             }
@@ -283,49 +274,47 @@ const calc = (
                         initX: x,
                         initY: startY,
                         length: 1500,
-                        key: `section1500_${count}`
+                        key: `section1500_${x}c`
                     })
                     x += 1500
                     len -= 1500
-                    count++
                 }
             }
         }
 
         name = 'RegularSection1000'
         if (i !== parts.length - 1) {
-            if (parts[i + 1].startX - parts[i].startX + len - parts[i].length > 2000) {
+            // console.log(x)
+            if (parts[i + 1].startX + len - parts[i].startX - parts[i].length > 2000) {
                 while (len > 2000) {
-                    [x, len] = checkPlateJoints(x, len, 1)
+                    [x, len] = checkPlateJoints(x, len, 1, parts[i + 1].startX - parts[i].startX - parts[i].length + len)
                     if (len > 2000) {
                         result.push({
                             name: name,
                             initX: x,
                             initY: startY,
                             length: 1000,
-                            key: `section1000_${count}`
+                            key: `section1000_${x}`
                         })
                         x += 1000
                         len -= 1000
-                        count++
                     }
                 }
             }
         } else {
-            if (len >= 2000) {
-                while (len >= 2000) {
+            if (len > 2000) {
+                while (len > 2000) {
                     [x, len] = checkPlateJoints(x, len, 1)
-                    if (len >= 2000) {
+                    if (len > 1500) {
                         result.push({
                             name: name,
                             initX: x,
                             initY: startY,
                             length: 1000,
-                            key: `section1000_${count}`
+                            key: `section1000_${x}`
                         })
                         x += 1000
                         len -= 1000
-                        count++
                     }
                 }
             }
@@ -340,11 +329,10 @@ const calc = (
                         initX: x,
                         initY: startY,
                         length: 1000,
-                        key: `section1000_${count}`
+                        key: `section1000_${x}`
                     })
                     x += 1000
                     len -= 1000
-                    count++
                 }
             }
         }
@@ -359,13 +347,11 @@ const calc = (
                         initY: startY,
                         length: parts[i + 1].startX - parts[i].startX - parts[i].length + len,
                         addedStatePos: len,
-                        key: `uniqSection_${count}`
+                        key: `uniqSection_${x}_d`
                     })
                 }
             } else {
-                // console.log(len)
                 len = checkPlateJoints(x, len, 0)[1]
-                // console.log(len)
                 if (len > 0) {
                     result.push({
                         name: 'UniqSection',
@@ -373,26 +359,35 @@ const calc = (
                         initY: startY,
                         length: len,
                         addedStatePos: 0,
-                        key: `uniqSection_${count}`
+                        key: `uniqSection_${x}_c`
                     })
                 }
             }
-            count++
         }
     }
 
     result.sort((a, b) => a.initX - b.initX)
 
     function checkPlateJoints(x: number, len: number, type:number, length?:number) {
-        let count = 0
         for (let i = 0; i < plateJoints.length; i++) {
             const pj = plateJoints[i]
             const prev = i ? plateJoints[i - 1] : {left: -1, right: -1}
             if (type === 3) {
                 if ((x + 1500 > pj.left && x + 1500 < pj.right)
                 || (x + 3000 > pj.left && x + 3000 < pj.right)) {
-                    setData(pj, prev)
-                    count++
+                    if (x + 1500 <= pj.left || x + 1500 >= pj.right) {
+                        result.push({
+                            name: 'RegularSection1500',
+                            initX: x,
+                            initY: startY,
+                            length: 1500,
+                            key: `section1500_${x}_b`
+                        })
+                        x += 1500
+                        len -= 1500
+                    } else {
+                        setData(pj, prev)
+                    }
                     if (len >= 4000) [x, len] = checkPlateJoints(x, len, 3)
                 }
             } if (type === 4) {
@@ -406,12 +401,10 @@ const calc = (
                     })
                     x += pj.left - x
                     len -= (pj.left - x)
-                    count++
                 }
             } else if (type === 1.5) {
                 if (x + 1500 > pj.left && x + 1500 < pj.right) {
                     setData(pj, prev)
-                    count++
                     if (len >= 2500) [x, len] = checkPlateJoints(x, len, 1.5)
                 }
             } else if (type === 1) {
@@ -422,35 +415,34 @@ const calc = (
                         initX: x,
                         initY: startY,
                         length: pj.right - x,
-                        key: `unicSection_${count}`
+                        key: `unicSection_${x}`
                     })
                     len -= (pj.right - x)
                     x = pj.right
-                    count++
                     } else {
-                        if (len > 2500) {
+                        if (len > 2000) {
+                            console.log(x)
                             result.push({
                                 name: 'RegularSection1500',
                                 initX: x,
                                 initY: startY,
                                 length: 1500,
-                                key: `section1500_${count}`
+                                key: `section1500_${x}_a`
                             })
                             x += 1500
                             len -= 1500
-                            count++
-                        } else {
+                        } else if(length && length < 2500) {
+                            console.log(len)
                             result.push({
                                 name: 'UniqSection',
                                 initX: x,
                                 initY: startY,
-                                length: len,
-                                addedStatePos: x,
-                                key: `uniqSection_${count}`
+                                length: length,
+                                addedStatePos: x + 1000,
+                                key: `uniqSection_${x}_b`
                             })
                             len = 0
                             x += len
-                            count++
                         }
                     }
                 }
@@ -459,16 +451,24 @@ const calc = (
                 if ((x + len > pj.left && x + len < pj.right)
                 || (x + 1500 > pj.left && x + 1500 < pj.right)
                 || (x + 1000 > pj.left && x + 1000 < pj.right)) {
+                    let addPos = pj.left - x
+                    // console.log(rLength - (pj.right - x), rLength - addPos)
+
+                    if (rLength - addPos >= 1500 || rLength - addPos > 1000) {
+                        addPos = pj.right - x
+                    }
+                    if (rLength - addPos > 1000) {
+                        addPos += (rLength - addPos - 1000)
+                    }
                     result.push({
                         name: 'UniqSection',
                         initX: x,
                         initY: startY,
                         length: rLength,
-                        addedStatePos: pj.left - x,
-                        key: `uniqSection_${count}`
+                        addedStatePos: addPos,
+                        key: `uniqSection_${x}_a`
                     })
                     len = 0
-                    count++
                 }
             }
         }
@@ -477,7 +477,8 @@ const calc = (
 
             if ((x + 1000 > pj.left && x + 1000 < pj.right)
             || (x + 1000 > prev.left && x + 1000 < prev.right)
-            || (pj.left - x >= 1000 && pj.left - x < 1500)) {
+            // || (pj.left - x >= 1000 && pj.left - x < 1500)) 
+            ){
 
             // uniq
             result.push({
@@ -485,23 +486,21 @@ const calc = (
                 initX: x,
                 initY: startY,
                 length: pj.left - x,
-                key: `uniqSection_${count}`
+                key: `uniqSection_${x}_c`
             })
             len -= (pj.left - x)
             x = pj.left
-            count++
-            } else if (pj.left - x >= 1500) {
+            } else {
                 //  push 1000
                 result.push({
                     name: 'RegularSection1000',
                     initX: x,
                     initY: startY,
                     length: 1000,
-                    key: `section1000_${count}`
+                    key: `section1000_${x}`
                 })
                 x += 1000
                 len -= 1000
-                count++
             }
         }
         
