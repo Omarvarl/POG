@@ -7,7 +7,6 @@ const calc = (
     plateJointsData:{id: string, length: number}[],
     plates: IExpansionJoints[]
     ):ISection[] => {
-
         // console.log('calc')
 
     const startX = plates[0].left

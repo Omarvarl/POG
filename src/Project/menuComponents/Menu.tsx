@@ -33,9 +33,10 @@ export default function Menu() {
         <label htmlFor="break-view-check"
           className="view-break"
             onClick={(e: React.MouseEvent<HTMLLabelElement>) => {
-                let check = e.target as HTMLInputElement
-                dispatch(setViewBreakState(check.checked))
-                if (reducedScale > 1) dispatch(setReducedPOLength(POLengthData))
+              let check = e.target as HTMLInputElement
+              dispatch(setViewBreakState(check.checked))
+              if (reducedScale > 1) dispatch(setReducedPOLength(POLengthData))
+
             }
           }
         >

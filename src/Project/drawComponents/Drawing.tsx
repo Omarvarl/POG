@@ -1,10 +1,9 @@
 import Border from "./Border";
 import BaseTable from "./BaseTable";
-import { IExpansionJoints, ISection } from "../../Types/Types";
+import {IExpansionJoints } from "../../Types/Types";
 import Ground from "./Ground";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import './Drawing.css'
-import calc from "../../Logic/calc";
 import StartSection1500 from "./Sections/StartSection1500";
 import EndSection1500 from "./Sections/EndSection1500";
 import RegularSection3000 from "./Sections/RegularSection3000";
@@ -13,11 +12,10 @@ import RegularSection1000 from "./Sections/RegularSection1000";
 import UniqSection from "./Sections/UniqSection";
 import UniqStartSection from "./Sections/UniqStartSection";
 import UniqEndSection from "./Sections/UniqEndSection";
-import DimArrow from "./DimArrow";
-import { useMemo, useEffect } from "react";
+import { useEffect } from "react";
 import ReducedSection from "./Sections/ReducedSection";
-import { setReducedPOLength } from "../../store/reducedPOLengthSlice";
-import { addSection, clearSections } from "../../store/drawPlatesSlice";
+// import { setReducedPOLength } from "../../store/reducedPOLengthSlice";
+import { setSections, removeSames } from "../../store/platesSlice";
 
 
 export default function Drawing() {
@@ -34,107 +32,26 @@ export default function Drawing() {
     const plateJoints = useAppSelector(state => state.platesJoints)
     const plates = useAppSelector(state => state.plates)
     const expansionsArr:IExpansionJoints[] = structuredClone(expansionJoints);
-    const sections = useMemo(() => calc(POLength, expansionJoints, plateJoints, plates), [POLength, expansionJoints, plateJoints, plates])
     const viewBreak = useAppSelector(state => state.viewBreak)
-    const drawPlates = useAppSelector(state => state.drawPlates)
 
     useEffect(() => {
-      // console.log(sections)
-      plates.forEach(plate => {
-        dispatch(clearSections(plate.id))
-        sections.forEach(section => {
-          if (section.initX >= plate.position
-            && section.initX <= plate.position + plate.length) {
-              // console.log(plate.id, plate.position, section.initX, plate.position + plate.length)
-              dispatch(addSection({id: plate.id, section}))
-            }
-        })
-      })
-      // console.log(drawPlates)
-    }, [dispatch, plates, sections])
-
-    const jointsDimLeft = useMemo(() => {
-      return plates.map(elm => {
-      let result = <></>
-      sections.forEach(section => {
-        result = <DimArrow
-        initX={initX + elm.position / scale}
-        initY={initY + section.initY}
-        type={{type: 'hor', dir: 'down'}}
-        length={elm.left / scale}
-        indent={260}
-        id={`leftDim_${elm.id}`}
-        key={`leftDim_${elm.id}`}
-      />
-      })
-      return result
-      })
-    }, [plates, scale, sections])
-
-    const jointsDimRight = useMemo(() => {
-      return plates.map(elm => {
-      let result = <></>
-      sections.forEach(section => {
-        result = <DimArrow
-        initX={initX + (elm.position + elm.length - elm.right) / scale}
-        initY={initY + section.initY}
-        type={{type: 'hor', dir: 'down'}}
-        length={elm.right / scale}
-        indent={150}
-        id={`rightDim_${elm.id}`}
-        key={`rightDim_${elm.id}`}
-      />
-      })
-      return result
-      })
-  }, [plates, scale, sections])
-
+      dispatch(setSections({POLength, expansionJoints, plateJoints}))
+    }, [POLength, expansionJoints, plateJoints, dispatch])
 
     expansionsArr.sort((a, b) => a.position - b.position)
-    let arr: ISection[] = []
-    let len = 0
-    // console.log(sections)
-    if (viewBreak) {
-      let currentName = ''
-      for (let i = 0; i < sections.length; i++) {
-        if (sections[i].name === currentName && i + 2 < sections.length - 1) {
 
-          if (sections[i + 1].name === currentName) {
-
-            // len = sections[i + 1].length
-            arr.push({
-              ...sections[i],
-              name: 'ReducedSection',
-              length: 1000
-            })
-            len -= 1000
-            while (sections[i].name === currentName) {
-              len += sections[i].length
-              i++
-            }
-            i--
-          }
-        } else {
-
-          currentName = sections[i].name
-          arr.push({
-            ...sections[i],
-            initX: sections[i].initX - len
-          })
+    useEffect(() => {
+      if (viewBreak) {
+          dispatch(removeSames())
         }
-      }
-      dispatch(setReducedPOLength({
-        ...POLengthData,
-        POLength: POLength - len
-      }))
+    }, [viewBreak, dispatch])
 
-    } else {
-      arr = structuredClone(sections)
-    }
 
     if (reducedScale > 1) scale = reducedScale
 
-    const drawSections = drawPlates.map(plate => {
+    // console.log(drawPlates)
+
+    const drawSections = plates.map(plate => {
       if (plate.sections && plate.sections.length > 0) {
         return plate.sections.map(section => {
           if (section.name === 'StartSection1500') {
@@ -161,7 +78,7 @@ export default function Drawing() {
         return []
       }
     })
-    console.log(drawPlates)
+    // console.log(drawPlates)
 
   return (
     <div
@@ -178,9 +95,6 @@ export default function Drawing() {
 
         <Ground />
         { drawSections }
-        { jointsDimLeft }
-        { jointsDimRight }
-
 
       </svg>
     </div>

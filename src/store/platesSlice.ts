@@ -1,23 +1,46 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IExpansionJoints, ISection } from '../Types/Types';
+import { IPlates, IExpansionJoints, IPOLength } from '../Types/Types';
+import calc from '../Logic/calc';
 
-const initialState:IExpansionJoints[] = [{
+const initialState:IPlates[] = [{
     id: 'plate_0',
     position: 0,  //  start position in assembley coordinate system
     length: 10000,  //  real length of plate
     reducedLength: 10000,  //  reduced length of plate for reduced dtawing view
     left: 250,  //  min distance for first stand
-    right: 250  //  min distance for last stand
-    }
-]
+    right: 250,  //  min distance for last stand
+    sections: []  //  sections on this plate
+}]
 
 export const platesSlice = createSlice({
     name: 'plates',
     initialState,
     reducers: {
         addPlate: (state, action:PayloadAction<IExpansionJoints>) => {
-            state.push(action.payload)
+            state.push({
+                ...action.payload,
+                reducedLength: action.payload.length,
+                sections: []
+            })
             state.sort((a, b) => a.position - b.position)
+            return state
+        },
+        setSections: (state, action:PayloadAction<{
+            POLength: number,
+            expansionJoints: IExpansionJoints[],
+            plateJoints: {id: string, length: number}[]
+        }>) => {
+            const {POLength, expansionJoints, plateJoints} = action.payload
+            const sections = calc(POLength, expansionJoints, plateJoints, state)
+            state.forEach(plate => {
+                plate.sections = []
+                sections.forEach(section => {
+                    if (section.initX >= plate.position
+                      && section.initX <= plate.position + plate.length) {
+                        plate.sections.push(section)
+                      }
+                  })
+            })
             return state
         },
         removePlate: (state, action:PayloadAction<string>) => {
@@ -76,6 +99,41 @@ export const platesSlice = createSlice({
             }
             return state
         },
+        removeSames: (state) => {
+            state.forEach(plate => {
+
+                const sections = plate.sections
+                let currentName = ''
+                let len = 0
+
+                for (let i = 0; i < sections.length; i++) {
+                    const section = sections[i]
+
+                    if (currentName === section.name
+                        && i + 1 < sections.length
+                    ) {
+                        len = section.length - 1000
+                        section.length = 1000
+                        section.name = 'ReducedSection'
+                        i++
+
+                        while (i < sections.length
+                            && sections[i].name === currentName
+                        ) {
+                            len += sections[i].length
+                            sections.splice(i, 1)
+                        }
+                        i--
+
+                    } else {
+                        section.initX -= len
+                        currentName = section.name
+                    }
+                }
+                plate.reducedLength -= len
+            })
+            return state
+        }
     }
 })
 
@@ -88,5 +146,7 @@ export const {
     setLeft,
     setRight,
     connectPlates,
-    setReducedLength
+    setReducedLength,
+    setSections,
+    removeSames
 } = platesSlice.actions

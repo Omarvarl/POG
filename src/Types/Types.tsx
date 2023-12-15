@@ -36,13 +36,10 @@ export interface ISection {
 
 export interface IExpansionJoints extends IGround {
     left: number,
-    right: number,
-    reducedLength?: number,
-    sections?: ISection[]
+    right: number
 }
 
-export interface IDrawPlates {
-    id: string,
+export interface IPlates extends IExpansionJoints {
     reducedLength: number,
     sections: ISection[]
 }

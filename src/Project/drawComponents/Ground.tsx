@@ -4,6 +4,7 @@ import { setCurrentPlate } from "../../store/currentPlateSlice";
 import { setPopUp } from "../../store/popUpSlice";
 import './Drawing.css'
 import DimArrow from "./DimArrow";
+import { useMemo } from "react";
 
 
 export default function Ground() {
@@ -25,9 +26,45 @@ export default function Ground() {
   }
 
   let count = 0
+
+  const jointsDimLeft = useMemo(() => {
+    return plates.map(elm => {
+    let result = <g key={`left_${elm.id}`}></g>
+    elm.sections.forEach(section => {
+      result = <DimArrow
+      initX={initX + elm.position / scale}
+      initY={startY}
+      type={{type: 'hor', dir: 'down'}}
+      length={elm.left / scale}
+      indent={260}
+      id={`leftDim_${elm.id}_${section.initX}`}
+      key={`leftDim_${elm.id}_${section.initX}`}
+    />
+    })
+    return result
+    })
+  }, [plates, scale])
+
+  const jointsDimRight = useMemo(() => {
+    return plates.map(elm => {
+    let result = <g key={`right_${elm.id}`}></g>
+    elm.sections.forEach(section => {
+      result = <DimArrow
+      initX={initX + (elm.position + elm.length - elm.right) / scale}
+      initY={startY}
+      type={{type: 'hor', dir: 'down'}}
+      length={elm.right / scale}
+      indent={150}
+      id={`rightDim_${elm.id}_${section.initX}`}
+      key={`rightDim_${elm.id}_${section.initX}`}
+    />
+  })
+  return result
+  })
+}, [plates, scale])
   
   const expansionJointsDraw = expansionJoints.map(elm => {
-    const reducedLength = elm.reducedLength ? elm.reducedLength : elm.length
+    const length = elm.length
     count++
     return (
       <g
@@ -37,8 +74,8 @@ export default function Ground() {
         <path
           d={`M${elm.position / overallScale + initX} ${startY + 150 / overallScale}
               L${elm.position / overallScale + initX} ${startY}
-              L${(elm.position + reducedLength) / overallScale + initX} ${startY}
-              L${(elm.position + reducedLength) / overallScale + initX} ${startY + 150 / overallScale}Z
+              L${(elm.position + length) / overallScale + initX} ${startY}
+              L${(elm.position + length) / overallScale + initX} ${startY + 150 / overallScale}Z
             `}
           fill="white"
           strokeWidth='3'
@@ -54,9 +91,9 @@ export default function Ground() {
         />
 
         <path
-          d={`M${(elm.position + reducedLength) / overallScale + initX} ${startY + 150 / overallScale}
-              L${(elm.position + reducedLength) / overallScale + initX} ${startY}
-              L${(elm.position + reducedLength + elm.right) / overallScale + initX} ${startY}
+          d={`M${(elm.position + length) / overallScale + initX} ${startY + 150 / overallScale}
+              L${(elm.position + length) / overallScale + initX} ${startY}
+              L${(elm.position + length + elm.right) / overallScale + initX} ${startY}
             `}
           fill='none'
           strokeWidth='5'
@@ -94,7 +131,8 @@ export default function Ground() {
     let startX = initX;
     result = (
       <g>
-          { plates.map((p, index) => {
+          {
+            plates.map((p, index) => {
             // console.log(joints)
             
             let len = p.length
@@ -102,7 +140,7 @@ export default function Ground() {
             let plateJointDim = <></>
             let platesDim = <></>
 
-            let drawPlates = <path
+            let drawingPlates = <path
               className="ground"
               onClick={showPop}
               d={`M${startX} ${startY + 150 / overallScale}
@@ -155,7 +193,7 @@ export default function Ground() {
                     <path className="ground" d="M 0 5 L 5 0" fill="none" strokeWidth={1} />
                   </pattern>
                 </defs>
-                  { drawPlates }
+                  { drawingPlates }
                   { platesDim }
                   { plateJointDim }
                   { expansionJointsDraw }
@@ -177,6 +215,8 @@ export default function Ground() {
             indent={(700)}
             id={'POLength_0'}
           />
+          { jointsDimLeft }
+          { jointsDimRight }
           
       </g>
     );

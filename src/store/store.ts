@@ -11,7 +11,6 @@ import popUpSlice from './popUpSlice';
 import currentPlateSlice from './currentPlateSlice';
 import platesJointsSlice from './platesJointsSlice';
 import inputVisibilitySlice from './inputVisibilitySlice';
-import drawPlatesSlice from './drawPlatesSlice';
 
 
 
@@ -28,8 +27,7 @@ const store = configureStore({
         reducedPOLEngth: reducedPOLengthSlice,
         popUp: popUpSlice,
         currentPlate: currentPlateSlice,
-        inputVisibility: inputVisibilitySlice,
-        drawPlates: drawPlatesSlice
+        inputVisibility: inputVisibilitySlice
     }
     
 })
