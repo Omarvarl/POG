@@ -1,11 +1,8 @@
-import { useAppSelector } from "../../../hooks"
 import { IProfile } from "../../../Types/Types"
 import '../Drawing.css'
 
-export default function RailTube88x58({initX, initY, length}: IProfile) {
-  const normalScale =  useAppSelector(state => state.POLength.scale)
-  const reducedScale = useAppSelector(state => state.reducedPOLEngth.scale)
-  const scale = (reducedScale === 1) ? normalScale : reducedScale
+export default function RailTube88x58({initX, initY, length, scale=1}: IProfile) {
+
   const profileWidth = 58 / scale
   const profileTickness = 3.5 /scale
   return (

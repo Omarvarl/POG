@@ -1,4 +1,3 @@
-import React from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { setCurrentPlate } from "../../store/currentPlateSlice";
 import { setPopUp } from "../../store/popUpSlice";
@@ -11,31 +10,40 @@ export default function Ground() {
   const dispatch = useAppDispatch()
 
   const expansionJoints = useAppSelector((state) => state.expansionJoints);
-  const reducedPOLength = useAppSelector(state => state.reducedPOLEngth)
   const plates = useAppSelector(state => state.plates);
   const plateJoints = useAppSelector(state => state.platesJoints);
-  let {POLength, screenWidth, scale} = useAppSelector((state) => state.POLength);
-  let overallScale = scale
+  const {POLength, screenWidth, scale, reducedLength, reducedScale} = useAppSelector((state) => state.POLength);
   const joints = [...expansionJoints, ...plateJoints]
   const initX = 700
   const startY = 850
+  const viewBreak = useAppSelector(state => state.viewBreak)
   
-  if (reducedPOLength.scale > 1) {
-    overallScale = reducedPOLength.scale
-    POLength = reducedPOLength.POLength
-  }
+  const wholeLength = (viewBreak)
+    ? reducedLength
+    : POLength;
+
+  const overallScale = (viewBreak)
+    ? reducedScale
+    : scale;
+  
 
   let count = 0
 
+  // console.log(POLength, reducedLength, scale, reducedScale)
+
   const jointsDimLeft = useMemo(() => {
     return plates.map(elm => {
+      const position = (viewBreak)
+      ? elm.reducedPosition
+      : elm.position;
+
     let result = <g key={`left_${elm.id}`}></g>
     elm.sections.forEach(section => {
       result = <DimArrow
-      initX={initX + elm.position / scale}
+      initX={initX + position / overallScale}
       initY={startY}
       type={{type: 'hor', dir: 'down'}}
-      length={elm.left / scale}
+      length={elm.left / overallScale}
       indent={260}
       id={`leftDim_${elm.id}_${section.initX}`}
       key={`leftDim_${elm.id}_${section.initX}`}
@@ -43,17 +51,26 @@ export default function Ground() {
     })
     return result
     })
-  }, [plates, scale])
+  }, [plates, overallScale, viewBreak])
 
   const jointsDimRight = useMemo(() => {
     return plates.map(elm => {
+
+      const position = (viewBreak)
+      ? elm.reducedPosition
+      : elm.position;
+
+      const length = (viewBreak)
+      ? elm.reducedLength
+      : elm.length;
+
     let result = <g key={`right_${elm.id}`}></g>
     elm.sections.forEach(section => {
       result = <DimArrow
-      initX={initX + (elm.position + elm.length - elm.right) / scale}
+      initX={initX + (position + length - elm.right) / overallScale}
       initY={startY}
       type={{type: 'hor', dir: 'down'}}
-      length={elm.right / scale}
+      length={elm.right / overallScale}
       indent={150}
       id={`rightDim_${elm.id}_${section.initX}`}
       key={`rightDim_${elm.id}_${section.initX}`}
@@ -61,9 +78,19 @@ export default function Ground() {
   })
   return result
   })
-}, [plates, scale])
-  
+}, [plates, overallScale, viewBreak])
+
   const expansionJointsDraw = expansionJoints.map(elm => {
+    let position = elm.position
+    if (viewBreak) {
+      plates.forEach(plate => {
+        expansionJoints.forEach(elm => {
+            if (elm.id.split('_')[1] === plate.id.split('_')[1]) {
+                position = plate.reducedPosition + plate.reducedLength
+            }
+        })
+     })
+    }
     const length = elm.length
     count++
     return (
@@ -72,28 +99,28 @@ export default function Ground() {
         key={`ej_${count}`}
       >
         <path
-          d={`M${elm.position / overallScale + initX} ${startY + 150 / overallScale}
-              L${elm.position / overallScale + initX} ${startY}
-              L${(elm.position + length) / overallScale + initX} ${startY}
-              L${(elm.position + length) / overallScale + initX} ${startY + 150 / overallScale}Z
+          d={`M${position / overallScale + initX} ${startY + 150 / overallScale}
+              L${position / overallScale + initX} ${startY}
+              L${(position + length) / overallScale + initX} ${startY}
+              L${(position + length) / overallScale + initX} ${startY + 150 / overallScale}Z
             `}
           fill="white"
           strokeWidth='3'
           stroke="white"
         />
         <path
-          d={`M${elm.position / overallScale + initX} ${startY + 150 / overallScale}
-              L${elm.position / overallScale + initX} ${startY}
-              L${(elm.position - elm.left) / overallScale + initX} ${startY}
+          d={`M${position / overallScale + initX} ${startY + 150 / overallScale}
+              L${position / overallScale + initX} ${startY}
+              L${(position - elm.left) / overallScale + initX} ${startY}
             `}
           fill='none'
           strokeWidth='5'
         />
 
         <path
-          d={`M${(elm.position + length) / overallScale + initX} ${startY + 150 / overallScale}
-              L${(elm.position + length) / overallScale + initX} ${startY}
-              L${(elm.position + length + elm.right) / overallScale + initX} ${startY}
+          d={`M${(position + length) / overallScale + initX} ${startY + 150 / overallScale}
+              L${(position + length) / overallScale + initX} ${startY}
+              L${(position + length + elm.right) / overallScale + initX} ${startY}
             `}
           fill='none'
           strokeWidth='5'
@@ -127,19 +154,22 @@ export default function Ground() {
     result = <div>TOO BIG</div>;
 
   }  else {
-    // console.log(plates, plateJoints, expansionJoints)
     let startX = initX;
+    // console.log(plates)
+
     result = (
       <g>
           {
             plates.map((p, index) => {
             // console.log(joints)
             
-            let len = p.length
+            const  len = (viewBreak) ? p.reducedLength : p.length
+            const pos = (viewBreak) ? p.reducedPosition : p.position
+
             let jointLength = 0
             let plateJointDim = <></>
             let platesDim = <></>
-
+              
             let drawingPlates = <path
               className="ground"
               onClick={showPop}
@@ -200,9 +230,10 @@ export default function Ground() {
               </g>
               
             );
+            // console.log(wholeLength)
             if (index < plates.length - 1) {
               // console.log(platesJoints)
-              startX = initX + (p.position + len + jointLength) / overallScale;
+              startX = initX + (pos + len + jointLength) / overallScale;
             }
 
             return res;
@@ -211,7 +242,7 @@ export default function Ground() {
             initX={initX}
             initY={startY}
             type={{type: 'hor', dir: 'up'}}
-            length={POLength / overallScale}
+            length={wholeLength / overallScale}
             indent={(700)}
             id={'POLength_0'}
           />

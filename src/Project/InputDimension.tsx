@@ -5,6 +5,7 @@ import { setPOLength } from "../store/POLengthSlice";
 import { setLengthJoint } from "../store/platesJointsSlice";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import React from "react";
+import { setCurrentPlate } from "../store/currentPlateSlice";
 
 export default function InputDimension() {
     const dispatch = useAppDispatch();
@@ -25,7 +26,7 @@ export default function InputDimension() {
         if (appointment === 'plate') {
       
           if (index !== plates.length - 1) {
-            if (value > 0 && value < plates[index + 1].length + plates[index].length) {
+            if (value > 0 && value < (plates[index + 1]?.length | currentPlate.length) + plates[index].length) {
               dispatch(setLength({
                 id: plates[index + 1].id,
                 length: plates[index + 1].length + (plates[index].length - value),
@@ -76,7 +77,7 @@ export default function InputDimension() {
               id: currentPlate.id,
               length: value,
             }))
-            // console.log(plates)
+
           }
         } else if (appointment === 'pj' || appointment === 'ej') {
           const i = plateJoints.findIndex(elm => elm.id.split('_')[1] === plates[index].id.split('_')[1])
@@ -167,6 +168,8 @@ export default function InputDimension() {
                             dispatch(setExpansionJointLength({id: expansionJoints[ejIndex].id, length: expansionJoints[ejIndex].length - delta}))
                             dispatch(setExpansionJointPosition({id: expansionJoints[ejIndex].id, position: expansionJoints[ejIndex].position + delta}))
                             dispatch(setLength({id: plates[index1 - 1].id, length: plates[index1 - 1].length + delta}))
+
+
                         } else {
                             dispatch(setRight({id:plates[index1 - 1].id, right: plates[index1 - 1].right - delta}))
                             dispatch(setExpansionJointLeft({id: expansionJoints[ejIndex].id, left: expansionJoints[ejIndex].left - delta}))
@@ -191,7 +194,7 @@ export default function InputDimension() {
                     }
                 }
                 if (value < plates[index1].length) {
-                    dispatch(setLeft({id: plates[index1].id, left: value}))
+                    dispatch(setLeft({id: plates[index1].id, left: value}))                   
                 }
             }
 
@@ -249,8 +252,8 @@ export default function InputDimension() {
     style={{display: inputVisibility.display}}
     onMouseDown={(e: React.MouseEvent) => {
       const target = e.target as HTMLElement
-      if (!target.classList.contains('dim-input'))
-      dispatch(hideInput())
+      !target.classList.contains('dim-input') && dispatch(hideInput())
+      
     }}
     onKeyDown={(e: React.KeyboardEvent) => {
         if (e.key === 'Enter') dispatch(hideInput())
@@ -267,10 +270,22 @@ export default function InputDimension() {
         onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
           const target = e.target as HTMLInputElement
           changePlateLength(target)
+          dispatch(setCurrentPlate({
+            id: 'plate_-1',
+            position: -1,
+            length: -1500
+          }))
         }}
         onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
             const target = e.target as HTMLInputElement
-            if (e.key === 'Enter') changePlateLength(target)
+            if (e.key === 'Enter') {
+              changePlateLength(target)
+              dispatch(setCurrentPlate({
+                id: 'plate_-1',
+                position: -1,
+                length: -1
+              }))
+            }
         }}
         key={currentPlate.id}
         autoFocus

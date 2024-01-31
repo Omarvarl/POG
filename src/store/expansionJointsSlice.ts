@@ -49,7 +49,7 @@ export const expansionJointsQuantitySlice = createSlice({
             const index = state.findIndex(elm => elm.id === action.payload.id)
             if(index !== -1) state[index].id = action.payload.newId
             return state
-        }
+        },
     }
 })
 
@@ -61,5 +61,5 @@ export const {
     setExpansionJointLength,
     setExpansionJointLeft,
     setExpansionJointRight,
-    setIdExpansionJoint
+    setIdExpansionJoint,
 } = expansionJointsQuantitySlice.actions

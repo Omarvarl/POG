@@ -1,0 +1,17 @@
+{
+  "name": "test_server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "next dev"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "makerjs": "^0.18.1",
+    "node-html-parser": "^6.1.11",
+    "svg-to-pdfkit": "^0.1.8"
+  }
+}

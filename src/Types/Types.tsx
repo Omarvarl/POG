@@ -41,14 +41,16 @@ export interface IExpansionJoints extends IGround {
 
 export interface IPlates extends IExpansionJoints {
     reducedLength: number,
+    reducedPosition: number,
     sections: ISection[]
 }
 
 export interface IPOLength {
     POLength: number,
-    scaledPOLength: number,
     screenWidth: number,
-    scale: number
+    scale: number,
+    reducedLength: number,
+    reducedScale: number
 }
 
 export interface IInitCoord {

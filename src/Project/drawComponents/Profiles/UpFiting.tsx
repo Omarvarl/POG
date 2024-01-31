@@ -1,10 +1,6 @@
-import { useAppSelector } from "../../../hooks"
 import { IInitCoord } from "../../../Types/Types"
 
-export default function UpFiting({initX, initY }: IInitCoord) {
-  const normalScale =  useAppSelector(state => state.POLength.scale)
-  const reducedScale = useAppSelector(state => state.reducedPOLEngth.scale)
-  const scale = (reducedScale === 1) ? normalScale : reducedScale
+export default function UpFiting({initX, initY, scale=1 }: IInitCoord) {
   const fitingLength = 138 / scale
   return (
     <g>

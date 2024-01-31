@@ -3,14 +3,13 @@ import { addPlate, connectPlates, removePlate } from "../store/platesSlice";
 import { addPlateJoint, removePlateJoint, setIDJoint } from "../store/platesJointsSlice";
 import { addExpansionJoin, removeExpansionJoint, setIdExpansionJoint } from "../store/expansionJointsSlice";
 import { useAppDispatch, useAppSelector } from "../hooks";
+import { setCurrentPlate } from "../store/currentPlateSlice";
 
 export default function PopMenu() {
     const dispatch = useAppDispatch();
     const visibility = useAppSelector(state => state.popUp)
     const currentPlate = useAppSelector(state => state.currentPlate)
     const plates = useAppSelector(state => state.plates)
-    // const plateJoints = useAppSelector(state => state.platesJoints)
-    // const expansionJoints = useAppSelector(state => state.expansionJoints)
 
     function addExpansionJoinToPlate() {
         const leftPlate = createNewPlate()[0]
@@ -26,7 +25,10 @@ export default function PopMenu() {
     
       function addNewPlate() {
         const leftPlate = createNewPlate()[0]
-        dispatch(addPlateJoint({id: `pj_${leftPlate.id.split('_')[1]}`, length: 50}))
+        dispatch(addPlateJoint({
+          id: `pj_${leftPlate.id.split('_')[1]}`,
+          length: 50
+      }))
       }
     
       function createNewPlate() {
@@ -45,8 +47,10 @@ export default function PopMenu() {
           position: currentPlate.position,
           length: currentPlate.length / 2 - 25,
           reducedLength: currentPlate.length / 2 - 25,
+          reducedPosition: currentPlate.position,
           left: 250,
-          right: 250
+          right: 250,
+          sections: []
         }
     
         const rightPlate = {
@@ -54,8 +58,10 @@ export default function PopMenu() {
           position: currentPlate.length / 2 + 25 + currentPlate.position,
           length: currentPlate.length / 2 - 25,
           reducedLength: currentPlate.length / 2 - 25,
+          reducedPosition: currentPlate.length / 2 + 25 + currentPlate.position,
           left: 250,
-          right: 250
+          right: 250,
+          sections: []
         }
     
         dispatch(removePlate(currentPlate.id))
@@ -102,6 +108,7 @@ export default function PopMenu() {
                 dispatch(setIDJoint({id: `pj_${number}`, newId: `pj_${newNumber}`}))
                 dispatch(removeExpansionJoint(`ej_${newNumber}`))
                 dispatch(setIdExpansionJoint({id: `ej_${number}`, newId: `ej_${newNumber}`}))
+
             }
         }}
       >

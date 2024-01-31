@@ -6,14 +6,13 @@ import { changeVisibility } from "../../store/inputVisibilitySlice"
 import { IDimArrow } from "../../Types/Types"
 
 export default function DimArrow({initX, initY, type, length, indent, id}:IDimArrow) {
-    const normalScale =  useAppSelector(state => state.POLength.scale)
-    const reducedScale = useAppSelector(state => state.reducedPOLEngth.scale)
-    const POLength = useAppSelector(state => state.POLength.POLength)
+
+    const POLengthData = useAppSelector(state => state.POLength)
+    const viewBreak = useAppSelector(state => state.viewBreak)
 
     const plates = useAppSelector(state => state.plates)
     const plateJoints = useAppSelector(state => state.platesJoints)
     const expansionJoints = useAppSelector(state => state.expansionJoints)
-    const scale = (reducedScale === 1) ? normalScale : reducedScale
     const dispatch = useAppDispatch()
     let indentLineLength = indent
     let result = <></>
@@ -22,6 +21,9 @@ export default function DimArrow({initX, initY, type, length, indent, id}:IDimAr
     const joints = [...plateJoints, ...expansionJoints]
 
     const index = plates.findIndex(elm => elm.id.split('_')[1] === num)
+
+    const scale = (viewBreak) ? POLengthData.reducedScale : POLengthData.scale
+    const wholeLength = (viewBreak) ? POLengthData.reducedLength : POLengthData.POLength
 
     const changeText = (e: React.MouseEvent) => {
         const target = e.target as HTMLElement
@@ -61,7 +63,7 @@ export default function DimArrow({initX, initY, type, length, indent, id}:IDimAr
             dispatch(setCurrentPlate({
                 id: id,
                 position: 0,
-                length: POLength
+                length: wholeLength
             }))
         }
 
@@ -284,7 +286,7 @@ export default function DimArrow({initX, initY, type, length, indent, id}:IDimAr
     }
 
     function getLength() {
-        let result = 0
+        let result = length * scale
         if (appointment === 'plate') {
             result = plates[index].length
         } else if (appointment === 'pj' || appointment === 'ej') {
@@ -292,7 +294,7 @@ export default function DimArrow({initX, initY, type, length, indent, id}:IDimAr
                 if (elm.id === id) result = elm.length
             })
         } else if (appointment === 'POLength') {
-            result = POLength
+            result = POLengthData.POLength
         } else if (appointment === 'leftDim' || appointment === 'rightDim') {
             const index1 = plates.findIndex(elm => elm.id.split('_')[1] === num1)
             result = (appointment === 'leftDim') ? plates[index1].left : plates[index1].right

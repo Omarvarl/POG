@@ -1,17 +1,22 @@
-// import { useAppSelector } from "../../../hooks"
 import { IInitCoord } from "../../../Types/Types"
 import RegularSection1500 from "./RegularSection1500"
+import DimArrow from "../DimArrow"
 
-export default function RegularSection3000({initX, initY, scale}:IInitCoord) {
-  // const normalScale =  useAppSelector(state => state.POLength.scale)
-  // const reducedScale = useAppSelector(state => state.reducedPOLEngth.scale)
-  // const scale = (reducedScale === 1) ? normalScale : reducedScale
-  if (!scale) scale = 1
+export default function RegularSection3000({initX, initY, scale=1}:IInitCoord) {
 
   return (
     <g className="r3000">
-        <RegularSection1500 initX={initX} initY={initY} scale={scale} />
-        <RegularSection1500 initX={initX + 1500 / scale} initY={initY} scale={scale} />
+        <RegularSection1500 initX={initX} initY={initY} scale={scale} arrow={false} />
+        <RegularSection1500 initX={initX + 1500 / scale} initY={initY} scale={scale} arrow={false} />
+        <DimArrow
+          initX={initX}
+          initY={initY - 1100 / scale}
+          type={{type: 'hor', dir: 'up'}}
+          length={3000 / scale}
+          indent={150 / scale}
+          id={`Section3000_dim_${initX}`}
+          key={`Section3000_dim_${initX}`}
+        />
     </g>
   )
 }

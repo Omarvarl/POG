@@ -7,11 +7,12 @@ const calc = (
     plateJointsData:{id: string, length: number}[],
     plates: IExpansionJoints[]
     ):ISection[] => {
-        // console.log('calc')
 
     const startX = plates[0].left
     const startY = 800
     const result: ISection[] = []
+
+    console.log(plates)
 
     const plateJoints = plateJointsData.map(elm => {
         const result = {

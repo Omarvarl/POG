@@ -1,10 +1,11 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IPlates, IExpansionJoints, IPOLength } from '../Types/Types';
+import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
+import { IPlates, IExpansionJoints } from '../Types/Types';
 import calc from '../Logic/calc';
 
 const initialState:IPlates[] = [{
     id: 'plate_0',
     position: 0,  //  start position in assembley coordinate system
+    reducedPosition: 0,  //  position with reduced view
     length: 10000,  //  real length of plate
     reducedLength: 10000,  //  reduced length of plate for reduced dtawing view
     left: 250,  //  min distance for first stand
@@ -16,12 +17,8 @@ export const platesSlice = createSlice({
     name: 'plates',
     initialState,
     reducers: {
-        addPlate: (state, action:PayloadAction<IExpansionJoints>) => {
-            state.push({
-                ...action.payload,
-                reducedLength: action.payload.length,
-                sections: []
-            })
+        addPlate: (state, action:PayloadAction<IPlates>) => {
+            state.push(action.payload)
             state.sort((a, b) => a.position - b.position)
             return state
         },
@@ -56,10 +53,13 @@ export const platesSlice = createSlice({
             
             if (index > 0) {
                 state[index - 1].length = state[index].position + state[index].length - state[index - 1].position
+                state[index - 1].reducedLength = state[index].reducedPosition + state[index].reducedLength - state[index - 1].reducedPosition
                 state.splice(index, 1)
             } else if (index === 0 && state.length > 1) {
                 state[index + 1].length = state[index + 1].position + state[index + 1].length
+                state[index + 1].reducedLength = state[index + 1].reducedPosition + state[index + 1].reducedLength
                 state[index + 1].position = 0
+                state[index + 1].reducedPosition = 0
                 state[index + 1].id = state[index].id
                 state.splice(index, 1)
             }
@@ -100,26 +100,33 @@ export const platesSlice = createSlice({
             return state
         },
         removeSames: (state) => {
-            state.forEach(plate => {
-
+            let len = 0
+            let currentName = ''
+            let reduceSectionMark = 1
+            state.forEach((plate, index) => {
+                let plateLen = 0
                 const sections = plate.sections
-                let currentName = ''
-                let len = 0
 
                 for (let i = 0; i < sections.length; i++) {
                     const section = sections[i]
 
                     if (currentName === section.name
-                        && i + 1 < sections.length
+                        && i < sections.length
                     ) {
-                        len = section.length - 1000
-                        section.length = 1000
-                        section.name = 'ReducedSection'
-                        i++
+                        if (reduceSectionMark) {
+                            section.initX -= len
+                            len += section.length - 1000
+                            plateLen += section.length - 1000
+                            section.length = 1000
+                            section.name = 'ReducedSection'
+                            i++
+                            reduceSectionMark = 0
+                        }
 
                         while (i < sections.length
                             && sections[i].name === currentName
                         ) {
+                            plateLen += sections[i].length
                             len += sections[i].length
                             sections.splice(i, 1)
                         }
@@ -128,10 +135,14 @@ export const platesSlice = createSlice({
                     } else {
                         section.initX -= len
                         currentName = section.name
+                        reduceSectionMark = 1
                     }
                 }
-                plate.reducedLength -= len
+                plate.reducedLength = plate.length - plateLen
+                if (index !== state.length - 1) 
+                state[index + 1].reducedPosition = state[index + 1].position - len
             })
+            // console.log(current(state))
             return state
         }
     }

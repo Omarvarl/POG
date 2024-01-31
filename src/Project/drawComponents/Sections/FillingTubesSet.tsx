@@ -3,7 +3,7 @@ import { IFillingTubesSet } from "../../../Types/Types"
 import FillingTube from "../Profiles/FillingTubeD32"
 
 
-export default function FillingTubesSet({initX, initY, sectionLength, scale}:IFillingTubesSet) {
+export default function FillingTubesSet({initX, initY, sectionLength, scale=1}:IFillingTubesSet) {
     const fillingTubes:JSX.Element[] = useMemo(() => {
         const res:JSX.Element[] = []
         const tubesInterval = 182 / scale
@@ -24,6 +24,7 @@ export default function FillingTubesSet({initX, initY, sectionLength, scale}:IFi
                 initY={initY - 169 / scale}
                 length={703 / scale}
                 key={`tubes_${pos}`}
+                scale={scale}
             />)
         })
         return res

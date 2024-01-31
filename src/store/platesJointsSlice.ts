@@ -32,7 +32,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
                 if (index !== -1) state[index].id = action.payload.newId
                 // console.log(index)
                 return state
-            }
+            },
         }
     })
 

@@ -14,8 +14,12 @@ import UniqStartSection from "./Sections/UniqStartSection";
 import UniqEndSection from "./Sections/UniqEndSection";
 import { useEffect } from "react";
 import ReducedSection from "./Sections/ReducedSection";
-// import { setReducedPOLength } from "../../store/reducedPOLengthSlice";
 import { setSections, removeSames } from "../../store/platesSlice";
+import { setReducedLength } from "../../store/POLengthSlice";
+import axios from "axios";
+// import BorderTest from './Border-TEST'
+
+
 
 
 export default function Drawing() {
@@ -25,9 +29,8 @@ export default function Drawing() {
     const initY = 50
 
     const POLengthData = useAppSelector(state => state.POLength)
+    const currentPlate = useAppSelector(state => state.currentPlate)
     const POLength = POLengthData.POLength
-    let scale = POLengthData.scale
-    const reducedScale = useAppSelector(state => state.reducedPOLEngth.scale)
     const expansionJoints = useAppSelector((state) => state.expansionJoints);
     const plateJoints = useAppSelector(state => state.platesJoints)
     const plates = useAppSelector(state => state.plates)
@@ -43,14 +46,23 @@ export default function Drawing() {
     useEffect(() => {
       if (viewBreak) {
           dispatch(removeSames())
+        } else {
+          dispatch(setSections({POLength, expansionJoints, plateJoints}))
         }
-    }, [viewBreak, dispatch])
+    }, [viewBreak, dispatch, POLength, expansionJoints, plateJoints, currentPlate])
 
+    useEffect(() => {
+      if (viewBreak) {
+        const reducedLength = plates[plates.length - 1].reducedPosition + plates[plates.length - 1].reducedLength
+        // console.log(plates[plates.length - 1].reducedPosition)
+        // console.log(plates[plates.length - 1].reducedLength)
+        dispatch(setReducedLength(reducedLength))
+      }
+    }, [plates, dispatch, viewBreak])
+    
 
-    if (reducedScale > 1) scale = reducedScale
-
-    // console.log(drawPlates)
-
+    const scale = (viewBreak) ? POLengthData.reducedScale : POLengthData.scale
+    console.log(currentPlate)
     const drawSections = plates.map(plate => {
       if (plate.sections && plate.sections.length > 0) {
         return plate.sections.map(section => {
@@ -80,24 +92,43 @@ export default function Drawing() {
     })
     // console.log(drawPlates)
 
+    const SVG = <svg className="svg"
+      xmlns="http://www.w3.org/2000/svg"
+
+      viewBox={`0 0 ${width * factor} ${(factor === 1) ? height : height * 2}`}
+      style={{ width: "100%", height: "100%"}}
+    >
+      <Border />
+      
+      <BaseTable />
+
+      <Ground />
+      { drawSections }
+
+    </svg>
+
+    // const [SVG, setSVG] = useState<JSX.Element>(<BorderTest />)
+
+// console.log(scale)
   return (
     <div
       className="drawing"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
+      { SVG }
+      <button onClick={() => {
+        axios.post('http://localhost:5000/', {
+          // data: JSON.stringify(document.getElementsByClassName('svg')[0].outerHTML)
+          // headers: {
+          //   'Content-Type': 'application/json;charset=utf-8'
+          // },
+        }).then((res) => {
+          // setSVG(<div dangerouslySetInnerHTML={{__html: res.data}}></div>)
+        })
 
-        viewBox={`0 0 ${width * factor} ${(factor === 1) ? height : height * 2}`}
-        style={{ width: "100%", height: "100%"}}
-      >
-        <Border />
-        <BaseTable />
-
-        <Ground />
-        { drawSections }
-
-      </svg>
+      }}>
+        send</button>
     </div>
   );
 }
+
 

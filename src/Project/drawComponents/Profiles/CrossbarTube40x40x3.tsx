@@ -2,10 +2,8 @@ import { useAppSelector } from "../../../hooks"
 import { IProfile } from "../../../Types/Types"
 import '../Drawing.css'
 
-export default function Crossbar({initX, initY, length}: IProfile) {
-  const normalScale =  useAppSelector(state => state.POLength.scale)
-  const reducedScale = useAppSelector(state => state.reducedPOLEngth.scale)
-  const scale = (reducedScale === 1) ? normalScale : reducedScale
+export default function Crossbar({initX, initY, length, scale=1}: IProfile) {
+
   const profileWidth = 40 / scale
   // const profileTickness = 3 /scale
   return (

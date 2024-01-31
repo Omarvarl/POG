@@ -6,7 +6,6 @@ import realPageSizeSlice from './realPageSizeSlice';
 import expansionJointsSlice from './expansionJointsSlice';
 import platesSlice from './platesSlice';
 import viewBreakSlice from './viewBreakSlice';
-import reducedPOLengthSlice from './reducedPOLengthSlice';
 import popUpSlice from './popUpSlice';
 import currentPlateSlice from './currentPlateSlice';
 import platesJointsSlice from './platesJointsSlice';
@@ -24,7 +23,6 @@ const store = configureStore({
         plates: platesSlice,
         platesJoints: platesJointsSlice,
         viewBreak: viewBreakSlice,
-        reducedPOLEngth: reducedPOLengthSlice,
         popUp: popUpSlice,
         currentPlate: currentPlateSlice,
         inputVisibility: inputVisibilitySlice
