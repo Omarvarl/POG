@@ -27,7 +27,8 @@ export default function PopMenu() {
         const leftPlate = createNewPlate()[0]
         dispatch(addPlateJoint({
           id: `pj_${leftPlate.id.split('_')[1]}`,
-          length: 50
+          length: 50,
+          // position: leftPlate.position + leftPlate.length
       }))
       }
     

@@ -12,7 +12,7 @@ const calc = (
     const startY = 800
     const result: ISection[] = []
 
-    console.log(plates)
+    // console.log(plates)
 
     const plateJoints = plateJointsData.map(elm => {
         const result = {

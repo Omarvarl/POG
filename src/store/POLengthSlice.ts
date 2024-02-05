@@ -25,6 +25,7 @@ export const POLengthSlice = createSlice({
                 scaledPOLength = newPOLength / drawScales[i];
                 i++;
             }
+            console.log()
 
             if (newPOLength >= 5000) {
                 return {

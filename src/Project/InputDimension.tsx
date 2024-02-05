@@ -31,14 +31,14 @@ export default function InputDimension() {
                 id: plates[index + 1].id,
                 length: plates[index + 1].length + (plates[index].length - value),
               }))
+
               dispatch(setPosition({
                 id: plates[index + 1].id,
                 position: plates[index + 1].position - (plates[index].length - value),
               }))
 
               let exIndex = expansionJoints.findIndex(elm => elm.id === `ej_${num}`)
-              if (exIndex !== -1)
-              dispatch(setExpansionJointPosition({
+              exIndex !== -1 && dispatch(setExpansionJointPosition({
                 id: expansionJoints[exIndex].id,
                 position: expansionJoints[exIndex].position - (plates[index].length - value)
               }))
@@ -77,8 +77,12 @@ export default function InputDimension() {
               id: currentPlate.id,
               length: value,
             }))
-
           }
+            // dispatch(setPositionJoint({
+            //   id: `pj_${currentPlate.id.split('_')[1]}`,
+            //   position: currentPlate.position + value
+            // }))
+
         } else if (appointment === 'pj' || appointment === 'ej') {
           const i = plateJoints.findIndex(elm => elm.id.split('_')[1] === plates[index].id.split('_')[1])
           const ej = expansionJoints.findIndex(elm => elm.id.split('_')[1] === plates[index].id.split('_')[1])
@@ -194,7 +198,7 @@ export default function InputDimension() {
                     }
                 }
                 if (value < plates[index1].length) {
-                    dispatch(setLeft({id: plates[index1].id, left: value}))                   
+                    dispatch(setLeft({id: plates[index1].id, left: value}))
                 }
             }
 

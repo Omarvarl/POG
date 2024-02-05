@@ -38,31 +38,36 @@ export default function Drawing() {
     const viewBreak = useAppSelector(state => state.viewBreak)
 
     useEffect(() => {
-      dispatch(setSections({POLength, expansionJoints, plateJoints}))
-    }, [POLength, expansionJoints, plateJoints, dispatch])
+        dispatch(setSections({POLength, expansionJoints, plateJoints}))
+    }, [POLength, expansionJoints, plateJoints, dispatch, viewBreak, currentPlate])
 
     expansionsArr.sort((a, b) => a.position - b.position)
 
     useEffect(() => {
-      if (viewBreak) {
-          dispatch(removeSames())
-        } else {
-          dispatch(setSections({POLength, expansionJoints, plateJoints}))
-        }
-    }, [viewBreak, dispatch, POLength, expansionJoints, plateJoints, currentPlate])
+       viewBreak
+        && dispatch(removeSames())
+        // : dispatch(setSections({POLength, expansionJoints, plateJoints}))
+        
+    }, [viewBreak, dispatch, expansionJoints, plateJoints, currentPlate])
 
     useEffect(() => {
+      console.log(plates)
       if (viewBreak) {
-        const reducedLength = plates[plates.length - 1].reducedPosition + plates[plates.length - 1].reducedLength
-        // console.log(plates[plates.length - 1].reducedPosition)
-        // console.log(plates[plates.length - 1].reducedLength)
+        const reducedLength = plates[0].reducedPosition
+          + plates.reduce(
+            (acc, plate) => acc += plate.sections
+              .reduce(
+              (acc2, section) => acc2 += section.length
+            , 0)
+          , 500)
         dispatch(setReducedLength(reducedLength))
       }
-    }, [plates, dispatch, viewBreak])
-    
+    }, [plates, dispatch, viewBreak, currentPlate])
 
     const scale = (viewBreak) ? POLengthData.reducedScale : POLengthData.scale
-    console.log(currentPlate)
+    
+    // console.log(viewBreak, POLengthData.reducedScale)
+    // console.log(currentPlate)
     const drawSections = plates.map(plate => {
       if (plate.sections && plate.sections.length > 0) {
         return plate.sections.map(section => {

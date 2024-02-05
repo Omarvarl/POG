@@ -1,8 +1,9 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
 
     const initialState:{
         id: string,
-        length: number
+        length: number,
+        // position: number
     }[] = []
 
     export const platesJointsSlice = createSlice({
@@ -24,7 +25,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
             },
             setLengthJoint: (state, action: PayloadAction<{id: string, length: number}>) => {
                 const index = state.findIndex(elm => elm.id === action.payload.id)
-                state[index].length = action.payload.length
+                if (index !== -1) state[index].length = action.payload.length
                 return state
             },
             setIDJoint: (state, action: PayloadAction<{id: string, newId: string}>) => {
@@ -33,6 +34,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
                 // console.log(index)
                 return state
             },
+            // setPositionJoint: (state, action: PayloadAction<{id: string, position: number}>) => {
+            //     const index = state.findIndex(elm => elm.id === action.payload.id)
+            //     console.log(index, action.payload.position)
+            //     if (index !== -1) state[index].position = action.payload.position
+            //     console.log(current(state))
+            //     return state
+            // }
         }
     })
 
@@ -41,5 +49,6 @@ export const {
     addPlateJoint,
     removePlateJoint,
     setLengthJoint,
-    setIDJoint
+    setIDJoint,
+    // setPositionJoint
 } = platesJointsSlice.actions

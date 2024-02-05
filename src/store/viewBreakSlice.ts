@@ -6,13 +6,9 @@ export const viewBreakSlice = createSlice({
     name: 'viewBreak',
     initialState,
     reducers: {
-        setViewBreakState: (state, action:PayloadAction<boolean>) => {
-            if (action.payload) {
-                return action.payload
-            } else {
-                return false
-            }
-
+        setViewBreakState: (state) => {
+            state = !state
+            return state
         }
     }
 })

@@ -17,7 +17,10 @@ export default function Ground() {
   const initX = 700
   const startY = 850
   const viewBreak = useAppSelector(state => state.viewBreak)
-  
+  // console.log(reducedLength, POLength)
+  // console.log(reducedScale, scale)
+  // console.log(plates)
+  // console.log(viewBreak)
   const wholeLength = (viewBreak)
     ? reducedLength
     : POLength;
@@ -29,7 +32,7 @@ export default function Ground() {
 
   let count = 0
 
-  // console.log(POLength, reducedLength, scale, reducedScale)
+  // console.log(plates, wholeLength)
 
   const jointsDimLeft = useMemo(() => {
     return plates.map(elm => {
