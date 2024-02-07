@@ -3,7 +3,6 @@ import { addPlate, connectPlates, removePlate } from "../store/platesSlice";
 import { addPlateJoint, removePlateJoint, setIDJoint } from "../store/platesJointsSlice";
 import { addExpansionJoin, removeExpansionJoint, setIdExpansionJoint } from "../store/expansionJointsSlice";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { setCurrentPlate } from "../store/currentPlateSlice";
 
 export default function PopMenu() {
     const dispatch = useAppDispatch();
@@ -76,11 +75,11 @@ export default function PopMenu() {
 
   return (
     <div
-    onClick={() => dispatch(hidePopUp())}
-    className="background-modal"
-    style={{display: visibility.display}}
-  >
-  <div
+      onClick={() => dispatch(hidePopUp())}
+      className="background-modal"
+      style={{display: visibility.display}}
+    >
+    <div
       style={{display: visibility.display, left: `${visibility.x + 20}px`, top: `${visibility.y - 20}px`}}
       className='pop-up'
     >

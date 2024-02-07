@@ -9,7 +9,7 @@ export default function UniqEndSection({initX, initY, length, addedStatePos, sca
   return (
     <g className="ue"> 
         <UniqSectionMirror initX={initX} initY={initY} length={length} addedStatePos={addedStatePos} scale={scale} />
-        <End initX={initX} initY={initY - 169 / scale} length={250 / scale} scale={scale} />
+        <End initX={initX} initY={initY - 169 / scale} scale={scale} />
         <UpFiting initX={initX} initY={initY - 1100 / scale} scale={scale} />
     </g>
   )

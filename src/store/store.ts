@@ -10,6 +10,8 @@ import popUpSlice from './popUpSlice';
 import currentPlateSlice from './currentPlateSlice';
 import platesJointsSlice from './platesJointsSlice';
 import inputVisibilitySlice from './inputVisibilitySlice';
+import overhangsSlice from './overhangsSlice';
+import overhangsVisibilitySlice from './overhangsVisibilitySlice';
 
 
 
@@ -25,7 +27,9 @@ const store = configureStore({
         viewBreak: viewBreakSlice,
         popUp: popUpSlice,
         currentPlate: currentPlateSlice,
-        inputVisibility: inputVisibilitySlice
+        inputVisibility: inputVisibilitySlice,
+        overnahgs: overhangsSlice,
+        overhangVisibility: overhangsVisibilitySlice
     }
     
 })

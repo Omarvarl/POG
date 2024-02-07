@@ -16,7 +16,8 @@ export interface ICursorPosition {
 export interface IPagedDim {
     width: number,
     height: number,
-    factor: number
+    factor: number,
+    format: string
 }
 
 export interface IGround {
@@ -92,5 +93,11 @@ export interface IFillingTubesSet {
     initY: number,
     sectionLength: number,
     scale: number
+}
+
+export interface IOverhang {
+    length: number,
+    type: string,
+    filling: boolean
 }
 

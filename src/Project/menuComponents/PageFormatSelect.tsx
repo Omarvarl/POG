@@ -30,8 +30,10 @@ export default function PageFormatSelect():JSX.Element {
     dispatch(setRealPageSize({
       ...realPageSize,
       width: width,
-      height: height
+      height: height,
+      format: e.target.value
     }));
+    
     dispatch(setPOLength({...POLengthData, screenWidth: width * realPageSize.factor}))
 
     while (window.innerWidth * 0.85 < width || window.innerHeight < height) {

@@ -16,9 +16,7 @@ import { useEffect } from "react";
 import ReducedSection from "./Sections/ReducedSection";
 import { setSections, removeSames } from "../../store/platesSlice";
 import { setReducedLength } from "../../store/POLengthSlice";
-import axios from "axios";
-// import BorderTest from './Border-TEST'
-
+import calc from "../../Logic/calc";
 
 
 
@@ -36,17 +34,19 @@ export default function Drawing() {
     const plates = useAppSelector(state => state.plates)
     const expansionsArr:IExpansionJoints[] = structuredClone(expansionJoints);
     const viewBreak = useAppSelector(state => state.viewBreak)
+    var {start, end} = useAppSelector(state => state.overnahgs)
+
+    const pageParams = useAppSelector(state => state.realPageSize)
 
     useEffect(() => {
         dispatch(setSections({POLength, expansionJoints, plateJoints}))
+
     }, [POLength, expansionJoints, plateJoints, dispatch, viewBreak, currentPlate])
 
     expansionsArr.sort((a, b) => a.position - b.position)
 
     useEffect(() => {
-       viewBreak
-        && dispatch(removeSames())
-        // : dispatch(setSections({POLength, expansionJoints, plateJoints}))
+       viewBreak && dispatch(removeSames())
         
     }, [viewBreak, dispatch, expansionJoints, plateJoints, currentPlate])
 
@@ -65,9 +65,7 @@ export default function Drawing() {
     }, [plates, dispatch, viewBreak, currentPlate])
 
     const scale = (viewBreak) ? POLengthData.reducedScale : POLengthData.scale
-    
-    // console.log(viewBreak, POLengthData.reducedScale)
-    // console.log(currentPlate)
+
     const drawSections = plates.map(plate => {
       if (plate.sections && plate.sections.length > 0) {
         return plate.sections.map(section => {
@@ -112,25 +110,105 @@ export default function Drawing() {
 
     </svg>
 
-    // const [SVG, setSVG] = useState<JSX.Element>(<BorderTest />)
+    var exJointMark = 0
+    function getDesignation(name: string, position: number, length: number): {number: string, name:string} | undefined {
+      var pattern = 'ЦРНС.305112.001.'
+      var count = 0
+      var exJointsCount = 0
 
-// console.log(scale)
+      for (let ej of expansionJoints) {
+        const leftPosOfjoint = ej.position - ej.left
+        if (exJointMark) {
+          exJointMark = 0
+          return {number: ((exJointsCount < 10) ? pattern + '06-0' + exJointsCount : pattern + '06-' + exJointsCount), name: 'ПО-6'}
+        }
+        if (position < leftPosOfjoint && position + length > leftPosOfjoint) {
+          exJointMark = 1
+          exJointsCount++
+          return {number: ((exJointsCount< 10) ? pattern + '05-0' + exJointsCount : pattern + '05-' + exJointsCount), name: 'ПО-5'}
+        }
+      }
+
+      if (name.includes('StartSection')) {
+        if (start.type === 'withBevel') {
+          if (!start.filling) {
+            return {number: pattern + '01', name: 'ПО-1'}
+          } else {
+            return {number: pattern + '01', name: 'ПО-1 Lout'}
+          }
+        } else {
+          if (!start.filling) {
+            return {number: pattern + '07', name: 'ПО-7'}
+          } else {
+            return {number: pattern + '07', name: 'ПО-7 Lout'}
+          }
+        }
+      } else if (name.includes('RegularSection3000')) return {number: pattern + '04', name: 'ПО-4'}
+      else if (name.includes('RegularSection')) return {number: pattern + '03', name: 'ПО-3'}
+      else if (name.includes('EndSection')) {
+        if (end.type === 'withBevel') {
+          if (!end.filling) {
+            return {number: pattern + '02', name: 'ПО-2'}
+          } else {
+            return {number: pattern + '02', name: 'ПО-2 Lout'}
+          }
+        } else {
+          if (!end.filling) {
+            return {number: pattern + '08', name: 'ПО-8'}
+          } else {
+            return {number: pattern + '08', name: 'ПО-8 Lout'}
+          }
+        }
+      }
+      else if (name.includes('UniqSection')) {
+        count++
+        return {number: ((count < 10) ? pattern + '03-0' + count : pattern + '03-' + count), name: 'ПО-3'}
+      }
+      else return undefined
+    }
+
+
+  function makeJSON() {
+    const fullPlatesList = calc(POLength, expansionJoints, plateJoints, plates)
+    console.log(fullPlatesList)
+    const sections = fullPlatesList.map((section, index) => {
+      const {number, name} = getDesignation(section.name, section.initX, section.length) || {number: 'null', name: 'null'}
+      return {
+        id: index + 1,
+        number: number,
+        name: name,
+        x: section.initX,
+        y: section.initY,
+        lTotal: section.length,
+        lLeft: section.name.includes('StartSection')
+          ? start.length
+          : section.name.includes('EndSection')
+            ? end.length
+            : undefined,
+        l: section.addedStatePos || section.length
+      }
+    })
+    const result = {
+      page: {
+        format: pageParams.format,
+        factor: pageParams.factor
+      },
+      shortView: viewBreak,
+      stamp: {},
+      expansionJoints: expansionJoints,
+      plateJoints: plateJoints,
+      sections: sections
+    }
+
+    return result
+  }
+
   return (
     <div
       className="drawing"
     >
       { SVG }
-      <button onClick={() => {
-        axios.post('http://localhost:5000/', {
-          // data: JSON.stringify(document.getElementsByClassName('svg')[0].outerHTML)
-          // headers: {
-          //   'Content-Type': 'application/json;charset=utf-8'
-          // },
-        }).then((res) => {
-          // setSVG(<div dangerouslySetInnerHTML={{__html: res.data}}></div>)
-        })
-
-      }}>
+      <button onClick={() => console.log(makeJSON())}>
         send</button>
     </div>
   );

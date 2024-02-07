@@ -11,7 +11,8 @@ while (window.innerWidth * 0.85 < startW || window.innerHeight < startH) {
 const defaultPageSize:IPagedDim = {
     width: startW,
     height: startH,
-    factor: 1
+    factor: 1,
+    format: 'A2'
 }
 
 export const pageSizeSlice = createSlice({

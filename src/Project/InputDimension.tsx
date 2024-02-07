@@ -252,16 +252,16 @@ export default function InputDimension() {
 
   return (
     <div
-    className="background-modal"
-    style={{display: inputVisibility.display}}
-    onMouseDown={(e: React.MouseEvent) => {
-      const target = e.target as HTMLElement
-      !target.classList.contains('dim-input') && dispatch(hideInput())
-      
-    }}
-    onKeyDown={(e: React.KeyboardEvent) => {
-        if (e.key === 'Enter') dispatch(hideInput())
-    }}
+      className="background-modal"
+      style={{display: inputVisibility.display}}
+      onMouseDown={(e: React.MouseEvent) => {
+        const target = e.target as HTMLElement
+        !target.classList.contains('dim-input') && dispatch(hideInput())
+        
+      }}
+      onKeyDown={(e: React.KeyboardEvent) => {
+          if (e.key === 'Enter') dispatch(hideInput())
+      }}
     >
       <input
         className="dim-input"

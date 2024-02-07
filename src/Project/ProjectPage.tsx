@@ -7,11 +7,13 @@ import Drawing from "./drawComponents/Drawing";
 import Menu from "./menuComponents/Menu";
 import InputDimension from "./InputDimension";
 import PopMenu from "./PopMenu";
+import OverhangPop from "./drawComponents/OverhangPop";
 
 const ProjectPage = () => {
   const dispatch = useAppDispatch();
   const pageSize = useAppSelector((state) => state.pageSize);
   const drawParam = useAppSelector((state) => state.drawParam);
+  const overhangVisibility = useAppSelector(state => state.overhangVisibility)
   const cursorPos = useRef<ICursorPosition>({
     startX: 0,
     startY: 0,
@@ -111,6 +113,7 @@ const ProjectPage = () => {
         onMouseMove={moveArea}
       >
         <PopMenu />
+        <OverhangPop />
 
         <button className="show-all-btn" onClick={showAll}>
           Показать все

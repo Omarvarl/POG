@@ -4,7 +4,8 @@ import { IPagedDim } from '../Types/Types'
 const defaultPageSize:IPagedDim = {
     width: 5940,
     height: 4200,
-    factor: 1
+    factor: 1,
+    format: 'A2'
 }
 
 export const realPageSizeSlice = createSlice({
