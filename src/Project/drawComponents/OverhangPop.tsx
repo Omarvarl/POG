@@ -42,6 +42,8 @@ export default function OverhangPop() {
             <label htmlFor="">
                 Длина свеса
                 <input type="number"
+                    min={250}
+                    contentEditable={true}
                     value={overhangVisibility.target === 'start' ? value.start : value.end}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const target = e.target as HTMLInputElement

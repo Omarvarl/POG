@@ -1,4 +1,4 @@
-import { hideInput } from "../store/inputVisibilitySlice";
+import { hideInput, setInputValue } from "../store/inputVisibilitySlice";
 import { setLength, setPosition, setLeft, setRight } from "../store/platesSlice";
 import { setExpansionJointLength, setExpansionJointPosition, setExpansionJointRight, setExpansionJointLeft } from "../store/expansionJointsSlice";
 import { setPOLength } from "../store/POLengthSlice";
@@ -15,18 +15,20 @@ export default function InputDimension() {
     const plateJoints = useAppSelector(state => state.platesJoints)
     const expansionJoints = useAppSelector(state => state.expansionJoints)
     const POLengthData = useAppSelector(state => state.POLength)
+    const iValue = inputVisibility.value
     const [appointment, num, num1] = currentPlate.id.split('_')
+
 
     function changePlateLength(target:HTMLInputElement) {
 
         const index = plates.findIndex(elm => elm.id.split('_')[1] === num)
-        const value = Number(target.value)
+        const value = Number(target.value) || currentPlate.length
         const index1 = plates.findIndex(elm => elm.id.split('_')[1] === num1)
 
         if (appointment === 'plate') {
       
           if (index !== plates.length - 1) {
-            if (value > 0 && value < (plates[index + 1]?.length | currentPlate.length) + plates[index].length) {
+            if (value > 0 && index !== -1 && value < (plates[index + 1]?.length | currentPlate.length) + plates[index].length) {
               dispatch(setLength({
                 id: plates[index + 1].id,
                 length: plates[index + 1].length + (plates[index].length - value),
@@ -71,6 +73,7 @@ export default function InputDimension() {
                 id: plates[index].id,
                 length: value
               }))
+
             }
           } else if (index === plates.length - 1 && index === 0) {
             dispatch(setLength({
@@ -78,10 +81,6 @@ export default function InputDimension() {
               length: value,
             }))
           }
-            // dispatch(setPositionJoint({
-            //   id: `pj_${currentPlate.id.split('_')[1]}`,
-            //   position: currentPlate.position + value
-            // }))
 
         } else if (appointment === 'pj' || appointment === 'ej') {
           const i = plateJoints.findIndex(elm => elm.id.split('_')[1] === plates[index].id.split('_')[1])
@@ -106,10 +105,12 @@ export default function InputDimension() {
                         }
                     }
                 }
-                if (i !== -1) dispatch(setLength({
-                  id: plates[index].id,
-                  length: plates[index].length - (value - plateJoints[i].length),
-                }))
+                if (i !== -1) {
+                  dispatch(setLength({
+                    id: plates[index].id,
+                    length: plates[index].length - (value - plateJoints[i].length),
+                  }))
+                }
                 if (appointment === 'pj') {
                     dispatch(setLengthJoint({id: plateJoints[i].id, length: value}))
                 } else {
@@ -154,9 +155,12 @@ export default function InputDimension() {
             length: value - plates[plates.length - 1].position
           }))
 
-
         } else if (appointment === 'leftDim') {
-            const ejIndex = expansionJoints.findIndex(elm => elm.id.split('_')[1] === plates[index1 - 1].id.split('_')[1])
+
+            const ejIndex = expansionJoints.findIndex(elm => {
+              return plates[index1 - 1] && elm.id.split('_')[1] === plates[index1 - 1].id.split('_')[1]
+
+            })
 
             if (value <= 1200) {   //  join less than 1200 mm
                 if (ejIndex !== -1) {
@@ -203,6 +207,7 @@ export default function InputDimension() {
             }
 
         } else if (appointment === 'rightDim') {
+            
             const ejIndex = expansionJoints.findIndex(elm => elm.id.split('_')[1] === plates[index1].id.split('_')[1])
 
             if (value <= 1200) {
@@ -250,6 +255,8 @@ export default function InputDimension() {
         }
       }
 
+
+
   return (
     <div
       className="background-modal"
@@ -270,7 +277,12 @@ export default function InputDimension() {
         min={500}
         step={100}
         defaultValue={currentPlate.length}
+        value={iValue}
         contentEditable={true}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          const target = e.target as HTMLInputElement
+          dispatch(setInputValue(Number(target.value)))
+        }}
         onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
           const target = e.target as HTMLInputElement
           changePlateLength(target)
@@ -289,6 +301,10 @@ export default function InputDimension() {
                 position: -1,
                 length: -1
               }))
+            }
+            if (e.key === 'Escape') {
+              dispatch(setInputValue(currentPlate.length))
+              dispatch(hideInput())
             }
         }}
         key={currentPlate.id}

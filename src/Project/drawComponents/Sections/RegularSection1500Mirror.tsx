@@ -28,6 +28,7 @@ export default function RegularSection1500_mirror({initX, initY, scale=1}:IInitC
           indent={150 / scale}
           id={`Section1500_dim_${initX}`}
           key={`Section1500_dim_${initX}`}
+          unchange={true}
         />
     </g>
   )

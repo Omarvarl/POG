@@ -452,7 +452,6 @@ const calc = (
                 || (x + 1500 > pj.left && x + 1500 < pj.right)
                 || (x + 1000 > pj.left && x + 1000 < pj.right)) {
                     let addPos = pj.left - x
-                    // console.log(rLength - (pj.right - x), rLength - addPos)
 
                     if (rLength - addPos >= 1500 || rLength - addPos > 1000) {
                         addPos = pj.right - x

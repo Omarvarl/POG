@@ -85,7 +85,8 @@ export interface IDimArrow extends IInitCoord {
     },
     length: number,
     indent: number,
-    id: string
+    id: string,
+    unchange?: boolean
 }
 
 export interface IFillingTubesSet {

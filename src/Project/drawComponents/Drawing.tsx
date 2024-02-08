@@ -51,7 +51,7 @@ export default function Drawing() {
     }, [viewBreak, dispatch, expansionJoints, plateJoints, currentPlate])
 
     useEffect(() => {
-      console.log(plates)
+      // console.log(plates)
       if (viewBreak) {
         const reducedLength = plates[0].reducedPosition
           + plates.reduce(
@@ -93,7 +93,7 @@ export default function Drawing() {
         return []
       }
     })
-    // console.log(drawPlates)
+    // console.log(expansionJoints, plates, plateJoints)
 
     const SVG = <svg className="svg"
       xmlns="http://www.w3.org/2000/svg"
@@ -111,11 +111,10 @@ export default function Drawing() {
     </svg>
 
     var exJointMark = 0
+    var exJointsCount = 0
     function getDesignation(name: string, position: number, length: number): {number: string, name:string} | undefined {
       var pattern = 'ЦРНС.305112.001.'
       var count = 0
-      var exJointsCount = 0
-
       for (let ej of expansionJoints) {
         const leftPosOfjoint = ej.position - ej.left
         if (exJointMark) {

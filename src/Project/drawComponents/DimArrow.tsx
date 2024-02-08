@@ -2,10 +2,10 @@
 import React from "react"
 import { useAppDispatch, useAppSelector } from "../../hooks"
 import { setCurrentPlate } from "../../store/currentPlateSlice"
-import { changeVisibility } from "../../store/inputVisibilitySlice"
+import { changeVisibility, setInputValue } from "../../store/inputVisibilitySlice"
 import { IDimArrow } from "../../Types/Types"
 
-export default function DimArrow({initX, initY, type, length, indent, id}:IDimArrow) {
+export default function DimArrow({initX, initY, type, length, indent, id, unchange=false}:IDimArrow) {
 
     const POLengthData = useAppSelector(state => state.POLength)
     const viewBreak = useAppSelector(state => state.viewBreak)
@@ -25,7 +25,8 @@ export default function DimArrow({initX, initY, type, length, indent, id}:IDimAr
     const scale = (viewBreak) ? POLengthData.reducedScale : POLengthData.scale
     const wholeLength = (viewBreak) ? POLengthData.reducedLength : POLengthData.POLength
 
-    const changeText = (e: React.MouseEvent) => {
+    const changeText = (e: React.MouseEvent): boolean => {
+        if (unchange) return false
         const target = e.target as HTMLElement
         let draw:HTMLElement | null = target
         let x = draw.getBoundingClientRect().x
@@ -44,6 +45,7 @@ export default function DimArrow({initX, initY, type, length, indent, id}:IDimAr
             scale = Number(style.split('scale')[1].split(')')[0].split('(')[1])
         }
         if (appointment === 'plate' || appointment === 'leftDim' || appointment === 'rightDim') {
+            // console.log(appointment)
             const index1 = plates.findIndex(elm => elm.id.split('_')[1] === num1)
             const i = index !== -1 ? index : index1
             dispatch(setCurrentPlate({
@@ -51,6 +53,9 @@ export default function DimArrow({initX, initY, type, length, indent, id}:IDimAr
                 position: plates[i].position,
                 length: plates[i].length
             }))
+            if (appointment === 'plate') dispatch(setInputValue(plates[i].length))
+            if (appointment === 'leftDim') dispatch(setInputValue(plates[i].left))
+            if (appointment === 'rightDim') dispatch(setInputValue(plates[i].right))
         } else if (appointment === 'pj' || appointment === 'ej') {
             const i = joints.findIndex(elm => elm.id.split('_')[1] === num)
             dispatch(setCurrentPlate({
@@ -58,16 +63,20 @@ export default function DimArrow({initX, initY, type, length, indent, id}:IDimAr
                 position: plates[index].position + plates[index].length,
                 length: joints[i].length
             }))
+            dispatch(setInputValue(joints[i].length))
 
         } else if (appointment === 'POLength') {
             dispatch(setCurrentPlate({
                 id: id,
                 position: 0,
-                length: wholeLength
+                length: POLengthData.POLength
             }))
+
+            dispatch(setInputValue(POLengthData.POLength))
         }
 
         dispatch(changeVisibility({left: (e.pageX - x ) / scale - 50, top: (e.pageY - y) / scale - 15}))
+        return true
     }
 
     if (type.type === 'hor') {
@@ -101,7 +110,7 @@ export default function DimArrow({initX, initY, type, length, indent, id}:IDimAr
 
         let text = (
             <text
-                onClick={changeText}
+                onClick={!unchange ? changeText : undefined}
                 x={initX + length / 2 - 50}
                 y={indent - 10}
                 fontSize={fontSize}
@@ -110,7 +119,7 @@ export default function DimArrow({initX, initY, type, length, indent, id}:IDimAr
             </text>
         )
 
-        if (length < 300 / scale) {
+        if (length < 450 / scale) {
             horArrows = (
                 <>
                     <path  //  arrow
@@ -146,7 +155,7 @@ export default function DimArrow({initX, initY, type, length, indent, id}:IDimAr
 
             text = (
                 <text
-                    onClick={changeText}
+                    onClick={!unchange ? changeText : undefined}
                     x={initX - 200}
                     y={indent - 10}
                     fontSize={fontSize}
@@ -217,7 +226,7 @@ export default function DimArrow({initX, initY, type, length, indent, id}:IDimAr
             </text>
         )
 
-        if (length < 300 / scale) {
+        if (length < 450 / scale) {
             vertArrows = (
                 <>
                     <path  //  arrow

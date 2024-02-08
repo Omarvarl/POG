@@ -119,6 +119,7 @@ export default function UniqSection({initX, initY, length, addedStatePos, scale=
             indent={150 / scale}
             id={`UniqSection_dim_${initX}`}
             key={`UniqSection_dim_${initX}`}
+            unchange={true}
         />
     </g>
   )

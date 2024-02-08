@@ -49,6 +49,7 @@ export default function RegularSection1000({initX, initY, scale=1}:IInitCoord) {
           indent={150 / scale}
           id={`Section1000_dim_${initX}`}
           key={`Section1000_dim_${initX}`}
+          unchange={true}
         />
     </g>
   )

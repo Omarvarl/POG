@@ -85,15 +85,15 @@ export default function Ground() {
 
   const expansionJointsDraw = expansionJoints.map(elm => {
     let position = elm.position
+
     if (viewBreak) {
       plates.forEach(plate => {
-        expansionJoints.forEach(elm => {
-            if (elm.id.split('_')[1] === plate.id.split('_')[1]) {
-                position = plate.reducedPosition + plate.reducedLength
-            }
-        })
+        if (elm.id.split('_')[1] === plate.id.split('_')[1]) {
+          position = plate.reducedPosition + plate.reducedLength
+        }
      })
     }
+
     const length = elm.length
     count++
     return (
@@ -103,8 +103,8 @@ export default function Ground() {
       >
         <path
           d={`M${position / overallScale + initX} ${startY + 150 / overallScale}
-              L${position / overallScale + initX} ${startY}
-              L${(position + length) / overallScale + initX} ${startY}
+              L${position / overallScale + initX} ${startY - 3}
+              L${(position + length) / overallScale + initX} ${startY - 3}
               L${(position + length) / overallScale + initX} ${startY + 150 / overallScale}Z
             `}
           fill="white"
@@ -113,8 +113,8 @@ export default function Ground() {
         />
         <path
           d={`M${position / overallScale + initX} ${startY + 150 / overallScale}
-              L${position / overallScale + initX} ${startY}
-              L${(position - elm.left) / overallScale + initX} ${startY}
+              L${position / overallScale + initX} ${startY - 3}
+              L${(position - elm.left) / overallScale + initX} ${startY - 3}
             `}
           fill='none'
           strokeWidth='5'
@@ -122,8 +122,8 @@ export default function Ground() {
 
         <path
           d={`M${(position + length) / overallScale + initX} ${startY + 150 / overallScale}
-              L${(position + length) / overallScale + initX} ${startY}
-              L${(position + length + elm.right) / overallScale + initX} ${startY}
+              L${(position + length) / overallScale + initX} ${startY - 3}
+              L${(position + length + elm.right) / overallScale + initX} ${startY - 3}
             `}
           fill='none'
           strokeWidth='5'
@@ -158,14 +158,11 @@ export default function Ground() {
 
   }  else {
     let startX = initX;
-    // console.log(plates)
 
     result = (
       <g>
           {
             plates.map((p, index) => {
-            // console.log(joints)
-            
             const  len = (viewBreak) ? p.reducedLength : p.length
             const pos = (viewBreak) ? p.reducedPosition : p.position
 

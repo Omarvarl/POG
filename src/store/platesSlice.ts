@@ -138,6 +138,7 @@ export const platesSlice = createSlice({
                         reduceSectionMark = 1
                     }
                 }
+                currentName = ''
                 plate.reducedLength = plate.length - plateLen
                 if (index !== state.length - 1) 
                 state[index + 1].reducedPosition = state[index + 1].position - len

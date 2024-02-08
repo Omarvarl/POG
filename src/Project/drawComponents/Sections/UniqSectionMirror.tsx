@@ -6,6 +6,7 @@ import DownFiting from "../Profiles/DownFiting"
 import UpFiting from "../Profiles/UpFiting"
 import { IUniqSectionData } from "../../../Types/Types"
 import '../Drawing.css'
+import DimArrow from "../DimArrow"
 
 export default function UniqSectionMirror({initX, initY, length, addedStatePos, scale=1}:IUniqSectionData) {
 
@@ -85,6 +86,16 @@ export default function UniqSectionMirror({initX, initY, length, addedStatePos, 
         <StandTube88x58 initX={initX - sectionLength} initY={initY} length={1100 / scale} scale={scale} />
         <UpFiting initX={initX - sectionLength} initY={initY - 1100 / scale} scale={scale} />
         <DownFiting initX={initX - sectionLength} initY={initY} scale={scale} />
+        <DimArrow
+          initX={initX - length / scale}
+          initY={initY - 1100 / scale}
+          type={{type: 'hor', dir: 'up'}}
+          length={length / scale}
+          indent={150 / scale}
+          id={`UniqSectionMirror_dim_${initX}`}
+          key={`UniqSectionMirror_dim_${initX}`}
+          unchange={true}
+        />
     </g>
   )
 }

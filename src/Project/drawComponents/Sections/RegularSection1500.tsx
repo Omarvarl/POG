@@ -24,6 +24,7 @@ export default function RegularSection1500({initX, initY, scale=1, arrow=true}:I
     indent={150 / scale}
     id={`Section1500_dim_${initX}`}
     key={`Section1500_dim_${initX}`}
+    unchange={true}
   />
  : <></>
 
