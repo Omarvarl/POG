@@ -20,7 +20,7 @@ export const POLengthSlice = createSlice({
             let scaledPOLength = newPOLength
             const width = action.payload.screenWidth
             let i = 1;
-            while (i < drawScales.length && (scaledPOLength + (2500 / drawScales[i]) >= width || scaledPOLength > 5000)) {
+            while (i < drawScales.length && (scaledPOLength + (2500 / drawScales[i]) >= width)) {
 
                 scaledPOLength = newPOLength / drawScales[i];
                 i++;
@@ -42,7 +42,7 @@ export const POLengthSlice = createSlice({
             let scaledPOLength = reducedLength
             const width = state.screenWidth
             let i = 1
-            while (i < drawScales.length && (scaledPOLength + (2500 / drawScales[i]) >= width || scaledPOLength > 5000)) {
+            while (i < drawScales.length && (scaledPOLength + (2500 / drawScales[i]) >= width)) {
 
                 scaledPOLength = reducedLength / drawScales[i];
                 i++;

@@ -15,7 +15,7 @@ export default function Ground() {
   const {POLength, screenWidth, scale, reducedLength, reducedScale} = useAppSelector((state) => state.POLength);
   const joints = [...expansionJoints, ...plateJoints]
   const initX = 700
-  const startY = 850
+ 
   const viewBreak = useAppSelector(state => state.viewBreak)
   // console.log(reducedLength, POLength)
   // console.log(reducedScale, scale)
@@ -28,7 +28,7 @@ export default function Ground() {
   const overallScale = (viewBreak)
     ? reducedScale
     : scale;
-  
+    const startY = 2500 / overallScale
 
   let count = 0
 
@@ -243,7 +243,7 @@ export default function Ground() {
             initY={startY}
             type={{type: 'hor', dir: 'up'}}
             length={wholeLength / overallScale}
-            indent={(700)}
+            indent={1600 / overallScale}
             id={'POLength_0'}
           />
           { jointsDimLeft }

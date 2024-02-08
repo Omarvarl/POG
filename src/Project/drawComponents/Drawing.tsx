@@ -24,7 +24,7 @@ export default function Drawing() {
     const dispatch = useAppDispatch()
     const {width, height, factor} = useAppSelector(state => state.realPageSize);
     const initX = 700
-    const initY = 50
+
 
     const POLengthData = useAppSelector(state => state.POLength)
     const currentPlate = useAppSelector(state => state.currentPlate)
@@ -34,6 +34,7 @@ export default function Drawing() {
     const plates = useAppSelector(state => state.plates)
     const expansionsArr:IExpansionJoints[] = structuredClone(expansionJoints);
     const viewBreak = useAppSelector(state => state.viewBreak)
+    const realPageSize = useAppSelector(state => state.realPageSize)
     var {start, end} = useAppSelector(state => state.overnahgs)
 
     const pageParams = useAppSelector(state => state.realPageSize)
@@ -41,14 +42,14 @@ export default function Drawing() {
     useEffect(() => {
         dispatch(setSections({POLength, expansionJoints, plateJoints}))
 
-    }, [POLength, expansionJoints, plateJoints, dispatch, viewBreak, currentPlate])
+    }, [POLength, expansionJoints, plateJoints, dispatch, viewBreak, currentPlate, realPageSize])
 
     expansionsArr.sort((a, b) => a.position - b.position)
 
     useEffect(() => {
        viewBreak && dispatch(removeSames())
         
-    }, [viewBreak, dispatch, expansionJoints, plateJoints, currentPlate])
+    }, [viewBreak, dispatch, expansionJoints, plateJoints, currentPlate, realPageSize])
 
     useEffect(() => {
       // console.log(plates)
@@ -66,27 +67,29 @@ export default function Drawing() {
 
     const scale = (viewBreak) ? POLengthData.reducedScale : POLengthData.scale
 
+    const initY = 2500 / scale
+
     const drawSections = plates.map(plate => {
       if (plate.sections && plate.sections.length > 0) {
         return plate.sections.map(section => {
           if (section.name === 'StartSection1500') {
-            return <StartSection1500 initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} key={section.key} />
+            return <StartSection1500 initX={initX + section.initX / scale} initY={initY} scale={scale} key={section.key} />
           } else if (section.name === 'EndSection1500') {
-            return <EndSection1500 initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} key={section.key} />
+            return <EndSection1500 initX={initX + section.initX / scale} initY={initY} scale={scale} key={section.key} />
           } else if (section.name === 'RegularSection3000') {
-            return <RegularSection3000 initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} key={section.key} />
+            return <RegularSection3000 initX={initX + section.initX / scale} initY={initY} scale={scale} key={section.key} />
           } else if (section.name === 'RegularSection1500') {
-            return <RegularSection1500 initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} key={section.key} />
+            return <RegularSection1500 initX={initX + section.initX / scale} initY={initY} scale={scale} key={section.key} />
           } else if (section.name === 'RegularSection1000') {
-            return <RegularSection1000 initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} key={section.key} />
+            return <RegularSection1000 initX={initX + section.initX / scale} initY={initY} scale={scale} key={section.key} />
           } else if (section.name === 'UniqSection') {
-            return <UniqSection initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
+            return <UniqSection initX={initX + section.initX / scale} initY={initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
           } else if (section.name === 'UniqStartSection') {
-            return <UniqStartSection initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
+            return <UniqStartSection initX={initX + section.initX / scale} initY={initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
           } else if (section.name === 'UniqEndSection') {
-            return <UniqEndSection initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
+            return <UniqEndSection initX={initX + section.initX / scale} initY={initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
           } else if (section.name === 'ReducedSection') {
-            return <ReducedSection initX={initX + section.initX / scale} initY={initY + section.initY} scale={scale} key={section.key} />
+            return <ReducedSection initX={initX + section.initX / scale} initY={initY} scale={scale} key={section.key} />
           } else return <></>
         })
       } else {

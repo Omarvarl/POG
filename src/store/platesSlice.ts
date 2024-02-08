@@ -111,7 +111,8 @@ export const platesSlice = createSlice({
                     const section = sections[i]
 
                     if (currentName === section.name
-                        && i < sections.length
+                        && i < sections.length - 1
+                        && currentName === sections[i + 1].name
                     ) {
                         if (reduceSectionMark) {
                             section.initX -= len
