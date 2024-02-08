@@ -35,6 +35,7 @@ export default function Drawing() {
     const expansionsArr:IExpansionJoints[] = structuredClone(expansionJoints);
     const viewBreak = useAppSelector(state => state.viewBreak)
     const realPageSize = useAppSelector(state => state.realPageSize)
+    const pageSize = useAppSelector(state => state.pageSize)
     var {start, end} = useAppSelector(state => state.overnahgs)
 
     const pageParams = useAppSelector(state => state.realPageSize)
@@ -42,7 +43,16 @@ export default function Drawing() {
     useEffect(() => {
         dispatch(setSections({POLength, expansionJoints, plateJoints}))
 
-    }, [POLength, expansionJoints, plateJoints, dispatch, viewBreak, currentPlate, realPageSize])
+    }, [
+      POLength,
+      expansionJoints,
+      plateJoints,
+      dispatch,
+      viewBreak,
+      currentPlate,
+      realPageSize,
+      pageSize
+    ])
 
     expansionsArr.sort((a, b) => a.position - b.position)
 
@@ -67,7 +77,7 @@ export default function Drawing() {
 
     const scale = (viewBreak) ? POLengthData.reducedScale : POLengthData.scale
 
-    const initY = 2500 / scale
+    const initY = realPageSize.height / 2 * (realPageSize.factor > 1 ? 2 : 1)
 
     const drawSections = plates.map(plate => {
       if (plate.sections && plate.sections.length > 0) {

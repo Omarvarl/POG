@@ -75,8 +75,10 @@ export default function PageFormatSelect():JSX.Element {
             ...realPageSize,
             factor: Number(factor.value)
           }));
-          dispatch(setPOLength({...POLengthData, screenWidth: realPageSize.width * Number(factor.value)}))
-
+          dispatch(setPOLength({
+            ...POLengthData,
+            screenWidth: realPageSize.width * Number(factor.value)
+          }))
         }}
       >
       </input>

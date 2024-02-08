@@ -21,11 +21,9 @@ export const POLengthSlice = createSlice({
             const width = action.payload.screenWidth
             let i = 1;
             while (i < drawScales.length && (scaledPOLength + (2500 / drawScales[i]) >= width)) {
-
                 scaledPOLength = newPOLength / drawScales[i];
                 i++;
             }
-            console.log()
 
             if (newPOLength >= 5000) {
                 return {

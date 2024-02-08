@@ -145,15 +145,18 @@ export default function InputDimension() {
           }
       
         } else if (appointment === 'POLength') {
-
-          dispatch(setPOLength({
-            ...POLengthData,
-            POLength: value
-          }))
-          dispatch(setLength({
-            id: plates[plates.length - 1].id,
-            length: value - plates[plates.length - 1].position
-          }))
+          const fullLength = plates.reduce((acc, item) => acc += item.length, 0)
+          if (value > fullLength || fullLength - value < plates[plates.length - 1].length) {
+            console.log()
+            dispatch(setPOLength({
+              ...POLengthData,
+              POLength: value
+            }))
+            dispatch(setLength({
+              id: plates[plates.length - 1].id,
+              length: value - plates[plates.length - 1].position
+            }))
+          }
 
         } else if (appointment === 'leftDim') {
 

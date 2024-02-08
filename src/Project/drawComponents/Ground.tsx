@@ -13,26 +13,22 @@ export default function Ground() {
   const plates = useAppSelector(state => state.plates);
   const plateJoints = useAppSelector(state => state.platesJoints);
   const {POLength, screenWidth, scale, reducedLength, reducedScale} = useAppSelector((state) => state.POLength);
+  const realPageSize = useAppSelector(state => state.realPageSize)
   const joints = [...expansionJoints, ...plateJoints]
   const initX = 700
+  const startY = realPageSize.height / 2 * (realPageSize.factor > 1 ? 2 : 1)
  
   const viewBreak = useAppSelector(state => state.viewBreak)
-  // console.log(reducedLength, POLength)
-  // console.log(reducedScale, scale)
-  // console.log(plates)
-  // console.log(viewBreak)
+
   const wholeLength = (viewBreak)
     ? reducedLength
-    : POLength;
+    : POLength
 
   const overallScale = (viewBreak)
     ? reducedScale
-    : scale;
-    const startY = 2500 / overallScale
+    : scale
 
   let count = 0
-
-  // console.log(plates, wholeLength)
 
   const jointsDimLeft = useMemo(() => {
     return plates.map(elm => {
