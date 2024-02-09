@@ -4,7 +4,7 @@ import { setPopUp } from "../../store/popUpSlice";
 import './Drawing.css'
 import DimArrow from "./DimArrow";
 import React, { useMemo } from "react";
-import { changeExJointVisibility } from "../../store/exJointPopVisibility";
+import { showExJointPop } from "../../store/exJointPopVisibility";
 
 
 export default function Ground() {
@@ -97,11 +97,12 @@ export default function Ground() {
       <g
         className="expansion-join"
         key={`ej_${count}`}
-        onClick={(e: React.MouseEvent) => {
-          dispatch(changeExJointVisibility({left: `${e.clientX - 200}px`, top: `${e.clientY - 150}px`, exId: elm.id}))
+        onClick={() => {
+          dispatch(showExJointPop(elm.id))
         }}
       >
         <path
+          className="exJoint"
           d={`M${position / overallScale + initX} ${startY + 150 / overallScale}
               L${position / overallScale + initX} ${startY - 3}
               L${(position + length) / overallScale + initX} ${startY - 3}

@@ -3,7 +3,7 @@ import { IInitCoord } from '../../../Types/Types'
 // import { createPortal } from 'react-dom'
 // import OverhangPop from '../OverhangPop'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
-import { changeOverhangVisibility } from '../../../store/overhangsVisibilitySlice'
+import { showOverhangMenu } from '../../../store/overhangsVisibilitySlice'
 import React from 'react'
 import FillingTubesSet from './FillingTubesSet'
 
@@ -79,7 +79,7 @@ export default function Start({initX, initY, scale=1}:IInitCoord) {
       className='start'
       onClick={(e: React.MouseEvent) => {
         const target = e.target as HTMLElement
-        dispatch(changeOverhangVisibility({left: e.clientX - 250, top: e.clientY, target: 'start'}))
+        dispatch(showOverhangMenu('start'))
       }}
     >
     {filling}

@@ -12,6 +12,7 @@
 .project-menu {
     overflow-y: scroll;
     overflow-x: hidden;
+    padding-right: 10px;
 }
 
 .view-break {

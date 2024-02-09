@@ -2,8 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {
     display: 'none',
-    left: '0px',
-    top: '0px',
     exId: ''
 }
 
@@ -11,15 +9,9 @@ export const exJointPopVisibilitySlice = createSlice({
     name: 'exJointVisibility',
     initialState,
     reducers: {
-        changeExJointVisibility: (state, action:PayloadAction<{left: string, top: string, exId: string}>) => {
-            if (state.display === 'none') {
-                state.display = 'block'
-            } else {
-                state.display = 'none'
-            }
-            state.left = action.payload.left
-            state.top = action.payload.top
-            state.exId = action.payload.exId
+        showExJointPop: (state, action:PayloadAction<string>) => {
+            state.display = 'block'
+            state.exId = action.payload
             return state
         },
         hideExJointPop: (state) => {
@@ -30,4 +22,4 @@ export const exJointPopVisibilitySlice = createSlice({
 })
 
 export default exJointPopVisibilitySlice.reducer
-export const { changeExJointVisibility, hideExJointPop } = exJointPopVisibilitySlice.actions
+export const { showExJointPop, hideExJointPop } = exJointPopVisibilitySlice.actions

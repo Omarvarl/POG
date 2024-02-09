@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import './Drawing.css'
-import { changeDisplay } from '../../store/stampSlice';
+import { showStampMenu } from '../../store/stampSlice';
 import React from 'react';
 
 export default function BaseTable({scale}: {scale: number}) {
@@ -15,7 +15,7 @@ export default function BaseTable({scale}: {scale: number}) {
   return (
     <g
       className='stamp'
-      onClick={(e: React.MouseEvent) => {dispatch(changeDisplay({right: `-460px`, bottom: `-440px`}))}}
+      onClick={(e: React.MouseEvent) => {dispatch(showStampMenu())}}
     >
       <path
         d={`M${width - 50} ${height - 50 - 550}

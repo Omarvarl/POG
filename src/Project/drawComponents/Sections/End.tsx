@@ -1,7 +1,7 @@
 import '../Drawing.css'
 import { IInitCoord } from '../../../Types/Types'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
-import { changeOverhangVisibility } from '../../../store/overhangsVisibilitySlice'
+import { showOverhangMenu } from '../../../store/overhangsVisibilitySlice'
 import FillingTubesSet from './FillingTubesSet'
 
 export default function Start({initX, initY, scale=1}:IInitCoord) {
@@ -74,7 +74,7 @@ export default function Start({initX, initY, scale=1}:IInitCoord) {
     <g className='end'
       onClick={(e: React.MouseEvent) => {
         const target = e.target as HTMLElement
-        dispatch(changeOverhangVisibility({left: e.clientX, top: e.clientY, target: 'end'}))
+        dispatch(showOverhangMenu('end'))
     }}
     >
       {filling}

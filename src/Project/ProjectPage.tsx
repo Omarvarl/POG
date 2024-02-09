@@ -7,9 +7,10 @@ import Drawing from "./drawComponents/Drawing";
 import Menu from "./menuComponents/Menu";
 import InputDimension from "./InputDimension";
 import PopMenu from "./PopMenu";
-import OverhangPop from "./drawComponents/OverhangPop";
-import StampPop from "./drawComponents/StampPop";
 import ExJointPop from "./drawComponents/ExJointPop";
+import { hideStampMenu } from "../store/stampSlice";
+import { hideOverhangMenu } from "../store/overhangsVisibilitySlice";
+import { hideExJointPop } from "../store/exJointPopVisibility";
 
 const ProjectPage = () => {
   const dispatch = useAppDispatch();
@@ -103,7 +104,6 @@ const ProjectPage = () => {
   return (
     <div className="project-page"
       onMouseUp={unfixOutAreaPoint}
-      // onClick={(e: React.MouseEvent) => console.log(e.pageX)}
     >
       
       <Menu />
@@ -113,10 +113,23 @@ const ProjectPage = () => {
         onMouseDown={fixAreaPoint}
         onMouseUp={unfixAreaPoint}
         onMouseMove={moveArea}
+        onClick={(e: React.MouseEvent) => {
+          const target = e.target as HTMLElement
+
+          if(!target.parentElement?.classList.contains('stamp')
+            && !target.classList.contains('project-menu'))
+            dispatch(hideStampMenu())
+
+          if (!target.parentElement?.classList.contains('start')
+            && !target.parentElement?.classList.contains('end')
+            && !target.classList.contains('project-menu')) dispatch(hideOverhangMenu())
+
+          if (!target.classList.contains('exJoint')
+          && !target.parentElement?.classList.contains('expansion-join')) dispatch(hideExJointPop())
+
+        }}
       >
         <PopMenu />
-        <OverhangPop />
-
         <button className="show-all-btn" onClick={showAll}>
           Показать все
         </button>
@@ -130,8 +143,6 @@ const ProjectPage = () => {
           }}
         >
           <InputDimension />
-          <StampPop />
-          <ExJointPop />
           <Drawing />
         </div>
       </div>

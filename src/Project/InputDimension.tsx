@@ -279,7 +279,6 @@ export default function InputDimension() {
         type="number"
         min={500}
         step={100}
-        defaultValue={currentPlate.length}
         value={iValue}
         contentEditable={true}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {

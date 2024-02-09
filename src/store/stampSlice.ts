@@ -3,8 +3,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const defaultPageSize: {
     display: string,
-    right: string,
-    bottom: string,
     designer: string,
     checker: string,
     techControl: string,
@@ -12,8 +10,6 @@ const defaultPageSize: {
     approver: string
 } = {
     display: 'none',
-    right: '0px',
-    bottom: '0px',
     designer: '',
     checker: '',
     techControl: '',
@@ -25,15 +21,16 @@ export const stampSlice = createSlice({
     name: 'stamp',
     initialState: defaultPageSize,
     reducers: {
-        changeDisplay: (state, action: PayloadAction<{right: string, bottom: string}>) => {
-            state = state.display === 'none'
-                ? {...state, display: 'block'}
-                : {...state, display: 'none'}
-
-            state.right = action.payload.right
-            state.bottom = action.payload.bottom
+        showStampMenu: (state) => {
+            state.display = 'block'
             return state
         },
+
+        hideStampMenu: (state) => {
+            state.display = 'none'
+            return state
+        },
+
         setDesigner: (state, action:PayloadAction<string>) => {
             state = {...state, designer: action.payload}
             return state
@@ -59,7 +56,8 @@ export const stampSlice = createSlice({
 
 export default stampSlice.reducer
 export const {
-    changeDisplay,
+    showStampMenu,
+    hideStampMenu,
     setDesigner,
     setChecker,
     setTechControl,

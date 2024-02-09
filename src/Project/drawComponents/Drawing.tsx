@@ -125,6 +125,7 @@ export default function Drawing() {
 
     var exJointMark = 0
     var exJointsCount = 0
+    var move = 32
     function getDesignation(name: string, position: number, length: number): {number: string, name:string} | undefined {
       var pattern = 'ЦРНС.305112.001.'
       var count = 0
@@ -132,12 +133,25 @@ export default function Drawing() {
         const leftPosOfjoint = ej.position - ej.left
         if (exJointMark) {
           exJointMark = 0
-          return {number: ((exJointsCount < 10) ? pattern + '06-0' + exJointsCount : pattern + '06-' + exJointsCount), name: 'ПО-6'}
+          console.log(move)
+          if (move <= 32)
+            return {number: ((exJointsCount < 10) ? pattern + '06-0' + exJointsCount : pattern + '06-' + exJointsCount), name: 'ПО-6'}
+          else if (move > 32 && move <= 55)
+            return {number: ((exJointsCount < 10) ? pattern + '20-0' + exJointsCount : pattern + '20-' + exJointsCount), name: 'ПО-20'}
         }
         if (position < leftPosOfjoint && position + length > leftPosOfjoint) {
           exJointMark = 1
           exJointsCount++
-          return {number: ((exJointsCount< 10) ? pattern + '05-0' + exJointsCount : pattern + '05-' + exJointsCount), name: 'ПО-5'}
+          if (ej.move) move = ej.move
+
+          if (ej.move && ej.move <= 32)
+            return {number: ((exJointsCount< 10) ? pattern + '05-0' + exJointsCount : pattern + '05-' + exJointsCount), name: 'ПО-5'}
+          else if (ej.move && ej.move > 32 && ej.move <= 55)
+            return {number: ((exJointsCount< 10) ? pattern + '19-0' + exJointsCount : pattern + '19-' + exJointsCount), name: 'ПО-19'}
+          else if (ej.move && ej.move > 55) {
+            exJointMark = 0
+            return {number: ((exJointsCount< 10) ? pattern + '13-0' + exJointsCount : pattern + '13-' + exJointsCount), name: 'ПО-13'}
+          }
         }
       }
 
@@ -215,7 +229,7 @@ export default function Drawing() {
     return result
   }
 
-  console.log(plates, expansionJoints)
+  // console.log(plates, expansionJoints)
 
   return (
     <div

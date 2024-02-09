@@ -16,47 +16,47 @@ export default function ExJointPop() {
 
   return (
     <div
-        className='background-modal'
-        style={{display: exJointPopVisibility.display}}
-        onClick={(e: React.MouseEvent) => {
-            const target = e.target as HTMLElement
-            if (!target.classList.contains('ex-joint-input'))
-            dispatch(hideExJointPop())
-        }}
+        className="ex-joint-menu"
+        style={exJointPopVisibility}
     >
-        <div
-            className="ex-joint-menu"
-            style={exJointPopVisibility}
-        >
-            <label>
-                Ход деф. шва
-                <div style={{display: 'flex', fontSize: '14pt'}}>
-                    {String.fromCharCode(parseInt('00B1', 16))}
-                    <input
-                        className='ex-joint-input'
-                        type="number"
-                        value={expansionJoint?.move}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            const target = e.target as HTMLInputElement
+        <label>
+            Деформационны шов {index + 1}
+        </label>
+        <label>
+            Ход деф. шва
+            <div style={{display: 'flex', fontSize: '14pt'}}>
+                {String.fromCharCode(parseInt('00B1', 16))}
+                <input
+                    className='ex-joint-input'
+                    type="number"
+                    value={expansionJoint?.move}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        const target = e.target as HTMLInputElement
+                        dispatch(setMove({id: expansionJoint.id, move: Number(target.value)}))
+                    }}
+                    onKeyDown={(e: React.KeyboardEvent) => {
+                        const target = e.target as HTMLInputElement
+                        if (e.key === 'Enter') {
                             dispatch(setMove({id: expansionJoint.id, move: Number(target.value)}))
-                        }}
-                    />
-                </div>
-            </label>
-            <button
-                onClick={() => {
-                    var number = Number(expansionJoint.id.split('_')[1])
-                    var index = plates.findIndex(elm => elm.id === `plate_${number}`) + 1
-                    var newNumber = index !== 0 ? Number(plates[index].id.split('_')[1]) : number
-                    dispatch(removeExpansionJoint(expansionJoint.id))
-                    dispatch(connectPlates(plates[index].id))
-                    dispatch(setIdExpansionJoint({id: `ej_${newNumber}`, newId: expansionJoint.id}))
-                    dispatch(setIDJoint({id: `pj_${newNumber}`, newId: `pj_${number}`}))
-                }}
-            >
-                Удалить деф. шов
-            </button>
-        </div>
+                            dispatch(hideExJointPop())
+                        }
+                    }}
+                />
+            </div>
+        </label>
+        <button
+            onClick={() => {
+                var number = Number(expansionJoint.id.split('_')[1])
+                var index = plates.findIndex(elm => elm.id === `plate_${number}`) + 1
+                var newNumber = index !== 0 ? Number(plates[index].id.split('_')[1]) : number
+                dispatch(removeExpansionJoint(expansionJoint.id))
+                dispatch(connectPlates(plates[index].id))
+                dispatch(setIdExpansionJoint({id: `ej_${newNumber}`, newId: expansionJoint.id}))
+                dispatch(setIDJoint({id: `pj_${newNumber}`, newId: `pj_${number}`}))
+            }}
+        >
+            Удалить деф. шов
+        </button>
     </div>
   )
 }

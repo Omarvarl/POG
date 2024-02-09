@@ -2,6 +2,9 @@ import PageFormatSelect from "./PageFormatSelect";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import './Menu.css'
 import { setViewBreakState } from "../../store/viewBreakSlice";
+import StampPop from "../drawComponents/StampPop";
+import OverhangPop from "../drawComponents/OverhangPop";
+import ExJointPop from "../drawComponents/ExJointPop";
 
 export default function Menu() {
   const dispatch = useAppDispatch()
@@ -23,6 +26,9 @@ export default function Menu() {
         />
         Добавить разрывы вида
       </label>
+      <StampPop />
+      <OverhangPop />
+      <ExJointPop />
     </div>
   );
 }
