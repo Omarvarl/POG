@@ -8,6 +8,7 @@ import Menu from "./menuComponents/Menu";
 import InputDimension from "./InputDimension";
 import PopMenu from "./PopMenu";
 import OverhangPop from "./drawComponents/OverhangPop";
+import StampPop from "./drawComponents/StampPop";
 
 const ProjectPage = () => {
   const dispatch = useAppDispatch();
@@ -128,6 +129,7 @@ const ProjectPage = () => {
           }}
         >
           <InputDimension />
+          <StampPop />
           <Drawing />
         </div>
       </div>

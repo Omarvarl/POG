@@ -12,7 +12,6 @@ export default function Start({initX, initY, scale=1}:IInitCoord) {
     const profileWidth = 58 / scale
     const profileWidth1 = 88 / scale
     const profileTickness = 3.5 / scale
-    // const overhangVisibility = useAppSelector(state => state.overhangVisibility)
     const dispatch = useAppDispatch()
 
     var overhang = useAppSelector(state => state.overnahgs.start)

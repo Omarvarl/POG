@@ -12,6 +12,7 @@ import platesJointsSlice from './platesJointsSlice';
 import inputVisibilitySlice from './inputVisibilitySlice';
 import overhangsSlice from './overhangsSlice';
 import overhangsVisibilitySlice from './overhangsVisibilitySlice';
+import stampSlice from './stampSlice';
 
 
 
@@ -29,7 +30,8 @@ const store = configureStore({
         currentPlate: currentPlateSlice,
         inputVisibility: inputVisibilitySlice,
         overnahgs: overhangsSlice,
-        overhangVisibility: overhangsVisibilitySlice
+        overhangVisibility: overhangsVisibilitySlice,
+        stamp: stampSlice
     }
     
 })

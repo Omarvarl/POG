@@ -79,42 +79,42 @@ export default function PopMenu() {
       className="background-modal"
       style={{display: visibility.display}}
     >
-    <div
-      style={{display: visibility.display, left: `${visibility.x + 20}px`, top: `${visibility.y - 20}px`}}
-      className='pop-up'
-    >
-      <button
-        onClick={addNewPlate}
+      <div
+        style={{display: visibility.display, left: `${visibility.x + 20}px`, top: `${visibility.y - 20}px`}}
+        className='pop-up'
       >
-        Разделить плиту
-      </button>
-      <button
-        onClick={addExpansionJoinToPlate}
-      >
-        Добавить деф. шов
-      </button>
-      <button
-        onClick={() => {
-            if (plates.length > 1) {
-                const index = plates.findIndex(elm => elm.id === currentPlate.id)
-                let number = Number(currentPlate.id.split('_')[1])
-                let newNumber = index !== 0 ? Number(plates[index - 1].id.split('_')[1]) : number
-    
-                if (index === 0) number = Number(plates[index + 1].id.split('_')[1])
-    
-                dispatch(connectPlates(currentPlate.id))
-    
-                dispatch(removePlateJoint(`pj_${newNumber}`))
-                dispatch(setIDJoint({id: `pj_${number}`, newId: `pj_${newNumber}`}))
-                dispatch(removeExpansionJoint(`ej_${newNumber}`))
-                dispatch(setIdExpansionJoint({id: `ej_${number}`, newId: `ej_${newNumber}`}))
+        <button
+          onClick={addNewPlate}
+        >
+          Разделить плиту
+        </button>
+        <button
+          onClick={addExpansionJoinToPlate}
+        >
+          Добавить деф. шов
+        </button>
+        <button
+          onClick={() => {
+              if (plates.length > 1) {
+                  const index = plates.findIndex(elm => elm.id === currentPlate.id)
+                  let number = Number(currentPlate.id.split('_')[1])
+                  let newNumber = index !== 0 ? Number(plates[index - 1].id.split('_')[1]) : number
+      
+                  if (index === 0) number = Number(plates[index + 1].id.split('_')[1])
+      
+                  dispatch(connectPlates(currentPlate.id))
+      
+                  dispatch(removePlateJoint(`pj_${newNumber}`))
+                  dispatch(setIDJoint({id: `pj_${number}`, newId: `pj_${newNumber}`}))
+                  dispatch(removeExpansionJoint(`ej_${newNumber}`))
+                  dispatch(setIdExpansionJoint({id: `ej_${number}`, newId: `ej_${newNumber}`}))
 
-            }
-        }}
-      >
-        Удалить плиту
-      </button>
+              }
+          }}
+        >
+          Удалить плиту
+        </button>
+      </div>
     </div>
-  </div>
   )
 }

@@ -45,9 +45,11 @@
     stroke: gold;
 }
 
-.pop-up, .overhang-menu {
+.pop-up, .overhang-menu, .stamp-menu {
     position: relative;
     flex-direction: column;
+    max-width: 200px;
+    /* background-color: aqua; */
 }
 
 
@@ -130,4 +132,8 @@
 .end:hover, .start:hover {
     cursor: pointer;
     stroke: gold;
+}
+
+.stamp:hover {
+    cursor: pointer;
 }

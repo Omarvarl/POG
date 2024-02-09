@@ -116,7 +116,7 @@ export default function Drawing() {
     >
       <Border />
       
-      <BaseTable />
+      <BaseTable scale={scale}/>
 
       <Ground />
       { drawSections }
