@@ -17,7 +17,8 @@ export default function PopMenu() {
           position: leftPlate.position + leftPlate.length,
           length: 50,
           left: 250,
-          right: 250
+          right: 250,
+          move: 32
         }))
       }
     

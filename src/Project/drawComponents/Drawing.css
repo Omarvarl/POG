@@ -45,7 +45,7 @@
     stroke: gold;
 }
 
-.pop-up, .overhang-menu, .stamp-menu {
+.pop-up, .overhang-menu, .stamp-menu, .ex-joint-menu {
     position: relative;
     flex-direction: column;
     max-width: 200px;

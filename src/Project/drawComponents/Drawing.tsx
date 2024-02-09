@@ -215,6 +215,8 @@ export default function Drawing() {
     return result
   }
 
+  console.log(plates, expansionJoints)
+
   return (
     <div
       className="drawing"

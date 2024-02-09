@@ -50,6 +50,11 @@ export const expansionJointsQuantitySlice = createSlice({
             if(index !== -1) state[index].id = action.payload.newId
             return state
         },
+        setMove: (state, action:PayloadAction<{id: string, move: number}>) => {
+            const index = state.findIndex(elm => elm.id === action.payload.id)
+            if(index !== -1) state[index].move = action.payload.move
+            return state
+        }
     }
 })
 
@@ -62,4 +67,5 @@ export const {
     setExpansionJointLeft,
     setExpansionJointRight,
     setIdExpansionJoint,
+    setMove
 } = expansionJointsQuantitySlice.actions

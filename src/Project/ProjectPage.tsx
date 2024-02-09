@@ -9,12 +9,13 @@ import InputDimension from "./InputDimension";
 import PopMenu from "./PopMenu";
 import OverhangPop from "./drawComponents/OverhangPop";
 import StampPop from "./drawComponents/StampPop";
+import ExJointPop from "./drawComponents/ExJointPop";
 
 const ProjectPage = () => {
   const dispatch = useAppDispatch();
   const pageSize = useAppSelector((state) => state.pageSize);
   const drawParam = useAppSelector((state) => state.drawParam);
-  const overhangVisibility = useAppSelector(state => state.overhangVisibility)
+  // const overhangVisibility = useAppSelector(state => state.overhangVisibility)
   const cursorPos = useRef<ICursorPosition>({
     startX: 0,
     startY: 0,
@@ -130,6 +131,7 @@ const ProjectPage = () => {
         >
           <InputDimension />
           <StampPop />
+          <ExJointPop />
           <Drawing />
         </div>
       </div>

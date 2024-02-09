@@ -37,7 +37,8 @@ export interface ISection {
 
 export interface IExpansionJoints extends IGround {
     left: number,
-    right: number
+    right: number,
+    move?: number
 }
 
 export interface IPlates extends IExpansionJoints {
