@@ -72,11 +72,16 @@ export interface IComponents {
 export interface IPOParts {
     startX: number,
     startY: number,
-    length: number
+    length: number,
+    move: number | undefined
 }
 
 export interface IUniqSectionData extends IProfile {
     addedStatePos?: number
+}
+
+export interface IExJoint extends IUniqSectionData {
+    baseLength?: number
 }
 
 export interface IDimArrow extends IInitCoord {
@@ -87,7 +92,8 @@ export interface IDimArrow extends IInitCoord {
     length: number,
     indent: number,
     id: string,
-    unchange?: boolean
+    unchange?: boolean,
+    text?: string
 }
 
 export interface IFillingTubesSet {

@@ -6,6 +6,7 @@ import UpFiting from "../Profiles/UpFiting"
 import { IInitCoord } from "../../../Types/Types"
 import '../Drawing.css'
 import FillingTubesSet from "./FillingTubesSet"
+import DimArrow from "../DimArrow"
 
 export default function ReducedSection({initX, initY, scale=1}:IInitCoord) {
   const sectionLength = 1000 / scale
@@ -57,29 +58,18 @@ export default function ReducedSection({initX, initY, scale=1}:IInitCoord) {
             `}
         />
 
-        
-        {/* <circle
-          cx={initX + 250 / scale} cy={initY + 50 /scale} r="5"
-          fill="none" stroke="red"
+        <DimArrow
+          initX={initX - 3000 / scale}
+          initY={initY - 1100 / scale}
+          type={{type: 'hor', dir: 'up'}}
+          length={4000 / scale}
+          indent={500 / scale}
+          id={`ReducedSection_dim_${initX}`}
+          key={`ReducedSection_dim_${initX}`}
+          unchange={true}
+          text={'3000x2='}
         />
 
-        <circle
-          cx={initX + 310 / scale} cy={1200 / scale / 4 * 3 + (initY - 1150 / scale)} r="5"
-          fill="none" stroke="red"
-        />
-
-        <circle
-          cx={initX + 250 / scale} cy={1200 / scale / 2 + (initY - 1150 / scale)} r="5"
-          fill="none" stroke="red"
-        />
-        <circle
-          cx={initX + 190 / scale} cy={1200 / scale / 4 + (initY - 1150 / scale)} r="5"
-          fill="none" stroke="red"
-        />
-        <circle
-          cx={initX + 250 / scale} cy={initY - 1150 / scale} r="5"
-          fill="none" stroke="red"
-        /> */}
     </g>
   )
 }

@@ -244,7 +244,7 @@ export default function Ground() {
             initY={startY}
             type={{type: 'hor', dir: 'up'}}
             length={wholeLength / overallScale}
-            indent={1600 / overallScale}
+            indent={2000 / overallScale}
             id={'POLength_0'}
           />
           { jointsDimLeft }

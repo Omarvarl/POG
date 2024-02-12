@@ -17,6 +17,7 @@ import ReducedSection from "./Sections/ReducedSection";
 import { setSections, removeSames } from "../../store/platesSlice";
 import { setReducedLength } from "../../store/POLengthSlice";
 import calc from "../../Logic/calc";
+import ExJointSection13 from "./Sections/ExJointSection13";
 
 
 
@@ -44,7 +45,7 @@ export default function Drawing() {
         dispatch(setSections({POLength, expansionJoints, plateJoints}))
 
     }, [
-      POLength,
+      // POLength,
       expansionJoints,
       plateJoints,
       dispatch,
@@ -100,6 +101,15 @@ export default function Drawing() {
             return <UniqEndSection initX={initX + section.initX / scale} initY={initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
           } else if (section.name === 'ReducedSection') {
             return <ReducedSection initX={initX + section.initX / scale} initY={initY} scale={scale} key={section.key} />
+          } else if (section.name === 'ExJoint13') {
+            return <ExJointSection13
+              initX={initX + section.initX / scale}
+              initY={initY}
+              scale={scale}
+              length={section.addedStatePos ? section.addedStatePos / scale : 1500 / scale}
+              baseLength={section.length / scale}
+              key={section.key} 
+            />
           } else return <></>
         })
       } else {
@@ -120,6 +130,7 @@ export default function Drawing() {
 
       <Ground />
       { drawSections }
+      {/* <ExJointSection13 initX={500} initY={2000} scale={scale} length={4000 / scale} baseLength={1200 / scale} /> */}
 
     </svg>
 

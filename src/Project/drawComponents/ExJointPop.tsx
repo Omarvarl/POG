@@ -20,7 +20,7 @@ export default function ExJointPop() {
         style={exJointPopVisibility}
     >
         <label>
-            Деформационны шов {index + 1}
+            Деформационный шов {index + 1}
         </label>
         <label>
             Ход деф. шва
@@ -53,6 +53,7 @@ export default function ExJointPop() {
                 dispatch(connectPlates(plates[index].id))
                 dispatch(setIdExpansionJoint({id: `ej_${newNumber}`, newId: expansionJoint.id}))
                 dispatch(setIDJoint({id: `pj_${newNumber}`, newId: `pj_${number}`}))
+                dispatch(hideExJointPop())
             }}
         >
             Удалить деф. шов

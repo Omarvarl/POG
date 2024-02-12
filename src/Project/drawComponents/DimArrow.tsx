@@ -5,7 +5,7 @@ import { setCurrentPlate } from "../../store/currentPlateSlice"
 import { changeVisibility, setInputValue } from "../../store/inputVisibilitySlice"
 import { IDimArrow } from "../../Types/Types"
 
-export default function DimArrow({initX, initY, type, length, indent, id, unchange=false}:IDimArrow) {
+export default function DimArrow({initX, initY, type, length, indent, id, unchange=false, text}:IDimArrow) {
 
     const POLengthData = useAppSelector(state => state.POLength)
     const viewBreak = useAppSelector(state => state.viewBreak)
@@ -108,7 +108,7 @@ export default function DimArrow({initX, initY, type, length, indent, id, unchan
             </>
         )
 
-        let text = (
+        let text1 = (
             <text
                 onClick={!unchange ? changeText : undefined}
                 x={initX + length / 2 - 50}
@@ -153,7 +153,7 @@ export default function DimArrow({initX, initY, type, length, indent, id, unchan
                 </>
             )
 
-            text = (
+            text1 = (
                 <text
                     onClick={!unchange ? changeText : undefined}
                     x={initX - 200}
@@ -183,7 +183,7 @@ export default function DimArrow({initX, initY, type, length, indent, id, unchan
                     `}
                 />
                 { horArrows }
-                { text }
+                { text1 }
             </g>
         )
     } else if (type.type === 'vert') {
@@ -215,7 +215,7 @@ export default function DimArrow({initX, initY, type, length, indent, id, unchan
             </>
         )
 
-        let text = (
+        let text1 = (
             <text
                 x={indent - 10}
                 y={initY - length / 2 + 50}
@@ -258,7 +258,7 @@ export default function DimArrow({initX, initY, type, length, indent, id, unchan
                     />
                 </>
             )
-            text = (
+            text1 = (
                 <text
                     x={indent - 10}
                     y={initY - length - 100}
@@ -289,12 +289,13 @@ export default function DimArrow({initX, initY, type, length, indent, id, unchan
                     `}
                 />
                 { vertArrows }
-                { text }
+                { text1 }
             </g>
         )
     }
 
     function getLength() {
+        if (text) return text
         let result = length * scale
         if (appointment === 'plate') {
             result = plates[index].length

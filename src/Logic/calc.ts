@@ -37,7 +37,8 @@ const calc = (
         parts.push({
             startX: startX,
             startY: startY,
-            length: expansionJoints[0].position - plates[0].left - plates[0].right
+            length: expansionJoints[0].position - plates[0].left - plates[0].right,
+            move: expansionJoints[0].move
         })
     
         for(let i = 0; i < expansionJoints.length; i++) {
@@ -45,14 +46,17 @@ const calc = (
                 parts.push({
                     startX: expansionJoints[i].position + expansionJoints[i].length + expansionJoints[i].right,
                     startY: startY,
-                    length: POLength - expansionJoints[i].position - expansionJoints[i].length - expansionJoints[i].right - plates[plates.length - 1].right
+                    length: POLength - expansionJoints[i].position - expansionJoints[i].length - expansionJoints[i].right - plates[plates.length - 1].right,
+                    move: undefined
                 })
                 
             } else {
                 parts.push({
                     startX: expansionJoints[i].position + expansionJoints[i].length + expansionJoints[i].right,
                     startY: startY,
-                    length: expansionJoints[i + 1].position - expansionJoints[i].position - expansionJoints[i].length - expansionJoints[i + 1].left - expansionJoints[i].right
+                    length: expansionJoints[i + 1].position - expansionJoints[i].position - expansionJoints[i].length - expansionJoints[i + 1].left - expansionJoints[i].right,
+                    move: expansionJoints[i + 1].move
+
                 })
             }
         }
@@ -60,16 +64,21 @@ const calc = (
         parts.push({
             startX: startX,
             startY: startY,
-            length: POLength - plates[plates.length - 1].right - plates[0].left
+            length: POLength - plates[plates.length - 1].right - plates[0].left,
+            move: undefined
         })
     }
 
     let name = 'RegularSection3000'
-
+    var deltaX = 0
+    var deltaLen = 0
     for (let i = 0; i < parts.length; i++) {
-        // console.log(parts)
-        let len = parts[i].length
-        let x = parts[i].startX
+
+        let len = deltaLen ? deltaLen : parts[i].length
+        let x = deltaX ? deltaX : parts[i].startX
+        if (deltaLen) deltaLen = 0
+        if (deltaX) deltaX = 0
+        var move = parts[i].move
 
         if (i === 0) {
             if (i !== parts.length - 1) {
@@ -266,9 +275,25 @@ const calc = (
                     }
                 }
             }
+
             if (len === 1500 && (i !== 0 || parts.length - 1 === 0 )) {
                 [x, len] = checkPlateJoints(x, len, 1.5)
-                if (len === 1500) {
+
+                if (move && move >= 75 && parts.length - 1 !== i) {
+                    result.push({
+                        name: 'ExJoint13',
+                        initX: x,
+                        initY: startY,
+                        length: 3000,
+                        addedStatePos: 1000,
+                        key: `ExJoint13_${x}a`
+                    })
+                    x += 3000
+                    len -= 1500
+                    deltaLen = parts[i + 1].length - 3000
+                    deltaX = parts[i + 1].startX - 3000
+
+                } else if (len === 1500) {
                     result.push({
                         name: name,
                         initX: x,
@@ -340,12 +365,35 @@ const calc = (
         if (len > 0) {
             if (i !== parts.length - 1) {
                 len = checkPlateJoints(x, len, 0, parts[i + 1].startX - parts[i].startX - parts[i].length + len)[1]
-                if (len > 0) {
+                if (move && move >= 75) {
+                    var nextPos = parts[i + 1].startX
+                    var exJointLength = nextPos - x - len
+                    if (exJointLength < 1000) {
+                        len -= ((1000 - exJointLength) / 2)
+                        exJointLength = 1000
+                    }
+                    result.push({
+                        name: 'ExJoint13',
+                        initX: x,
+                        initY: startY,
+                        length: len * 2 + exJointLength,
+                        addedStatePos: exJointLength,
+                        key: `ExJoint13_${x}a`
+                    })
+                    if (parts.length - 1 !== i) {
+                        var newStart = x + len * 2 + exJointLength
+                        deltaLen = parts[i + 1].length + (parts[i + 1].startX - newStart)
+                        deltaX = newStart
+                    }
+                    x += len + exJointLength / 2
+                    len = 0
+
+                } else if (len > 0) {
                     result.push({
                         name: 'UniqSection',
                         initX: x,
                         initY: startY,
-                        length: parts[i + 1].startX - parts[i].startX - parts[i].length + len,
+                        length: parts[i + 1].startX - x,
                         addedStatePos: len,
                         key: `uniqSection_${x}_d`
                     })

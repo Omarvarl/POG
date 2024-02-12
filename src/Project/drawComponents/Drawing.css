@@ -101,6 +101,13 @@
     stroke-linecap: round;
 }
 
+.ex-j-13 {
+    fill: white;
+    stroke: rgb(202, 13, 219);
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
 .u {
     fill: white;
     stroke: rgb(255, 149, 0);
