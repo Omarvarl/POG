@@ -20,6 +20,8 @@ import calc from "../../Logic/calc";
 import ExJointSection13 from "./Sections/ExJointSection13";
 import ExJointSection5 from "./Sections/ExJointSection5";
 import ExJointSection6 from "./Sections/ExJointSection6";
+import ExJointSection19 from "./Sections/ExJointSection19";
+import ExJointSection20 from "./Sections/ExJointSection20";
 
 
 
@@ -101,6 +103,23 @@ export default function Drawing() {
             return <ExJointSection5 initX={initX + section.initX / scale} initY={initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
           } else if (section.name === 'ExJoint6') {
             return <ExJointSection6 initX={initX + section.initX / scale} initY={initY} scale={scale} length={section.length / scale} key={section.key} />
+          } else if (section.name === 'ExJoint20') {
+            return <ExJointSection20
+              initX={initX + section.initX / scale}
+              initY={initY} scale={scale}
+              length={section.length / scale}
+              end={section.end ? section.end / scale : 0}
+              key={section.key}
+            />
+          } else if (section.name === 'ExJoint19') {
+            return <ExJointSection19
+              initX={initX + section.initX / scale}
+              initY={initY} scale={scale}
+              length={section.length}
+              addedStatePos={section.addedStatePos}
+              end={section.end ? section.end / scale : 0}
+              key={section.key}
+            />
           } else if (section.name === 'UniqStartSection') {
             return <UniqStartSection initX={initX + section.initX / scale} initY={initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
           } else if (section.name === 'UniqEndSection') {

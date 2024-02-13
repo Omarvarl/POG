@@ -16,7 +16,7 @@ export default function ReducedSection({initX, initY, scale=1, countOfReducedSec
   const sectionLength = 1000 / scale
 
   return (
-    <g className="r1000"> 
+    <g className="reduced"> 
         <FillingTubesSet initX={initX} initY={initY} sectionLength={sectionLength} scale={scale} />
         <Crossbar initX={initX} initY={initY - 169 / scale} length={sectionLength} scale={scale}/>
         <Crossbar initX={initX} initY={initY - (169 + 703) / scale} length={sectionLength} scale={scale}/>

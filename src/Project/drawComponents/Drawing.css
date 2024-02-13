@@ -94,7 +94,7 @@
     stroke-linecap: round;
 }
 
-.r1000 {
+.reduced {
     fill: white;
     stroke: rgb(160, 160, 12);
     stroke-width: 2;
@@ -103,7 +103,7 @@
 
 .ex-j-13 {
     fill: white;
-    stroke: rgb(202, 13, 219);
+    stroke: rgb(149, 9, 162);
     stroke-width: 2;
     stroke-linecap: round;
 }
@@ -129,6 +129,13 @@
     stroke-linecap: round;
 }
 
+.u19 {
+    fill: white;
+    stroke: rgb(86, 46, 196);
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
 .us {
     fill: white;
     stroke: rgb(132, 176, 253);
@@ -136,9 +143,9 @@
     stroke-linecap: round;
 }
 
-.ue {
+.r1000 {
     fill: white;
-    stroke: rgb(209, 64, 209);
+    stroke: rgb(251, 139, 221);
     stroke-width: 2;
     stroke-linecap: round;
 }

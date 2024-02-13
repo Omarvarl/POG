@@ -79,11 +79,11 @@ export default function ExJointSection13({
         />
 
         <DimArrow
-          initX={initX + firstLength + length}
+          initX={initX}
           initY={initY - 1100 / scale}
           type={{type: 'hor', dir: 'up'}}
-          length={firstLength}
-          indent={150 / scale}
+          length={baseLength}
+          indent={500 / scale}
           id={`ExJoint13_dim3_${initX}`}
           key={`ExJoint13_dim3_${initX}`}
           unchange={true}

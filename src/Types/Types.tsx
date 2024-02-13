@@ -32,6 +32,7 @@ export interface ISection {
     initY: number,
     length: number,
     addedStatePos?: number,
+    end?: number,
     key: string
 }
 

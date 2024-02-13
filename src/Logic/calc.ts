@@ -416,6 +416,37 @@ const calc = (
                     x += parts[i + 1].startX - x + part6Length
                     len = 0
 
+                } else if (move && move > 32 && move < 75) {
+                    var exJointLength = parts[i + 1].startX - x - len
+                    result.push({
+                        name: 'ExJoint19',
+                        initX: x,
+                        initY: startY,
+                        length: parts[i + 1].startX - x,
+                        addedStatePos: len,
+                        end: exJointLength / 2,
+                        key: `ExJoint19_${x}a`
+                    })
+
+                    var nextPartLength = parts[i + 1].length
+                    var part6Length = nextPartLength % 1500
+                    if (part6Length < 500) part6Length = 1500
+                    result.push({
+                        name: 'ExJoint20',
+                        initX: parts[i + 1].startX,
+                        initY: startY,
+                        length: part6Length,
+                        end: exJointLength / 2,
+                        key: `ExJoint20_${x}a`
+                    })
+                    if (parts.length - 1 !== i) {
+                        var newStart = parts[i + 1].startX + part6Length
+                        deltaLen = parts[i + 1].length - part6Length
+                        deltaX = newStart
+                    }
+                    x += parts[i + 1].startX - x + part6Length
+                    len = 0
+
                 } else if (len > 0) {
                     result.push({
                         name: 'UniqSection',

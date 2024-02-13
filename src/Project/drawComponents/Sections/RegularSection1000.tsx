@@ -12,28 +12,8 @@ export default function RegularSection1000({initX, initY, scale=1}:IInitCoord) {
 
   const sectionLength = 1000 / scale
 
-    // const getFillingTubes = ():JSX.Element[] => {
-    //   const tubesInterval = 181 / scale
-    //   const positions: number[] = []
-    //   let fillingTubes:JSX.Element[] = []
-    //   let tubesQuantity = Math.floor((sectionLength - 88 / scale) / tubesInterval) - 1
-
-    //   const firstPosition = (sectionLength - tubesQuantity * filingInterval) / 2
-      
-    //   positions.push(firstPosition)
-    //   for (let i = 0; i < tubesQuantity; i++) {
-    //       positions.push(positions[i] + tubesInterval)
-    //   }
-
-    //   positions.forEach(pos => {
-    //       fillingTubes.push(<FillingTube initX={initX + pos} initY={initY - 169 / scale} length={703 / scale} key={`tubes-${pos}`}/>)
-    //   })
-    //   return fillingTubes
-  // }
-
-
   return (
-    <g className="r1500"> 
+    <g className="r1000"> 
         <FillingTubesSet initX={initX} initY={initY} sectionLength={sectionLength} scale={scale} />
         <Crossbar initX={initX} initY={initY - 169 / scale} length={sectionLength} scale={scale} />
         <Crossbar initX={initX} initY={initY - (169 + 703) / scale} length={sectionLength} scale={scale} />
