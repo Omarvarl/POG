@@ -10,7 +10,8 @@ const initialState:IPlates[] = [{
     reducedLength: 10000,  //  reduced length of plate for reduced dtawing view
     left: 250,  //  min distance for first stand
     right: 250,  //  min distance for last stand
-    sections: []  //  sections on this plate
+    sections: [],  //  sections on this plate
+    countOfReducedSections: 0
 }]
 
 export const platesSlice = createSlice({
@@ -103,9 +104,11 @@ export const platesSlice = createSlice({
             let len = 0
             let currentName = ''
             let reduceSectionMark = 1
+
             state.forEach((plate, index) => {
                 let plateLen = 0
                 const sections = plate.sections
+                plate.countOfReducedSections = 0
 
                 for (let i = 0; i < sections.length; i++) {
                     const section = sections[i]
@@ -122,6 +125,7 @@ export const platesSlice = createSlice({
                             section.name = 'ReducedSection'
                             i++
                             reduceSectionMark = 0
+                            plate.countOfReducedSections = 2
                         }
 
                         while (i < sections.length
@@ -130,6 +134,7 @@ export const platesSlice = createSlice({
                             plateLen += sections[i].length
                             len += sections[i].length
                             sections.splice(i, 1)
+                            plate.countOfReducedSections += 1
                         }
                         i--
 
@@ -141,8 +146,9 @@ export const platesSlice = createSlice({
                 }
                 currentName = ''
                 plate.reducedLength = plate.length - plateLen
-                if (index !== state.length - 1) 
-                state[index + 1].reducedPosition = state[index + 1].position - len
+                if (index !== state.length - 1) {
+                    state[index + 1].reducedPosition = state[index + 1].position - len
+                }
             })
             // console.log(current(state))
             return state

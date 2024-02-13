@@ -51,7 +51,8 @@ export default function PopMenu() {
           reducedPosition: currentPlate.position,
           left: 250,
           right: 250,
-          sections: []
+          sections: [],
+          countOfReducedSections: 0
         }
     
         const rightPlate = {
@@ -62,7 +63,8 @@ export default function PopMenu() {
           reducedPosition: currentPlate.length / 2 + 25 + currentPlate.position,
           left: 250,
           right: 250,
-          sections: []
+          sections: [],
+          countOfReducedSections: 0
         }
     
         dispatch(removePlate(currentPlate.id))

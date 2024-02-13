@@ -29,7 +29,7 @@ export default function RegularSection1500({initX, initY, scale=1, arrow=true}:I
  : <></>
 
   return (
-    <g>
+    <g className="r1500">
         <FillingTubesSet initX={initX} initY={initY} sectionLength={sectionLength} scale={scale} />
         <Crossbar initX={initX} initY={initY - 169 / scale} length={sectionLength} scale={scale} />
         <Crossbar initX={initX} initY={initY - (169 + 703) / scale} length={sectionLength} scale={scale} />

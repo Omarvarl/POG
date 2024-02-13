@@ -18,6 +18,8 @@ import { setSections, removeSames } from "../../store/platesSlice";
 import { setReducedLength } from "../../store/POLengthSlice";
 import calc from "../../Logic/calc";
 import ExJointSection13 from "./Sections/ExJointSection13";
+import ExJointSection5 from "./Sections/ExJointSection5";
+import ExJointSection6 from "./Sections/ExJointSection6";
 
 
 
@@ -95,12 +97,21 @@ export default function Drawing() {
             return <RegularSection1000 initX={initX + section.initX / scale} initY={initY} scale={scale} key={section.key} />
           } else if (section.name === 'UniqSection') {
             return <UniqSection initX={initX + section.initX / scale} initY={initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
+          } else if (section.name === 'ExJoint5') {
+            return <ExJointSection5 initX={initX + section.initX / scale} initY={initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
+          } else if (section.name === 'ExJoint6') {
+            return <ExJointSection6 initX={initX + section.initX / scale} initY={initY} scale={scale} length={section.length / scale} key={section.key} />
           } else if (section.name === 'UniqStartSection') {
             return <UniqStartSection initX={initX + section.initX / scale} initY={initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
           } else if (section.name === 'UniqEndSection') {
             return <UniqEndSection initX={initX + section.initX / scale} initY={initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
           } else if (section.name === 'ReducedSection') {
-            return <ReducedSection initX={initX + section.initX / scale} initY={initY} scale={scale} key={section.key} />
+            return <ReducedSection
+              initX={initX + section.initX / scale}
+              initY={initY} scale={scale}
+              countOfReducedSections={plate.countOfReducedSections}
+              key={section.key}
+            />
           } else if (section.name === 'ExJoint13') {
             return <ExJointSection13
               initX={initX + section.initX / scale}
@@ -239,8 +250,6 @@ export default function Drawing() {
 
     return result
   }
-
-  // console.log(plates, expansionJoints)
 
   return (
     <div

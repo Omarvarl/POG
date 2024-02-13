@@ -388,6 +388,34 @@ const calc = (
                     x += len + exJointLength / 2
                     len = 0
 
+                } else if (move && move <= 32) {
+                    result.push({
+                        name: 'ExJoint5',
+                        initX: x,
+                        initY: startY,
+                        length: parts[i + 1].startX - x,
+                        addedStatePos: len,
+                        key: `ExJoint5_${x}a`
+                    })
+
+                    var nextPartLength = parts[i + 1].length
+                    var part6Length = nextPartLength % 1500
+                    if (part6Length < 500) part6Length = 1500
+                    result.push({
+                        name: 'ExJoint6',
+                        initX: parts[i + 1].startX,
+                        initY: startY,
+                        length: part6Length,
+                        key: `ExJoint6_${x}a`
+                    })
+                    if (parts.length - 1 !== i) {
+                        var newStart = parts[i + 1].startX + part6Length
+                        deltaLen = parts[i + 1].length - part6Length
+                        deltaX = newStart
+                    }
+                    x += parts[i + 1].startX - x + part6Length
+                    len = 0
+
                 } else if (len > 0) {
                     result.push({
                         name: 'UniqSection',

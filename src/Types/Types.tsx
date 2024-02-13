@@ -44,7 +44,8 @@ export interface IExpansionJoints extends IGround {
 export interface IPlates extends IExpansionJoints {
     reducedLength: number,
     reducedPosition: number,
-    sections: ISection[]
+    sections: ISection[],
+    countOfReducedSections: number
 }
 
 export interface IPOLength {

@@ -8,7 +8,11 @@ import '../Drawing.css'
 import FillingTubesSet from "./FillingTubesSet"
 import DimArrow from "../DimArrow"
 
-export default function ReducedSection({initX, initY, scale=1}:IInitCoord) {
+interface IReducedSection extends IInitCoord {
+  countOfReducedSections: number
+}
+
+export default function ReducedSection({initX, initY, scale=1, countOfReducedSections}:IReducedSection) {
   const sectionLength = 1000 / scale
 
   return (
@@ -67,7 +71,7 @@ export default function ReducedSection({initX, initY, scale=1}:IInitCoord) {
           id={`ReducedSection_dim_${initX}`}
           key={`ReducedSection_dim_${initX}`}
           unchange={true}
-          text={'3000x2='}
+          text={`3000x${countOfReducedSections}=${3000 * countOfReducedSections}`}
         />
 
     </g>

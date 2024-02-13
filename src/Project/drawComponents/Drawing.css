@@ -75,19 +75,19 @@
 
 .r1500 {
     fill: white;
-    stroke: green;
+    stroke: rgb(12, 197, 222);
     stroke-width: 2;
     stroke-linecap: round;
 }
 
-.s1500, .e1500 {
+.s1500, .e1500, .s1500>.r1500 {
     fill: white;
     stroke: blue;
     stroke-width: 2;
     stroke-linecap: round;
 }
 
-.r3000 {
+.r3000>.r1500 {
     fill: white;
     stroke: red;
     stroke-width: 2;
@@ -111,6 +111,20 @@
 .u {
     fill: white;
     stroke: rgb(255, 149, 0);
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+.u5 {
+    fill: white;
+    stroke: rgb(38, 26, 65);
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+.u6 {
+    fill: white;
+    stroke: rgb(9, 232, 80);
     stroke-width: 2;
     stroke-linecap: round;
 }
