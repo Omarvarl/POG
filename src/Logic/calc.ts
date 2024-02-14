@@ -96,18 +96,19 @@ const calc = (
                         })
                         x += 1500
                         len -= 1500
-                    } else {
-                        result.push({
-                            name: 'UniqStartSection',
-                            initX: x,
-                            initY: startY,
-                            length: parts[i + 1].startX - parts[i].startX - parts[i].length + len,
-                            addedStatePos: len,
-                            key: `section_start`
-                        })
-                        x += parts[i + 1].startX - parts[i].startX - parts[i].length + len
-                        len -= parts[i + 1].startX - parts[i].startX - parts[i].length + len
                     }
+                    // else {
+                    //     result.push({
+                    //         name: 'UniqStartSection',
+                    //         initX: x,
+                    //         initY: startY,
+                    //         length: parts[i + 1].startX - parts[i].startX - parts[i].length + len,
+                    //         addedStatePos: len,
+                    //         key: `section_start`
+                    //     })
+                    //     x += parts[i + 1].startX - parts[i].startX - parts[i].length + len
+                    //     len -= parts[i + 1].startX - parts[i].startX - parts[i].length + len
+                    // }
                 }
 
             } else {
@@ -131,17 +132,18 @@ const calc = (
                         })
                         x += 1500
                         len -= 1500
-                    } else {
-                        result.push({
-                            name: 'UniqStartSection',
-                            initX: x,
-                            initY: startY,
-                            length: left - x,
-                            key: `section_start`
-                        })
-                        len -= (left - x)
-                        x = left
                     }
+                    //  else {
+                    //     result.push({
+                    //         name: 'UniqStartSection',
+                    //         initX: x,
+                    //         initY: startY,
+                    //         length: left - x,
+                    //         key: `section_start`
+                    //     })
+                    //     len -= (left - x)
+                    //     x = left
+                    // }
                 }
             }
         }
@@ -165,28 +167,31 @@ const calc = (
                         key: `section_last`
                     })
                     len -= 1500
-                } else {
-                    result.push({
-                        name: 'UniqEndSection',
-                        initX: x + len,
-                        initY: startY,
-                        length: x + len - right,
-                        key: `section_last`
-                    })
-                    len -= (x + len - right)
                 }
+                
+                // else {
+                //     result.push({
+                //         name: 'UniqEndSection',
+                //         initX: x + len,
+                //         initY: startY,
+                //         length: x + len - right,
+                //         key: `section_last`
+                //     })
+                //     len -= (x + len - right)
+                // }
 
-            } else {
-                result.push({
-                    name: 'UniqEndSection',
-                    initX: x + len,
-                    initY: startY,
-                    length: len,
-                    key: `section_last`
-                })
-                x += len
-                len -= len
             }
+            // else {
+            //     result.push({
+            //         name: 'UniqEndSection',
+            //         initX: x + len,
+            //         initY: startY,
+            //         length: len,
+            //         key: `section_last`
+            //     })
+            //     x += len
+            //     len -= len
+            // }
         }
 
         name = 'RegularSection3000'
@@ -390,24 +395,35 @@ const calc = (
 
                 } else if (move && move <= 32) {
                     result.push({
-                        name: 'ExJoint5',
+                        name: result.length ? 'ExJoint5' : 'ExJoint11',
                         initX: x,
                         initY: startY,
                         length: parts[i + 1].startX - x,
                         addedStatePos: len,
-                        key: `ExJoint5_${x}a`
+                        key: result.length ? `ExJoint5_${x}a` : `ExJoint11_${x}a`
                     })
 
                     var nextPartLength = parts[i + 1].length
                     var part6Length = nextPartLength % 1500
                     if (part6Length < 500) part6Length = 1500
-                    result.push({
-                        name: 'ExJoint6',
-                        initX: parts[i + 1].startX,
-                        initY: startY,
-                        length: part6Length,
-                        key: `ExJoint6_${x}a`
-                    })
+                    if (nextPartLength < 1500) {
+                        result.push({
+                            name: 'ExJoint12',
+                            initX: parts[i + 1].startX + part6Length,
+                            initY: startY,
+                            length: part6Length,
+                            key: `ExJoint12_${x}a`
+                        })
+                        parts[i + 1].length = 0
+                    } else {
+                        result.push({
+                            name: 'ExJoint6',
+                            initX: parts[i + 1].startX,
+                            initY: startY,
+                            length: part6Length,
+                            key: `ExJoint6_${x}a`
+                        })
+                    }
                     if (parts.length - 1 !== i) {
                         var newStart = parts[i + 1].startX + part6Length
                         deltaLen = parts[i + 1].length - part6Length
@@ -429,22 +445,22 @@ const calc = (
                     })
 
                     var nextPartLength = parts[i + 1].length
-                    var part6Length = nextPartLength % 1500
-                    if (part6Length < 500) part6Length = 1500
+                    var part20Length = nextPartLength % 1500
+                    if (part20Length < 500) part20Length = 1500
                     result.push({
                         name: 'ExJoint20',
                         initX: parts[i + 1].startX,
                         initY: startY,
-                        length: part6Length,
+                        length: part20Length,
                         end: exJointLength / 2,
                         key: `ExJoint20_${x}a`
                     })
                     if (parts.length - 1 !== i) {
-                        var newStart = parts[i + 1].startX + part6Length
-                        deltaLen = parts[i + 1].length - part6Length
+                        var newStart = parts[i + 1].startX + part20Length
+                        deltaLen = parts[i + 1].length - part20Length
                         deltaX = newStart
                     }
-                    x += parts[i + 1].startX - x + part6Length
+                    x += parts[i + 1].startX - x + part20Length
                     len = 0
 
                 } else if (len > 0) {
@@ -466,7 +482,7 @@ const calc = (
                         initY: startY,
                         length: len,
                         addedStatePos: 0,
-                        key: `uniqSection_${x}_c`
+                        key: `uniqSection_${x}_e`
                     })
                 }
             }
@@ -585,6 +601,7 @@ const calc = (
             || (x + 1000 > prev.left && x + 1000 < prev.right)
             // || (pj.left - x >= 1000 && pj.left - x < 1500)) 
             ){
+                // console.log(x, pj.left, pj.right)
 
             // uniq
             result.push({
@@ -612,7 +629,7 @@ const calc = (
         
         return [x, len]
     }
-
+    // console.log(result)
     return result
 
 }

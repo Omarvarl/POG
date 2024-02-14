@@ -32,7 +32,7 @@ export default function ExJointSection20({initX, initY, scale=1, arrow=true, end
  : <></>
 
   return (
-    <g className="u6">
+    <g className="u20">
         <FillingTubesSet initX={initX} initY={initY} sectionLength={length} scale={scale} />
         <FillingTubesSet initX={initX - end} initY={initY} sectionLength={end} scale={scale} />
         <Crossbar initX={initX} initY={initY - 169 / scale} length={length} scale={scale} />

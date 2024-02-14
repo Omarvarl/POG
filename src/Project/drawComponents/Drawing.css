@@ -122,6 +122,13 @@
     stroke-linecap: round;
 }
 
+.s5>.u5, .s5>.start, .u12>.u6, .u12 {
+    fill: white;
+    stroke: blue;
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
 .u6 {
     fill: white;
     stroke: rgb(9, 232, 80);
@@ -132,6 +139,13 @@
 .u19 {
     fill: white;
     stroke: rgb(86, 46, 196);
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+.u20 {
+    fill: white;
+    stroke: rgb(238, 161, 8);
     stroke-width: 2;
     stroke-linecap: round;
 }
