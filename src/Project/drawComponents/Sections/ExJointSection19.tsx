@@ -76,21 +76,22 @@ export default function ExJointSection19({initX, initY, length, addedStatePos, e
         })
         return result
     }
+    let pos = addedStatePos ? addedStatePos : 0
 
     if (addedStatePos && (addedStatePos > 1500)) {
-        let pos = checkAddedPos(1500)
+        pos = checkAddedPos(1500)
         addedStand = <StandTube88x58 initX={initX + pos / scale} initY={initY} length={1100 / scale} scale={scale} />
         addedDownFiting = <DownFiting initX={initX + pos / scale} initY={initY} scale={scale} />
         addedUpFiting = <UpFiting initX={initX + pos / scale} initY={initY - 1100 / scale} scale={scale} />
         fillingTubes = getFillingTubes(pos / scale)
     } else if (addedStatePos && length - addedStatePos >= 500) {
-        let pos = checkAddedPos(addedStatePos)
+        pos = checkAddedPos(addedStatePos)
         addedStand = <StandTube88x58 initX={initX + pos / scale} initY={initY} length={1100 / scale} scale={scale} />
         addedDownFiting = <DownFiting initX={initX + pos / scale} initY={initY} scale={scale} />
         addedUpFiting = <UpFiting initX={initX + pos / scale} initY={initY - 1100 / scale} scale={scale} />
         fillingTubes = getFillingTubes(pos / scale)
     } else if (length <= 2000 && length > 1500) {
-        let pos = checkAddedPos(1000)
+        pos = checkAddedPos(1000)
         addedStand = <StandTube88x58 initX={initX + pos / scale} initY={initY} length={1100 / scale} scale={scale} />
         addedDownFiting = <DownFiting initX={initX + pos / scale} initY={initY} scale={scale} />
         addedUpFiting = <UpFiting initX={initX + pos / scale} initY={initY - 1100 / scale} scale={scale} />
@@ -104,7 +105,7 @@ export default function ExJointSection19({initX, initY, length, addedStatePos, e
         initX={initX}
         initY={initY - 1100 / scale}
         type={{type: 'hor', dir: 'up'}}
-        length={addedStatePos / scale}
+        length={pos / scale}
         indent={150 / scale}
         id={`ExJoint19_dim1_${initX}`}
         key={`ExJoint19_dim1_${initX}`}

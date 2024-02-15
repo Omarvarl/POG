@@ -15,7 +15,7 @@
     padding-right: 10px;
 }
 
-.view-break {
+.view-break, .up-fiting_switch {
     display: flex;
     flex-direction: row;
 }

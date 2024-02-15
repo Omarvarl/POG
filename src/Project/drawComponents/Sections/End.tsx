@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks'
 import { showOverhangMenu } from '../../../store/overhangsVisibilitySlice'
 import FillingTubesSet from './FillingTubesSet'
 
-export default function Start({initX, initY, scale=1}:IInitCoord) {
+export default function End({initX, initY, scale=1}:IInitCoord) {
 
   var dispatch = useAppDispatch()
   var overhang = useAppSelector(state => state.overnahgs.end)

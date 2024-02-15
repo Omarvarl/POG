@@ -14,6 +14,7 @@ import overhangsSlice from './overhangsSlice';
 import overhangsVisibilitySlice from './overhangsVisibilitySlice';
 import stampSlice from './stampSlice';
 import exJointPopVisibility from './exJointPopVisibility';
+import upFitingSlice from './upFitingSlice';
 
 
 
@@ -33,7 +34,8 @@ const store = configureStore({
         overnahgs: overhangsSlice,
         overhangVisibility: overhangsVisibilitySlice,
         stamp: stampSlice,
-        exJointPopVisibility: exJointPopVisibility
+        exJointPopVisibility: exJointPopVisibility,
+        upFitingState: upFitingSlice
     }
     
 })

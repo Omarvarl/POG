@@ -15,11 +15,6 @@ export default function ExJointSection12({initX, initY, scale=1, arrow=true, len
 
   return (
     <g className="u12">
-        <End
-          initX={initX}
-          initY={initY - 169 / scale}
-          scale={scale}
-        />
         <ExJoint6
           initX={initX - length}
           initY={initY}
@@ -30,6 +25,11 @@ export default function ExJointSection12({initX, initY, scale=1, arrow=true, len
           initX={initX}
           initY={initY}
           length={1100 / scale}
+          scale={scale}
+        />
+        <End
+          initX={initX}
+          initY={initY - 169 / scale}
           scale={scale}
         />
         <UpFiting

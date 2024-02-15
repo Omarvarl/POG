@@ -101,7 +101,7 @@
     stroke-linecap: round;
 }
 
-.ex-j-13 {
+.u13 {
     fill: white;
     stroke: rgb(149, 9, 162);
     stroke-width: 2;
@@ -122,7 +122,7 @@
     stroke-linecap: round;
 }
 
-.s5>.u5, .s5>.start, .u12>.u6, .u12 {
+.s5>.u5, .s5>.start, .u12>.u6, .u12, .s23, .s23>.u19, .e24, .e24>.u20, .s14, .s14>.u13, .us, .us>.u, .ue, .ue>.ur {
     fill: white;
     stroke: blue;
     stroke-width: 2;
@@ -146,13 +146,6 @@
 .u20 {
     fill: white;
     stroke: rgb(238, 161, 8);
-    stroke-width: 2;
-    stroke-linecap: round;
-}
-
-.us {
-    fill: white;
-    stroke: rgb(132, 176, 253);
     stroke-width: 2;
     stroke-linecap: round;
 }

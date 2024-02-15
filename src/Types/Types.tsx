@@ -32,6 +32,8 @@ export interface ISection {
     initY: number,
     length: number,
     addedStatePos?: number,
+    lengthBefore?: number,
+    lengthAfter?: number,
     end?: number,
     key: string
 }
@@ -60,7 +62,8 @@ export interface IPOLength {
 export interface IInitCoord {
     initX: number,
     initY: number,
-    scale?: number
+    scale?: number,
+    upFiting?: Function
 }
 
 export interface IProfile extends IInitCoord {
@@ -83,7 +86,8 @@ export interface IUniqSectionData extends IProfile {
 }
 
 export interface IExJoint extends IUniqSectionData {
-    baseLength?: number
+    lengthBefore?: number,
+    lengthAfter?: number
 }
 
 export interface IDimArrow extends IInitCoord {

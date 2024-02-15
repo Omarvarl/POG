@@ -24,6 +24,11 @@ import ExJointSection19 from "./Sections/ExJointSection19";
 import ExJointSection20 from "./Sections/ExJointSection20";
 import ExJointSection11 from "./Sections/ExJointSection11";
 import ExJointSection12 from "./Sections/ExJointSection12";
+import ExJointSection23 from "./Sections/ExJointSection23";
+import ExJointSection24 from "./Sections/ExJointSection24";
+import ExJointSection14 from "./Sections/ExJointSection14";
+import ExJointSection15 from "./Sections/ExJointSection15";
+import UpFiting from "./Profiles/UpFiting";
 
 
 
@@ -31,8 +36,11 @@ export default function Drawing() {
     const dispatch = useAppDispatch()
     const {width, height, factor} = useAppSelector(state => state.realPageSize);
     const initX = 700
+    const upFitingState = useAppSelector(state => state.upFitingState)
 
-
+    var upFiting = upFitingState
+      ? ((initX: number, initY: number, scale: number) => <UpFiting initX={initX} initY={initY} scale={scale} />)
+      : (() => <></>)
     const POLengthData = useAppSelector(state => state.POLength)
     const currentPlate = useAppSelector(state => state.currentPlate)
     const POLength = POLengthData.POLength
@@ -90,91 +98,165 @@ export default function Drawing() {
       if (plate.sections && plate.sections.length > 0) {
         return plate.sections.map(section => {
           if (section.name === 'StartSection1500') {
-            return <StartSection1500 initX={initX + section.initX / scale} initY={initY} scale={scale} key={section.key} />
+            return <StartSection1500
+              initX={initX + section.initX / scale}
+              initY={initY} scale={scale}
+              key={section.key}
+              upFiting={upFiting}
+            />
           } else if (section.name === 'EndSection1500') {
-            return <EndSection1500 initX={initX + section.initX / scale} initY={initY} scale={scale} key={section.key} />
-          } else if (section.name === 'RegularSection3000') {
-            return <RegularSection3000 initX={initX + section.initX / scale} initY={initY} scale={scale} key={section.key} />
-          } else if (section.name === 'RegularSection1500') {
-            return <RegularSection1500 initX={initX + section.initX / scale} initY={initY} scale={scale} key={section.key} />
-          } else if (section.name === 'RegularSection1000') {
-            return <RegularSection1000 initX={initX + section.initX / scale} initY={initY} scale={scale} key={section.key} />
-          } else if (section.name === 'UniqSection') {
-            return <UniqSection initX={initX + section.initX / scale} initY={initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
-          } else if (section.name === 'ExJoint5') {
-            return <ExJointSection5
-              initX={initX + section.initX / scale}
-              initY={initY} scale={scale}
-              length={section.length}
-              addedStatePos={section.addedStatePos}
-              key={section.key}
-            />
-          } else if (section.name === 'ExJoint11') {
-            return <ExJointSection11
-              initX={initX + section.initX / scale}
-              initY={initY} scale={scale}
-              length={section.length}
-              addedStatePos={section.addedStatePos}
-              key={section.key}
-            />
-          } else if (section.name === 'ExJoint6') {
-            return <ExJointSection6
-              initX={initX + section.initX / scale}
-              initY={initY} scale={scale}
-              length={section.length / scale}
-              key={section.key}
-            />
-          } else if (section.name === 'ExJoint12') {
-            return <ExJointSection12
-              initX={initX + section.initX / scale}
-              initY={initY} scale={scale}
-              length={section.length / scale}
-              key={section.key}
-            />
-          } else if (section.name === 'ExJoint20') {
-            return <ExJointSection20
-              initX={initX + section.initX / scale}
-              initY={initY} scale={scale}
-              length={section.length / scale}
-              end={section.end ? section.end / scale : 0}
-              key={section.key}
-            />
-          } else if (section.name === 'ExJoint19') {
-            return <ExJointSection19
-              initX={initX + section.initX / scale}
-              initY={initY} scale={scale}
-              length={section.length}
-              addedStatePos={section.addedStatePos}
-              end={section.end ? section.end / scale : 0}
-              key={section.key}
-            />
-          } else if (section.name === 'UniqStartSection') {
-            return <UniqStartSection initX={initX + section.initX / scale} initY={initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
-          } else if (section.name === 'UniqEndSection') {
-            return <UniqEndSection initX={initX + section.initX / scale} initY={initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
-          } else if (section.name === 'ReducedSection') {
-            return <ReducedSection
-              initX={initX + section.initX / scale}
-              initY={initY} scale={scale}
-              countOfReducedSections={plate.countOfReducedSections}
-              key={section.key}
-            />
-          } else if (section.name === 'ExJoint13') {
-            return <ExJointSection13
+            return <EndSection1500
               initX={initX + section.initX / scale}
               initY={initY}
               scale={scale}
-              length={section.addedStatePos ? section.addedStatePos / scale : 1500 / scale}
-              baseLength={section.length / scale}
-              key={section.key} 
+              key={section.key}
+              upFiting={upFiting}
             />
-          } else return <></>
+          } else if (section.name === 'RegularSection3000') {
+            return <RegularSection3000
+              initX={initX + section.initX / scale}
+              initY={initY} scale={scale}
+              key={section.key}
+              upFiting={upFiting}
+            />
+          } else if (section.name === 'RegularSection1500') {
+            return <RegularSection1500
+              initX={initX + section.initX / scale}
+              initY={initY}
+              scale={scale}
+              key={section.key}
+              upFiting={upFiting}
+            />
+          } else if (section.name === 'RegularSection1000') {
+            return <RegularSection1000
+              initX={initX + section.initX / scale}
+              initY={initY}
+              scale={scale}
+              key={section.key}
+              upFiting={upFiting}
+            />
+          } else if (section.name === 'UniqSection') {
+            return <UniqSection
+              initX={initX + section.initX / scale}
+              initY={initY} scale={scale}
+              length={section.length}
+              addedStatePos={section.addedStatePos}
+              key={section.key}
+              upFiting={upFiting}
+            />
+          }
+          // else if (section.name === 'ExJoint5') {
+      //       return <ExJointSection5
+      //         initX={initX + section.initX / scale}
+      //         initY={initY} scale={scale}
+      //         length={section.length}
+      //         addedStatePos={section.addedStatePos}
+      //         key={section.key}
+      //       />
+      //     } else if (section.name === 'ExJoint11') {
+      //       return <ExJointSection11
+      //         initX={initX + section.initX / scale}
+      //         initY={initY} scale={scale}
+      //         length={section.length}
+      //         addedStatePos={section.addedStatePos}
+      //         key={section.key}
+      //       />
+      //     } else if (section.name === 'ExJoint6') {
+      //       return <ExJointSection6
+      //         initX={initX + section.initX / scale}
+      //         initY={initY} scale={scale}
+      //         length={section.length / scale}
+      //         key={section.key}
+      //       />
+      //     } else if (section.name === 'ExJoint12') {
+      //       return <ExJointSection12
+      //         initX={initX + section.initX / scale}
+      //         initY={initY} scale={scale}
+      //         length={section.length / scale}
+      //         key={section.key}
+      //       />
+      //     } else if (section.name === 'ExJoint20') {
+      //       return <ExJointSection20
+      //         initX={initX + section.initX / scale}
+      //         initY={initY} scale={scale}
+      //         length={section.length / scale}
+      //         end={section.end ? section.end / scale : 0}
+      //         key={section.key}
+      //       />
+      //     } else if (section.name === 'ExJoint24') {
+      //       return <ExJointSection24
+      //         initX={initX + section.initX / scale}
+      //         initY={initY} scale={scale}
+      //         length={section.length / scale}
+      //         end={section.end ? section.end / scale : 0}
+      //         key={section.key}
+      //       />
+      //     } else if (section.name === 'ExJoint19') {
+      //       return <ExJointSection19
+      //         initX={initX + section.initX / scale}
+      //         initY={initY} scale={scale}
+      //         length={section.length}
+      //         addedStatePos={section.addedStatePos}
+      //         end={section.end ? section.end / scale : 0}
+      //         key={section.key}
+      //       />
+      //     } else if (section.name === 'ExJoint23') {
+      //       return <ExJointSection23
+      //         initX={initX + section.initX / scale}
+      //         initY={initY} scale={scale}
+      //         length={section.length}
+      //         addedStatePos={section.addedStatePos}
+      //         end={section.end ? section.end / scale : 0}
+      //         key={section.key}
+      //       />
+      //     } else if (section.name === 'UniqStartSection') {
+      //       return <UniqStartSection initX={initX + section.initX / scale} initY={initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
+      //     } else if (section.name === 'UniqEndSection') {
+      //       return <UniqEndSection initX={initX + section.initX / scale} initY={initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
+      //     } else if (section.name === 'ReducedSection') {
+      //       return <ReducedSection
+      //         initX={initX + section.initX / scale}
+      //         initY={initY} scale={scale}
+      //         countOfReducedSections={plate.countOfReducedSections}
+      //         key={section.key}
+      //       />
+      //     } else if (section.name === 'ExJoint13') {
+      //       return <ExJointSection13
+      //         initX={initX + section.initX / scale}
+      //         initY={initY}
+      //         scale={scale}
+      //         length={section.length / scale}
+      //         lengthBefore={section.lengthBefore ? section.lengthBefore / scale : 0}
+      //         lengthAfter={section.lengthAfter ? section.lengthAfter / scale : 0}
+      //         key={section.key} 
+      //       />
+      //     } else if (section.name === 'ExJoint14') {
+      //       return <ExJointSection14
+      //         initX={initX + section.initX / scale}
+      //         initY={initY}
+      //         scale={scale}
+      //         length={section.length / scale}
+      //         lengthBefore={section.lengthBefore ? section.lengthBefore / scale : 0}
+      //         lengthAfter={section.lengthAfter ? section.lengthAfter / scale : 0}
+      //         key={section.key} 
+      //       />
+      //     } else if (section.name === 'ExJoint15') {
+      //       return <ExJointSection15
+      //         initX={initX + section.initX / scale}
+      //         initY={initY}
+      //         scale={scale}
+      //         length={section.length / scale}
+      //         lengthBefore={section.lengthBefore ? section.lengthBefore / scale : 0}
+      //         lengthAfter={section.lengthAfter ? section.lengthAfter / scale : 0}
+      //         key={section.key} 
+      //       />
+          // }
+           else return <></>
         })
       } else {
         return []
       }
     })
-    // console.log(expansionJoints, plates, plateJoints)
 
     const SVG = <svg className="svg"
       xmlns="http://www.w3.org/2000/svg"
@@ -295,6 +377,7 @@ export default function Drawing() {
       sections: sections
     }
 
+    // return JSON.stringify(result)
     return result
   }
 

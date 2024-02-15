@@ -7,7 +7,6 @@ import { IInitCoord } from "../../../Types/Types"
 import '../Drawing.css'
 import FillingTubesSet from "./FillingTubesSet"
 import DimArrow from "../DimArrow"
-import HorizontTubeD32 from '../Profiles/HorizontTubeD32'
 
 interface IExSection6 extends IInitCoord {
   length: number,

@@ -76,20 +76,22 @@ export default function ExJointSection5({initX, initY, length, addedStatePos, sc
         return result
     }
 
+    let pos = addedStatePos ? addedStatePos : 0
+
     if (addedStatePos && (addedStatePos > 1500)) {
-        let pos = checkAddedPos(1500)
+        pos = checkAddedPos(1500)
         addedStand = <StandTube88x58 initX={initX + pos / scale} initY={initY} length={1100 / scale} scale={scale} />
         addedDownFiting = <DownFiting initX={initX + pos / scale} initY={initY} scale={scale} />
         addedUpFiting = <UpFiting initX={initX + pos / scale} initY={initY - 1100 / scale} scale={scale} />
         fillingTubes = getFillingTubes(pos / scale)
     } else if (addedStatePos && length - addedStatePos >= 500) {
-        let pos = checkAddedPos(addedStatePos)
+        pos = checkAddedPos(addedStatePos)
         addedStand = <StandTube88x58 initX={initX + pos / scale} initY={initY} length={1100 / scale} scale={scale} />
         addedDownFiting = <DownFiting initX={initX + pos / scale} initY={initY} scale={scale} />
         addedUpFiting = <UpFiting initX={initX + pos / scale} initY={initY - 1100 / scale} scale={scale} />
         fillingTubes = getFillingTubes(pos / scale)
     } else if (length <= 2000 && length > 1500) {
-        let pos = checkAddedPos(1000)
+        pos = checkAddedPos(1000)
         addedStand = <StandTube88x58 initX={initX + pos / scale} initY={initY} length={1100 / scale} scale={scale} />
         addedDownFiting = <DownFiting initX={initX + pos / scale} initY={initY} scale={scale} />
         addedUpFiting = <UpFiting initX={initX + pos / scale} initY={initY - 1100 / scale} scale={scale} />
@@ -98,6 +100,17 @@ export default function ExJointSection5({initX, initY, length, addedStatePos, sc
         fillingTubes = getFillingTubes()
     }
 
+    var dimArrow = <></>
+    if (pos) dimArrow = <DimArrow
+    initX={initX}
+    initY={initY - 1100 / scale}
+    type={{type: 'hor', dir: 'up'}}
+    length={pos / scale}
+    indent={150 / scale}
+    id={`ExJoint5_dim1_${initX}`}
+    key={`ExJoint5_dim1_${initX}`}
+    unchange={true}
+/>
 
   return (
     <g className="u5"> 
@@ -117,11 +130,12 @@ export default function ExJointSection5({initX, initY, length, addedStatePos, sc
             initY={initY - 1100 / scale}
             type={{type: 'hor', dir: 'up'}}
             length={length / scale}
-            indent={150 / scale}
-            id={`ExJoint5_dim_${initX}`}
-            key={`ExJoint5_dim_${initX}`}
+            indent={500 / scale}
+            id={`ExJoint5_dim2_${initX}`}
+            key={`ExJoint5_dim2_${initX}`}
             unchange={true}
         />
+        {dimArrow}
     </g>
   )
 }

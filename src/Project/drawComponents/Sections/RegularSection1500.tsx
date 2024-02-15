@@ -12,7 +12,7 @@ interface ISection1500 extends IInitCoord {
   arrow?: boolean
 }
 
-export default function RegularSection1500({initX, initY, scale=1, arrow=true}:ISection1500) {
+export default function RegularSection1500({initX, initY, scale=1, upFiting=()=>{}, arrow=true}:ISection1500) {
 
   const sectionLength = 1500 / scale
   const dimArrow = arrow
@@ -36,7 +36,8 @@ export default function RegularSection1500({initX, initY, scale=1, arrow=true}:I
         <StandTube88x58 initX={initX} initY={initY} length={1100 / scale} scale={scale} />
         <RailTube88x58 initX={initX} initY={initY - 1100 / scale} length={sectionLength} scale={scale} />
         <DownFiting initX={initX} initY={initY} scale={scale} />
-        <UpFiting initX={initX} initY={initY - 1100 / scale} scale={scale} />
+        {upFiting(initX, initY - 1100 / scale, scale)}
+        {/* <UpFiting initX={initX} initY={initY - 1100 / scale} scale={scale} /> */}
         { dimArrow }
     </g>
   )
