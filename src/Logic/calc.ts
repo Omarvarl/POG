@@ -358,13 +358,14 @@ const calc = (
         if (len > 0) {
             if (i !== parts.length - 1) {
                 len = checkPlateJoints(x, len, 0, parts[i + 1].startX - parts[i].startX - parts[i].length + len)[1]
-                if (move && move >= 75) {
+                if (move && move > 55) {
                     var nextPos = parts[i + 1].startX
                     var exJointLength = nextPos - x - len
                     var delta = 0
 
                     var lengthAfter = parts[i + 1].length % 1500
-                    if (parts[i + 1].length === lengthAfter) lengthAfter /= 2
+                    // if (parts[i + 1].length === lengthAfter && i + 1 === parts.length - 1)
+                    if (parts[i + 1].length === lengthAfter && parts[i + 1].length === lengthAfter && i + 1 !== parts.length - 1) lengthAfter /= 2
                     if (lengthAfter < 600 && parts[i + 1].length > 1700) lengthAfter += 600
 
                     if (exJointLength < 1000
@@ -398,7 +399,6 @@ const calc = (
                     parts[i + 1].length += (parts[i + 1].startX - newStart)
                     parts[i + 1].startX = newStart
                     len = 0
-
                     if (parts[i + 1].startX + startX === POLength) {
                         result[result.length - 1].name = 'ExJoint15'
                         result[result.length - 1].key = `ExJoint15_${x}a`
@@ -459,7 +459,7 @@ const calc = (
                     parts[i + 1].startX = newStart
                     len = 0
 
-                } else if (move && move > 32 && move < 75) {
+                } else if (move && move > 32 && move <= 55) {
                     var exJointLength = parts[i + 1].startX - x - len
                     if (parts[i + 1].startX - x > 2500 && len > 1500) {
                         result.push({

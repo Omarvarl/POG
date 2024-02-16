@@ -52,6 +52,7 @@ export default function Drawing() {
     const realPageSize = useAppSelector(state => state.realPageSize)
     const pageSize = useAppSelector(state => state.pageSize)
     var {start, end} = useAppSelector(state => state.overnahgs)
+    var stamp = useAppSelector(state => state.stamp)
 
     const pageParams = useAppSelector(state => state.realPageSize)
 
@@ -291,14 +292,13 @@ export default function Drawing() {
 
       <Ground />
       { drawSections }
-      {/* <ExJointSection13 initX={500} initY={2000} scale={scale} length={4000 / scale} baseLength={1200 / scale} /> */}
 
     </svg>
 
     var exJointMark = 0
     var exJointsCount = 0
     var move = 32
-    function getDesignation(name: string, position: number, length: number): {number: string, name:string} | undefined {
+    function getDesignation(name: string, position: number, length: number, index: number, len: number): {number: string, name:string} | undefined {
       var pattern = 'ЦРНС.305112.001.'
       var count = 0
       for (let ej of expansionJoints) {
@@ -306,22 +306,45 @@ export default function Drawing() {
         if (exJointMark) {
           exJointMark = 0
           if (move <= 32)
-            return {number: ((exJointsCount < 10) ? pattern + '06-0' + exJointsCount : pattern + '06-' + exJointsCount), name: 'ПО-6'}
+            if (index === len - 1) {
+              return {number: ((exJointsCount < 10) ? pattern + '12-0' + exJointsCount : pattern + '12-' + exJointsCount), name: 'ПО-12'}
+            } else {
+              return {number: ((exJointsCount < 10) ? pattern + '06-0' + exJointsCount : pattern + '06-' + exJointsCount), name: 'ПО-6'}
+            }
           else if (move > 32 && move <= 55)
-            return {number: ((exJointsCount < 10) ? pattern + '20-0' + exJointsCount : pattern + '20-' + exJointsCount), name: 'ПО-20'}
+            if (index === len - 1) {
+              return {number: ((exJointsCount < 10) ? pattern + '24-0' + exJointsCount : pattern + '24-' + exJointsCount), name: 'ПО-24'}
+            } else {
+              return {number: ((exJointsCount < 10) ? pattern + '20-0' + exJointsCount : pattern + '20-' + exJointsCount), name: 'ПО-20'}
+            }
         }
         if (position < leftPosOfjoint && position + length > leftPosOfjoint) {
           exJointMark = 1
           exJointsCount++
           if (ej.move) move = ej.move
-
           if (ej.move && ej.move <= 32)
-            return {number: ((exJointsCount< 10) ? pattern + '05-0' + exJointsCount : pattern + '05-' + exJointsCount), name: 'ПО-5'}
+            if (!index) {
+              return {number: ((exJointsCount< 10) ? pattern + '11-0' + exJointsCount : pattern + '11-' + exJointsCount), name: 'ПО-11'}
+            } else {
+              return {number: ((exJointsCount< 10) ? pattern + '05-0' + exJointsCount : pattern + '05-' + exJointsCount), name: 'ПО-5'}
+            }
           else if (ej.move && ej.move > 32 && ej.move <= 55)
+          if (!index) {
+            return {number: ((exJointsCount< 10) ? pattern + '23-0' + exJointsCount : pattern + '23-' + exJointsCount), name: 'ПО-23'}
+          } else {
             return {number: ((exJointsCount< 10) ? pattern + '19-0' + exJointsCount : pattern + '19-' + exJointsCount), name: 'ПО-19'}
+          }
           else if (ej.move && ej.move > 55) {
             exJointMark = 0
-            return {number: ((exJointsCount< 10) ? pattern + '13-0' + exJointsCount : pattern + '13-' + exJointsCount), name: 'ПО-13'}
+            if (index === len - 1) {
+              return {number: ((exJointsCount< 10) ? pattern + '15-0' + exJointsCount : pattern + '15-' + exJointsCount), name: 'ПО-15'}
+            } else {
+              if (!index) {
+                return {number: ((exJointsCount< 10) ? pattern + '14-0' + exJointsCount : pattern + '14-' + exJointsCount), name: 'ПО-14'}
+              } else {
+                return {number: ((exJointsCount< 10) ? pattern + '13-0' + exJointsCount : pattern + '13-' + exJointsCount), name: 'ПО-13'}
+              }
+            }
           }
         }
       }
@@ -368,8 +391,9 @@ export default function Drawing() {
   function makeJSON() {
     const fullPlatesList = calc(POLength, expansionJoints, plateJoints, plates)
     console.log(fullPlatesList)
-    const sections = fullPlatesList.map((section, index) => {
-      const {number, name} = getDesignation(section.name, section.initX, section.length) || {number: 'null', name: 'null'}
+
+    const sections = fullPlatesList.map((section, index, arr) => {
+      const {number, name} = getDesignation(section.name, section.initX, section.length, index, arr.length) || {number: 'null', name: 'null'}
       return {
         id: index + 1,
         number: number,
@@ -377,12 +401,15 @@ export default function Drawing() {
         x: section.initX,
         y: section.initY,
         lTotal: section.length,
-        lLeft: section.name.includes('StartSection')
+        lOut: section.name.includes('StartSection') || section.name.includes('11') || section.name.includes('23')|| section.name.includes('14')
           ? start.length
-          : section.name.includes('EndSection')
+          : section.name.includes('EndSection')|| section.name.includes('12')|| section.name.includes('24')|| section.name.includes('15')
             ? end.length
             : undefined,
-        l: section.addedStatePos || section.length
+        l: section.addedStatePos || section.length,
+        lBefore: section.lengthBefore,
+        lAfter: section.lengthAfter,
+        lAdded: section.end
       }
     })
     const result = {
@@ -391,11 +418,19 @@ export default function Drawing() {
         factor: pageParams.factor
       },
       shortView: viewBreak,
-      stamp: {},
+      stamp: {...stamp, scale:`1:${scale * 10}`},
       expansionJoints: expansionJoints,
       plateJoints: plateJoints,
       sections: sections
     }
+    const url = 'http://localhost:5000'
+    var request = fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(result),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
 
     // return JSON.stringify(result)
     return result
