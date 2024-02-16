@@ -53,11 +53,12 @@ export default function Drawing() {
     const pageSize = useAppSelector(state => state.pageSize)
     var {start, end} = useAppSelector(state => state.overnahgs)
     var stamp = useAppSelector(state => state.stamp)
+    var doubleSectionsState = useAppSelector(state => state.doubleSectionsState)
 
     const pageParams = useAppSelector(state => state.realPageSize)
 
     useEffect(() => {  //  Юзэффект позволяет контролировать рендеринг
-        dispatch(setSections({POLength, expansionJoints, plateJoints}))
+        dispatch(setSections({POLength, expansionJoints, plateJoints, doubleSectionsState}))
     }, [  //   Страница перерендеривается только если изменяется что-то из квадратных скобок
       expansionJoints,
       plateJoints,
@@ -65,7 +66,8 @@ export default function Drawing() {
       viewBreak,
       currentPlate,
       realPageSize,
-      pageSize
+      pageSize,
+      doubleSectionsState
     ])
 
     expansionsArr.sort((a, b) => a.position - b.position)
@@ -78,7 +80,8 @@ export default function Drawing() {
         expansionJoints,
         plateJoints,
         currentPlate,
-        realPageSize
+        realPageSize,
+        doubleSectionsState
       ])
 
     useEffect(() => {  //  Юзэффект позволяет контролировать рендеринг
@@ -405,7 +408,7 @@ export default function Drawing() {
 
 
   function makeJSON() {  //  Функция для создания JSON и отправки его на сервер
-    const fullPlatesList = calc(POLength, expansionJoints, plateJoints, plates)
+    const fullPlatesList = calc(POLength, expansionJoints, plateJoints, plates, doubleSectionsState)
     console.log(fullPlatesList)
 
     const sections = fullPlatesList.map((section, index, arr) => {

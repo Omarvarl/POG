@@ -5,14 +5,15 @@ const calc = (
     POLength:number,
     expansionJoints:IExpansionJoints[],
     plateJointsData:{id: string, length: number}[],
-    plates: IExpansionJoints[]
+    plates: IExpansionJoints[],
+    doubleSectionsState: boolean
     ):ISection[] => {
 
     const startX = plates[0].left
     const startY = 800
     const result: ISection[] = []
 
-    // console.log(plates)
+    console.log(doubleSectionsState)
 
     const plateJoints = plateJointsData.map(elm => {
         const result = {
@@ -197,12 +198,45 @@ const calc = (
             }
         }
 
-        name = 'RegularSection3000'
-        if (i !== parts.length - 1) {
-            if (parts[i + 1].startX + len - parts[i].startX - parts[i].length > 4000) {
-                while (len > 4000) {
+        if (doubleSectionsState) {
+            name = 'RegularSection3000'
+            if (i !== parts.length - 1) {
+                if (parts[i + 1].startX + len - parts[i].startX - parts[i].length > 4000) {
+                    while (len > 4000) {
+                        [x, len] = checkPlateJoints(x, len, 3)
+                        if (len > 4000) {
+                            result.push({
+                                name: name,
+                                initX: x,
+                                initY: startY,
+                                length: 3000,
+                                key: `section3000_${x}`
+                            })
+                            x += 3000
+                            len -= 3000
+                        }
+                    }
+                }
+            } else {
+                if (len > 4000) {
+                    while (len > 4000) {
+                        [x, len] = checkPlateJoints(x, len, 3)
+                        if (len >= 4000) {
+                            result.push({
+                                name: name,
+                                initX: x,
+                                initY: startY,
+                                length: 3000,
+                                key: `section3000_${x}`
+                            })
+                            x += 3000
+                            len -= 3000
+                        }
+                    }
+                }
+                if (len === 3000 && (i !== 0 || parts.length - 1 === 0 )) {
                     [x, len] = checkPlateJoints(x, len, 3)
-                    if (len > 4000) {
+                    if (len === 3000) {
                         result.push({
                             name: name,
                             initX: x,
@@ -213,37 +247,6 @@ const calc = (
                         x += 3000
                         len -= 3000
                     }
-                }
-            }
-        } else {
-            if (len > 4000) {
-                while (len > 4000) {
-                    [x, len] = checkPlateJoints(x, len, 3)
-                    if (len >= 4000) {
-                        result.push({
-                            name: name,
-                            initX: x,
-                            initY: startY,
-                            length: 3000,
-                            key: `section3000_${x}`
-                        })
-                        x += 3000
-                        len -= 3000
-                    }
-                }
-            }
-            if (len === 3000 && (i !== 0 || parts.length - 1 === 0 )) {
-                [x, len] = checkPlateJoints(x, len, 3)
-                if (len === 3000) {
-                    result.push({
-                        name: name,
-                        initX: x,
-                        initY: startY,
-                        length: 3000,
-                        key: `section3000_${x}`
-                    })
-                    x += 3000
-                    len -= 3000
                 }
             }
         }

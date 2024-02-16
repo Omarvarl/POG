@@ -6,11 +6,13 @@ import StampPop from "../drawComponents/StampPop";
 import OverhangPop from "../drawComponents/OverhangPop";
 import ExJointPop from "../drawComponents/ExJointPop";
 import { changeUpFitingState } from "../../store/upFitingSlice";
+import { changeDoubleSectionsState } from "../../store/doubleSectionsSlice";
 
 export default function Menu() {
   const dispatch = useAppDispatch()
   const viewBreak = useAppSelector(state => state.viewBreak)
   const upFitingState = useAppSelector(state => state.upFitingState)
+  const doubleSectionsState = useAppSelector(state => state.doubleSectionsState)
 
   return (
     <div className="project-menu">
@@ -38,6 +40,17 @@ export default function Menu() {
         />
         Добавить верхний фитинг
       </label>
+
+      <label
+        className="double_sections_switch"
+      >
+        <input id="double_sections_switch" type='checkbox'
+          defaultChecked={doubleSectionsState}
+          onClick={ () => dispatch(changeDoubleSectionsState()) }
+        />
+        3-х метровые секции
+      </label>
+
       <StampPop />
       <OverhangPop />
       <ExJointPop />

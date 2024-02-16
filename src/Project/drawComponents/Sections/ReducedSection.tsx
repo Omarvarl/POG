@@ -6,6 +6,7 @@ import { IInitCoord } from "../../../Types/Types"
 import '../Drawing.css'
 import FillingTubesSet from "./FillingTubesSet"
 import DimArrow from "../DimArrow"
+import { useAppSelector } from "../../../hooks"
 
 interface IReducedSection extends IInitCoord {
   countOfReducedSections: number
@@ -13,6 +14,8 @@ interface IReducedSection extends IInitCoord {
 
 export default function ReducedSection({initX, initY, scale=1, countOfReducedSections, upFiting=()=>{}}:IReducedSection) {
   const sectionLength = 1000 / scale
+  var doubleSectionsState = useAppSelector(state => state.doubleSectionsState)
+  var dimLength = doubleSectionsState ? 3000 : 1500
 
   return (
     <g className="reduced"> 
@@ -62,15 +65,15 @@ export default function ReducedSection({initX, initY, scale=1, countOfReducedSec
         />
 
         <DimArrow
-          initX={initX - 3000 / scale}
+          initX={initX - dimLength / scale}
           initY={initY - 1100 / scale}
           type={{type: 'hor', dir: 'up'}}
-          length={4000 / scale}
+          length={(dimLength + 1000) / scale}
           indent={500 / scale}
           id={`ReducedSection_dim_${initX}`}
           key={`ReducedSection_dim_${initX}`}
           unchange={true}
-          text={`3000x${countOfReducedSections}=${3000 * countOfReducedSections}`}
+          text={`${countOfReducedSections}x${dimLength}=${dimLength * countOfReducedSections}`}
         />
 
     </g>

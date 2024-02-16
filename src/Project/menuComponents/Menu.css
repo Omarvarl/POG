@@ -15,7 +15,7 @@
     padding-right: 10px;
 }
 
-.view-break, .up-fiting_switch {
+.view-break, .up-fiting_switch, .double_sections_switch {
     display: flex;
     flex-direction: row;
 }

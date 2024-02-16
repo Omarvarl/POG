@@ -26,10 +26,11 @@ export const platesSlice = createSlice({
         setSections: (state, action:PayloadAction<{
             POLength: number,
             expansionJoints: IExpansionJoints[],
-            plateJoints: {id: string, length: number}[]
+            plateJoints: {id: string, length: number}[],
+            doubleSectionsState: boolean
         }>) => {
-            const {POLength, expansionJoints, plateJoints} = action.payload
-            const sections = calc(POLength, expansionJoints, plateJoints, state)
+            const {POLength, expansionJoints, plateJoints, doubleSectionsState} = action.payload
+            const sections = calc(POLength, expansionJoints, plateJoints, state, doubleSectionsState)
             state.forEach(plate => {
                 plate.sections = []
                 sections.forEach(section => {
