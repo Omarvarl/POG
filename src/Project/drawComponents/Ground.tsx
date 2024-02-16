@@ -7,6 +7,8 @@ import React, { useMemo } from "react";
 import { showExJointPop } from "../../store/exJointPopVisibility";
 
 
+  //  Компонент для отрисовки бетонных плит и размерных линий
+
 export default function Ground() {
   const dispatch = useAppDispatch()
 
@@ -21,17 +23,17 @@ export default function Ground() {
  
   const viewBreak = useAppSelector(state => state.viewBreak)
 
-  const wholeLength = (viewBreak)
+  const wholeLength = (viewBreak)  //  определяем длину моста в зависимости от наличия галочки "Добавить разрыв вида"
     ? reducedLength
     : POLength
 
-  const overallScale = (viewBreak)
+  const overallScale = (viewBreak)  //  То же для масштаба
     ? reducedScale
     : scale
 
   let count = 0
 
-  const jointsDimLeft = useMemo(() => {
+  const jointsDimLeft = useMemo(() => {  //  хэширование размерных линий с краев бетонных плит. Сделано для ускорения
     return plates.map(elm => {
       const position = (viewBreak)
       ? elm.reducedPosition
@@ -53,7 +55,7 @@ export default function Ground() {
     })
   }, [plates, overallScale, viewBreak])
 
-  const jointsDimRight = useMemo(() => {
+  const jointsDimRight = useMemo(() => {  //  то же
     return plates.map(elm => {
 
       const position = (viewBreak)
@@ -80,10 +82,10 @@ export default function Ground() {
   })
 }, [plates, overallScale, viewBreak])
 
-  const expansionJointsDraw = expansionJoints.map(elm => {
+  const expansionJointsDraw = expansionJoints.map(elm => {  //  создание компонента для рендера плит
     let position = elm.position
 
-    if (viewBreak) {
+    if (viewBreak) {  //  при разрыве видов меняются координаты позиции деф шва
       plates.forEach(plate => {
         if (elm.id.split('_')[1] === plate.id.split('_')[1]) {
           position = plate.reducedPosition + plate.reducedLength
@@ -97,7 +99,7 @@ export default function Ground() {
       <g
         className="expansion-join"
         key={`ej_${count}`}
-        onClick={() => {
+        onClick={() => {  //  меню при нажатии на деф шов
           dispatch(showExJointPop(elm.id))
         }}
       >

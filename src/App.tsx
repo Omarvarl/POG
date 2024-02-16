@@ -1,13 +1,12 @@
 import React from 'react';
 import './App.css';
 import HomePage from './HomePage/HomePage';
-import {Routes, Route} from "react-router-dom";
+import {Routes, Route} from "react-router-dom";  //  Routes для перемещениям между страницами в рамках SPA приложения
 import ProjectPage from './Project/ProjectPage';
 import Layout from './Layout'
 
 
 function App() {
-  // const cards = projectCards.map(card => <ProjectCard projectCards={projectCards}/>)
 
   return (
     <div className="App">

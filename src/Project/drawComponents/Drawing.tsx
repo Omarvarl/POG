@@ -38,7 +38,7 @@ export default function Drawing() {
     const initX = 700
     const upFitingState = useAppSelector(state => state.upFitingState)
 
-    var upFiting = upFitingState
+    var upFiting = upFitingState  //  Верхний фитинг вынесен в отдельную функцию для управления его стейтом
       ? ((initX: number, initY: number, scale: number) => <UpFiting initX={initX} initY={initY} scale={scale} />)
       : (() => <></>)
     const POLengthData = useAppSelector(state => state.POLength)
@@ -56,10 +56,9 @@ export default function Drawing() {
 
     const pageParams = useAppSelector(state => state.realPageSize)
 
-    useEffect(() => {
+    useEffect(() => {  //  Юзэффект позволяет контролировать рендеринг
         dispatch(setSections({POLength, expansionJoints, plateJoints}))
-
-    }, [
+    }, [  //   Страница перерендеривается только если изменяется что-то из квадратных скобок
       expansionJoints,
       plateJoints,
       dispatch,
@@ -71,12 +70,18 @@ export default function Drawing() {
 
     expansionsArr.sort((a, b) => a.position - b.position)
 
-    useEffect(() => {
+    useEffect(() => {  //  Юзэффект позволяет контролировать рендеринг
        viewBreak && dispatch(removeSames())
-        
-    }, [viewBreak, dispatch, expansionJoints, plateJoints, currentPlate, realPageSize])
+    }, [  //   Страница перерендеривается только если изменяется что-то из квадратных скобок
+        viewBreak,
+        dispatch,
+        expansionJoints,
+        plateJoints,
+        currentPlate,
+        realPageSize
+      ])
 
-    useEffect(() => {
+    useEffect(() => {  //  Юзэффект позволяет контролировать рендеринг
       if (viewBreak) {
         const reducedLength = plates[0].reducedPosition
           + plates.reduce(
@@ -87,13 +92,18 @@ export default function Drawing() {
           , 500)
         dispatch(setReducedLength(reducedLength))
       }
-    }, [plates, dispatch, viewBreak, currentPlate])
+    }, [  //   Страница перерендеривается только если изменяется что-то из квадратных скобок
+        plates,
+        dispatch,
+        viewBreak,
+        currentPlate
+      ])
 
     const scale = (viewBreak) ? POLengthData.reducedScale : POLengthData.scale
 
     const initY = realPageSize.height / 2 * (realPageSize.factor > 1 ? 2 : 1)
 
-    const drawSections = plates.map(plate => {
+    const drawSections = plates.map(plate => {  //  Создаем новый массив компонентов секций, опираясь на их имена. Новый массив нужен для рендера
       if (plate.sections && plate.sections.length > 0) {
         return plate.sections.map(section => {
           if (section.name === 'StartSection1500') {
@@ -280,7 +290,7 @@ export default function Drawing() {
       }
     })
 
-    const SVG = <svg className="svg"
+    const SVG = <svg className="svg"  //  SVG вытащил в отдельную переменную. Возможно в будущем пригодится
       xmlns="http://www.w3.org/2000/svg"
 
       viewBox={`0 0 ${width * factor} ${(factor === 1) ? height : height * 2}`}
@@ -291,14 +301,20 @@ export default function Drawing() {
       <BaseTable scale={scale}/>
 
       <Ground />
-      { drawSections }
+      { drawSections }  {/* Массив секций для рендера */}
 
     </svg>
 
     var exJointMark = 0
     var exJointsCount = 0
     var move = 32
-    function getDesignation(name: string, position: number, length: number, index: number, len: number): {number: string, name:string} | undefined {
+    function getDesignation(  //  функция определяет обозначение и имя секции в зависимости от отношения к деф. шву
+      name: string,
+      position: number,
+      length: number,
+      index: number,
+      len: number
+    ): {number: string, name:string} | undefined {
       var pattern = 'ЦРНС.305112.001.'
       var count = 0
       for (let ej of expansionJoints) {
@@ -349,7 +365,7 @@ export default function Drawing() {
         }
       }
 
-      if (name.includes('StartSection')) {
+      if (name.includes('StartSection')) {  //  назначение имени и обозначения секции в зависимости от типа свеса
         if (start.type === 'withBevel') {
           if (!start.filling) {
             return {number: pattern + '01', name: 'ПО-1'}
@@ -388,7 +404,7 @@ export default function Drawing() {
     }
 
 
-  function makeJSON() {
+  function makeJSON() {  //  Функция для создания JSON и отправки его на сервер
     const fullPlatesList = calc(POLength, expansionJoints, plateJoints, plates)
     console.log(fullPlatesList)
 
@@ -396,20 +412,21 @@ export default function Drawing() {
       const {number, name} = getDesignation(section.name, section.initX, section.length, index, arr.length) || {number: 'null', name: 'null'}
       return {
         id: index + 1,
-        number: number,
-        name: name,
-        x: section.initX,
-        y: section.initY,
+        number: number,  //  обозначение секции
+        name: name,  //  наименование секции
+        x: section.initX,  //  X координата секции
+        y: section.initY,  //  Y координата секции
         lTotal: section.length,
+        //  Длина свеса (если есть)
         lOut: section.name.includes('StartSection') || section.name.includes('11') || section.name.includes('23')|| section.name.includes('14')
           ? start.length
           : section.name.includes('EndSection')|| section.name.includes('12')|| section.name.includes('24')|| section.name.includes('15')
             ? end.length
             : undefined,
-        l: section.addedStatePos || section.length,
-        lBefore: section.lengthBefore,
-        lAfter: section.lengthAfter,
-        lAdded: section.end
+        l: section.addedStatePos || section.length,  //  расстояние от начала секции до дополнительной стойки
+        lBefore: section.lengthBefore,  //  для секций 13, 14, 15. Расстояние от начала секции до стойки, после которой начинается деф. шов
+        lAfter: section.lengthAfter,  //  для секций 13, 14, 15. Расстояние от стойки, после которой начинается деф. шов до конца секции
+        lAdded: section.end  //  для секций 6, 19, 20. Длина части над деф. швом
       }
     })
     const result = {
@@ -424,15 +441,13 @@ export default function Drawing() {
       sections: sections
     }
     const url = 'http://localhost:5000'
-    var request = fetch(url, {
+    fetch(url, {
       method: 'POST',
       body: JSON.stringify(result),
       headers: {
         "Content-Type": "application/json",
       },
     })
-
-    // return JSON.stringify(result)
     return result
   }
 

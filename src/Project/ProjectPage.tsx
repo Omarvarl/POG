@@ -7,16 +7,16 @@ import Drawing from "./drawComponents/Drawing";
 import Menu from "./menuComponents/Menu";
 import InputDimension from "./InputDimension";
 import PopMenu from "./PopMenu";
-import ExJointPop from "./drawComponents/ExJointPop";
 import { hideStampMenu } from "../store/stampSlice";
 import { hideOverhangMenu } from "../store/overhangsVisibilitySlice";
 import { hideExJointPop } from "../store/exJointPopVisibility";
 
+  //  Страница проекта. Содержит боковое меню и основную часть с чертежем
+
 const ProjectPage = () => {
-  const dispatch = useAppDispatch();
-  const pageSize = useAppSelector((state) => state.pageSize);
+  const dispatch = useAppDispatch();  //  часть redux. используется для вызова функций изменяющих стейт параметров в куче редакс
+  const pageSize = useAppSelector((state) => state.pageSize);  //  часть redux позволяет получить параметр из кучи редакс
   const drawParam = useAppSelector((state) => state.drawParam);
-  // const overhangVisibility = useAppSelector(state => state.overhangVisibility)
   const cursorPos = useRef<ICursorPosition>({
     startX: 0,
     startY: 0,
@@ -26,7 +26,7 @@ const ProjectPage = () => {
     flag: false,
   });
 
-  const changeScale = (e: React.WheelEvent): void => {
+  const changeScale = (e: React.WheelEvent): void => {  //  функция меняет масштаб при вращении колеса мыши
     e.deltaY > 0
       ? (cursorPos.current.scale /= 1.2)
       : (cursorPos.current.scale *= 1.2);
@@ -44,7 +44,7 @@ const ProjectPage = () => {
     );
   };
 
-  const fixAreaPoint = (e: React.MouseEvent) => {
+  const fixAreaPoint = (e: React.MouseEvent) => {  //  функция фиксирует положения курсора при зажатом колесе мыши
     if (e.button === 1) {
       cursorPos.current = {
         ...cursorPos.current,
@@ -55,7 +55,7 @@ const ProjectPage = () => {
     }
   };
 
-  const unfixAreaPoint = (e: React.MouseEvent) => {
+  const unfixAreaPoint = (e: React.MouseEvent) => {  //  функция удаляет фиксацию после того как колесо мыши отожмется
     if (e.button === 1) {
       cursorPos.current = {
         ...cursorPos.current,
@@ -66,7 +66,7 @@ const ProjectPage = () => {
     }
   };
 
-  const unfixOutAreaPoint = (e: React.MouseEvent) => {
+  const unfixOutAreaPoint = (e: React.MouseEvent) => {  //  То же самое, только вне чертежа
     if (e.button === 1) {
       cursorPos.current = {
         ...cursorPos.current,
@@ -75,7 +75,7 @@ const ProjectPage = () => {
     }
   };
 
-  const moveArea = (e: React.MouseEvent) => {
+  const moveArea = (e: React.MouseEvent) => {  //  Движение чертежа при зажатом колесе мыши
     if (cursorPos.current.flag) {
       
       cursorPos.current = {
@@ -92,7 +92,7 @@ const ProjectPage = () => {
     }
   };
 
-  const showAll = (e: React.MouseEvent) => {
+  const showAll = (e: React.MouseEvent) => {  //  возвращает первоначальное положение чертежа
     cursorPos.current.startX = 0;
     cursorPos.current.startY = 0;
     cursorPos.current.pointX = 0;
