@@ -2,7 +2,6 @@ import { IUniqSectionData } from "../../../Types/Types"
 import '../Drawing.css'
 import ExJointSection13 from "./ExJointSection13"
 import Start from "./Start"
-import UpFiting from '../Profiles/UpFiting'
 
 interface ISection14 extends IUniqSectionData {
     lengthBefore: number,
@@ -15,7 +14,8 @@ export default function ExJointSection14({
     length,
     scale=1,
     lengthBefore=1500 / scale,
-    lengthAfter=1500 / scale
+    lengthAfter=1500 / scale,
+    upFiting=()=>{}
 }: ISection14) {
 
   return (
@@ -33,11 +33,7 @@ export default function ExJointSection14({
             initY={initY - 169 / scale}
             scale={scale}
         />
-        <UpFiting
-            initX={initX}
-            initY={initY - 1100 / scale}
-            scale={scale}
-        />
+        {upFiting(initX, initY - 1100 / scale, scale)}
     </g>
   )
 }

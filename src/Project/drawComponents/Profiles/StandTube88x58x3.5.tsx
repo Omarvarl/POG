@@ -9,8 +9,8 @@ export default function StandTube88x58({initX, initY, length, scale=1}: IProfile
         <path className="base-line-fill"  //  profile body
           d={`M${initX - profileWidth / 2} ${initY}
                 L${initX + profileWidth / 2} ${initY}
-                L${initX + profileWidth / 2} ${initY - length}
-                L${initX - profileWidth / 2} ${initY - length}Z
+                L${initX + profileWidth / 2} ${initY - length + 58 / scale}
+                L${initX - profileWidth / 2} ${initY - length + 58 / scale}Z
             `}
         />
 

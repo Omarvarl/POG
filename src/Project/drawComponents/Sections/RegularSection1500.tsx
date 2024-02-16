@@ -2,7 +2,6 @@ import StandTube88x58 from "../Profiles/StandTube88x58x3.5"
 import RailTube88x58 from '../Profiles/RailTube88x58x3.5'
 import Crossbar from "../Profiles/CrossbarTube40x40x3"
 import DownFiting from "../Profiles/DownFiting"
-import UpFiting from "../Profiles/UpFiting"
 import { IInitCoord } from "../../../Types/Types"
 import '../Drawing.css'
 import FillingTubesSet from "./FillingTubesSet"

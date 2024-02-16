@@ -4,7 +4,6 @@ import '../Drawing.css'
 import ExJointSection20 from './ExJointSection20'
 import End from './End'
 import StandTube from '../Profiles/StandTube88x58x3.5'
-import UpFiting from '../Profiles/UpFiting'
 import DownFiting from '../Profiles/DownFiting'
 
 interface IExSection6 extends IInitCoord {
@@ -13,7 +12,7 @@ interface IExSection6 extends IInitCoord {
   arrow?: boolean
 }
 
-export default function ExJointSection24({initX, initY, scale=1, arrow=true, end=0, length}:IExSection6) {
+export default function ExJointSection24({initX, initY, scale=1, arrow=true, end=0, length, upFiting=()=>{}}:IExSection6) {
 
   return (
     <g className="e24">
@@ -35,11 +34,7 @@ export default function ExJointSection24({initX, initY, scale=1, arrow=true, end
         initY={initY - 169 / scale}
         scale={scale}
       />
-      <UpFiting
-        initX={initX}
-        initY={initY - 1100 / scale}
-        scale={scale}
-      />
+      {upFiting(initX, initY - 1100 / scale, scale)}
       <DownFiting
         initX={initX}
         initY={initY}

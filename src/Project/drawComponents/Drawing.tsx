@@ -59,7 +59,6 @@ export default function Drawing() {
         dispatch(setSections({POLength, expansionJoints, plateJoints}))
 
     }, [
-      // POLength,
       expansionJoints,
       plateJoints,
       dispatch,
@@ -77,7 +76,6 @@ export default function Drawing() {
     }, [viewBreak, dispatch, expansionJoints, plateJoints, currentPlate, realPageSize])
 
     useEffect(() => {
-      // console.log(plates)
       if (viewBreak) {
         const reducedLength = plates[0].reducedPosition
           + plates.reduce(
@@ -144,114 +142,137 @@ export default function Drawing() {
               key={section.key}
               upFiting={upFiting}
             />
-          }
-          // else if (section.name === 'ExJoint5') {
-      //       return <ExJointSection5
-      //         initX={initX + section.initX / scale}
-      //         initY={initY} scale={scale}
-      //         length={section.length}
-      //         addedStatePos={section.addedStatePos}
-      //         key={section.key}
-      //       />
-      //     } else if (section.name === 'ExJoint11') {
-      //       return <ExJointSection11
-      //         initX={initX + section.initX / scale}
-      //         initY={initY} scale={scale}
-      //         length={section.length}
-      //         addedStatePos={section.addedStatePos}
-      //         key={section.key}
-      //       />
-      //     } else if (section.name === 'ExJoint6') {
-      //       return <ExJointSection6
-      //         initX={initX + section.initX / scale}
-      //         initY={initY} scale={scale}
-      //         length={section.length / scale}
-      //         key={section.key}
-      //       />
-      //     } else if (section.name === 'ExJoint12') {
-      //       return <ExJointSection12
-      //         initX={initX + section.initX / scale}
-      //         initY={initY} scale={scale}
-      //         length={section.length / scale}
-      //         key={section.key}
-      //       />
-      //     } else if (section.name === 'ExJoint20') {
-      //       return <ExJointSection20
-      //         initX={initX + section.initX / scale}
-      //         initY={initY} scale={scale}
-      //         length={section.length / scale}
-      //         end={section.end ? section.end / scale : 0}
-      //         key={section.key}
-      //       />
-      //     } else if (section.name === 'ExJoint24') {
-      //       return <ExJointSection24
-      //         initX={initX + section.initX / scale}
-      //         initY={initY} scale={scale}
-      //         length={section.length / scale}
-      //         end={section.end ? section.end / scale : 0}
-      //         key={section.key}
-      //       />
-      //     } else if (section.name === 'ExJoint19') {
-      //       return <ExJointSection19
-      //         initX={initX + section.initX / scale}
-      //         initY={initY} scale={scale}
-      //         length={section.length}
-      //         addedStatePos={section.addedStatePos}
-      //         end={section.end ? section.end / scale : 0}
-      //         key={section.key}
-      //       />
-      //     } else if (section.name === 'ExJoint23') {
-      //       return <ExJointSection23
-      //         initX={initX + section.initX / scale}
-      //         initY={initY} scale={scale}
-      //         length={section.length}
-      //         addedStatePos={section.addedStatePos}
-      //         end={section.end ? section.end / scale : 0}
-      //         key={section.key}
-      //       />
-      //     } else if (section.name === 'UniqStartSection') {
-      //       return <UniqStartSection initX={initX + section.initX / scale} initY={initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
-      //     } else if (section.name === 'UniqEndSection') {
-      //       return <UniqEndSection initX={initX + section.initX / scale} initY={initY} scale={scale} length={section.length} addedStatePos={section.addedStatePos} key={section.key} />
-      //     } else if (section.name === 'ReducedSection') {
-      //       return <ReducedSection
-      //         initX={initX + section.initX / scale}
-      //         initY={initY} scale={scale}
-      //         countOfReducedSections={plate.countOfReducedSections}
-      //         key={section.key}
-      //       />
-      //     } else if (section.name === 'ExJoint13') {
-      //       return <ExJointSection13
-      //         initX={initX + section.initX / scale}
-      //         initY={initY}
-      //         scale={scale}
-      //         length={section.length / scale}
-      //         lengthBefore={section.lengthBefore ? section.lengthBefore / scale : 0}
-      //         lengthAfter={section.lengthAfter ? section.lengthAfter / scale : 0}
-      //         key={section.key} 
-      //       />
-      //     } else if (section.name === 'ExJoint14') {
-      //       return <ExJointSection14
-      //         initX={initX + section.initX / scale}
-      //         initY={initY}
-      //         scale={scale}
-      //         length={section.length / scale}
-      //         lengthBefore={section.lengthBefore ? section.lengthBefore / scale : 0}
-      //         lengthAfter={section.lengthAfter ? section.lengthAfter / scale : 0}
-      //         key={section.key} 
-      //       />
-      //     } else if (section.name === 'ExJoint15') {
-      //       return <ExJointSection15
-      //         initX={initX + section.initX / scale}
-      //         initY={initY}
-      //         scale={scale}
-      //         length={section.length / scale}
-      //         lengthBefore={section.lengthBefore ? section.lengthBefore / scale : 0}
-      //         lengthAfter={section.lengthAfter ? section.lengthAfter / scale : 0}
-      //         key={section.key} 
-      //       />
-          // }
-           else return <></>
+          } else if (section.name === 'ExJoint5') {
+            return <ExJointSection5
+              initX={initX + section.initX / scale}
+              initY={initY} scale={scale}
+              length={section.length}
+              addedStatePos={section.addedStatePos}
+              key={section.key}
+              upFiting={upFiting}
+            />
+          } else if (section.name === 'ExJoint11') {
+            return <ExJointSection11
+              initX={initX + section.initX / scale}
+              initY={initY} scale={scale}
+              length={section.length}
+              addedStatePos={section.addedStatePos}
+              key={section.key}
+              upFiting={upFiting}
+            />
+          } else if (section.name === 'ExJoint6') {
+            return <ExJointSection6
+              initX={initX + section.initX / scale}
+              initY={initY} scale={scale}
+              length={section.length / scale}
+              key={section.key}
+              upFiting={upFiting}
+            />
+          } else if (section.name === 'ExJoint12') {
+            return <ExJointSection12
+              initX={initX + section.initX / scale}
+              initY={initY} scale={scale}
+              length={section.length / scale}
+              key={section.key}
+              upFiting={upFiting}
+            />
+          } else if (section.name === 'ExJoint20') {
+            return <ExJointSection20
+              initX={initX + section.initX / scale}
+              initY={initY} scale={scale}
+              length={section.length / scale}
+              end={section.end ? section.end / scale : 0}
+              key={section.key}
+              upFiting={upFiting}
+            />
+          } else if (section.name === 'ExJoint24') {
+            return <ExJointSection24
+              initX={initX + section.initX / scale}
+              initY={initY} scale={scale}
+              length={section.length / scale}
+              end={section.end ? section.end / scale : 0}
+              key={section.key}
+              upFiting={upFiting}
+            />
+          } else if (section.name === 'ExJoint19') {
+            return <ExJointSection19
+              initX={initX + section.initX / scale}
+              initY={initY} scale={scale}
+              length={section.length}
+              addedStatePos={section.addedStatePos}
+              end={section.end ? section.end / scale : 0}
+              key={section.key}
+              upFiting={upFiting}
+            />
+          } else if (section.name === 'ExJoint23') {
+            return <ExJointSection23
+              initX={initX + section.initX / scale}
+              initY={initY} scale={scale}
+              length={section.length}
+              addedStatePos={section.addedStatePos}
+              end={section.end ? section.end / scale : 0}
+              key={section.key}
+              upFiting={upFiting}
+            />
+          } else if (section.name === 'UniqStartSection') {
+            return <UniqStartSection
+              initX={initX + section.initX / scale}
+              initY={initY} scale={scale} length={section.length}
+              addedStatePos={section.addedStatePos}
+              key={section.key}
+              upFiting={upFiting}
+            />
+          } else if (section.name === 'UniqEndSection') {
+            return <UniqEndSection
+              initX={initX + section.initX / scale}
+              initY={initY} scale={scale}
+              length={section.length}
+              addedStatePos={section.addedStatePos}
+              key={section.key}
+              upFiting={upFiting}
+            />
+          } else if (section.name === 'ReducedSection') {
+            return <ReducedSection
+              initX={initX + section.initX / scale}
+              initY={initY} scale={scale}
+              countOfReducedSections={plate.countOfReducedSections}
+              key={section.key}
+              upFiting={upFiting}
+            />
+          } else if (section.name === 'ExJoint13') {
+            return <ExJointSection13
+              initX={initX + section.initX / scale}
+              initY={initY}
+              scale={scale}
+              length={section.length / scale}
+              lengthBefore={section.lengthBefore ? section.lengthBefore / scale : 0}
+              lengthAfter={section.lengthAfter ? section.lengthAfter / scale : 0}
+              key={section.key}
+              upFiting={upFiting}
+            />
+          } else if (section.name === 'ExJoint14') {
+            return <ExJointSection14
+              initX={initX + section.initX / scale}
+              initY={initY}
+              scale={scale}
+              length={section.length / scale}
+              lengthBefore={section.lengthBefore ? section.lengthBefore / scale : 0}
+              lengthAfter={section.lengthAfter ? section.lengthAfter / scale : 0}
+              key={section.key}
+              upFiting={upFiting}
+            />
+          } else if (section.name === 'ExJoint15') {
+            return <ExJointSection15
+              initX={initX + section.initX / scale}
+              initY={initY}
+              scale={scale}
+              length={section.length / scale}
+              lengthBefore={section.lengthBefore ? section.lengthBefore / scale : 0}
+              lengthAfter={section.lengthAfter ? section.lengthAfter / scale : 0}
+              key={section.key}
+              upFiting={upFiting}
+            />
+          } else return <></>
         })
       } else {
         return []
@@ -284,7 +305,6 @@ export default function Drawing() {
         const leftPosOfjoint = ej.position - ej.left
         if (exJointMark) {
           exJointMark = 0
-          console.log(move)
           if (move <= 32)
             return {number: ((exJointsCount < 10) ? pattern + '06-0' + exJointsCount : pattern + '06-' + exJointsCount), name: 'ПО-6'}
           else if (move > 32 && move <= 55)

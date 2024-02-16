@@ -2,7 +2,6 @@ import StandTube88x58 from "../Profiles/StandTube88x58x3.5"
 import RailTube88x58 from '../Profiles/RailTube88x58x3.5'
 import Crossbar from "../Profiles/CrossbarTube40x40x3"
 import DownFiting from "../Profiles/DownFiting"
-import UpFiting from "../Profiles/UpFiting"
 import { IExJoint } from "../../../Types/Types"
 import '../Drawing.css'
 import FillingTubesSet from "./FillingTubesSet"
@@ -16,7 +15,8 @@ export default function ExJointSection13({
   scale=1,
   length=4000 / scale,
   lengthBefore=1500 / scale,
-  lengthAfter=1500 / scale
+  lengthAfter=1500 / scale,
+  upFiting=()=>{}
 }: IExJoint) {
   var centralLength = length - lengthBefore - lengthAfter
   return (
@@ -38,7 +38,7 @@ export default function ExJointSection13({
       <StandTube88x58 initX={initX} initY={initY} length={1100 / scale} scale={scale} />
       <RailTube88x58 initX={initX} initY={initY - 1100 / scale} length={lengthBefore} scale={scale} />
       <DownFiting initX={initX} initY={initY} scale={scale} />
-      <UpFiting initX={initX} initY={initY - 1100 / scale} scale={scale} />
+      {upFiting(initX, initY - 1100 / scale, scale)}
       <StandTube88x58 initX={initX + lengthBefore} initY={initY} length={1100 / scale} scale={scale} />
 
       <FillingTubesSet initX={initX + length - lengthAfter + 270 / scale} initY={initY} sectionLength={lengthAfter - 270 / scale} scale={scale} />
@@ -52,9 +52,9 @@ export default function ExJointSection13({
       <Crossbar initX={initX + lengthBefore + centralLength / 2 - 75 / scale} initY={initY - 1075 / scale} length={150 / scale} scale={scale} />
 
       <DownFiting initX={initX + lengthBefore} initY={initY} scale={scale} />
-      <UpFiting initX={initX + lengthBefore} initY={initY - 1100 / scale} scale={scale} />
+      {upFiting(initX + lengthBefore, initY - 1100 / scale, scale)}
       <DownFiting initX={initX + length - lengthAfter} initY={initY} scale={scale} />
-      <UpFiting initX={initX + length - lengthAfter} initY={initY - 1100 / scale} scale={scale} />
+      {upFiting(initX + length, initY - 1100 / scale, scale)}
 
         <DimArrow
           initX={initX}

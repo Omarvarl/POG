@@ -87,7 +87,7 @@
     stroke-linecap: round;
 }
 
-.r3000>.r1500 {
+.r3000>.r1500, .r3000 {
     fill: white;
     stroke: red;
     stroke-width: 2;
@@ -122,7 +122,7 @@
     stroke-linecap: round;
 }
 
-.s5>.u5, .s5>.start, .u12>.u6, .u12, .s23, .s23>.u19, .e24, .e24>.u20, .s14, .s14>.u13, .us, .us>.u, .ue, .ue>.ur {
+.s5>.u5, .s5, .u12>.u6, .u12, .s23, .s23>.u19, .e24, .e24>.u20, .s14, .s14>.u13, .us, .us>.u, .ue, .ue>.ur {
     fill: white;
     stroke: blue;
     stroke-width: 2;

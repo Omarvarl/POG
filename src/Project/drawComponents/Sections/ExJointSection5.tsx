@@ -3,13 +3,13 @@ import RailTube88x58 from '../Profiles/RailTube88x58x3.5'
 import Crossbar from "../Profiles/CrossbarTube40x40x3"
 import FillingTube from "../Profiles/FillingTubeD32"
 import DownFiting from "../Profiles/DownFiting"
-import UpFiting from "../Profiles/UpFiting"
+// import UpFiting from "../Profiles/UpFiting"
 import { IUniqSectionData } from "../../../Types/Types"
 import '../Drawing.css'
 import { useAppSelector } from "../../../hooks"
 import DimArrow from "../DimArrow"
 
-export default function ExJointSection5({initX, initY, length, addedStatePos, scale=1}:IUniqSectionData) {
+export default function ExJointSection5({initX, initY, length, addedStatePos, scale=1, upFiting=()=>{}}:IUniqSectionData) {
 
     const sectionLength = length / scale
     const expansionJoints = useAppSelector(state => state.expansionJoints)
@@ -82,19 +82,19 @@ export default function ExJointSection5({initX, initY, length, addedStatePos, sc
         pos = checkAddedPos(1500)
         addedStand = <StandTube88x58 initX={initX + pos / scale} initY={initY} length={1100 / scale} scale={scale} />
         addedDownFiting = <DownFiting initX={initX + pos / scale} initY={initY} scale={scale} />
-        addedUpFiting = <UpFiting initX={initX + pos / scale} initY={initY - 1100 / scale} scale={scale} />
+        addedUpFiting = upFiting(initX + pos / scale, initY - 1100 / scale, scale)
         fillingTubes = getFillingTubes(pos / scale)
     } else if (addedStatePos && length - addedStatePos >= 500) {
         pos = checkAddedPos(addedStatePos)
         addedStand = <StandTube88x58 initX={initX + pos / scale} initY={initY} length={1100 / scale} scale={scale} />
         addedDownFiting = <DownFiting initX={initX + pos / scale} initY={initY} scale={scale} />
-        addedUpFiting = <UpFiting initX={initX + pos / scale} initY={initY - 1100 / scale} scale={scale} />
+        addedUpFiting = upFiting(initX + pos / scale, initY - 1100 / scale, scale)
         fillingTubes = getFillingTubes(pos / scale)
     } else if (length <= 2000 && length > 1500) {
         pos = checkAddedPos(1000)
         addedStand = <StandTube88x58 initX={initX + pos / scale} initY={initY} length={1100 / scale} scale={scale} />
         addedDownFiting = <DownFiting initX={initX + pos / scale} initY={initY} scale={scale} />
-        addedUpFiting = <UpFiting initX={initX + pos / scale} initY={initY - 1100 / scale} scale={scale} />
+        addedUpFiting = upFiting(initX + pos / scale, initY - 1100 / scale, scale)
         fillingTubes = getFillingTubes(pos / scale)
     } else {
         fillingTubes = getFillingTubes()
@@ -122,7 +122,7 @@ export default function ExJointSection5({initX, initY, length, addedStatePos, sc
         <RailTube88x58 initX={initX} initY={initY - 1100 / scale} length={sectionLength - 192 / scale} scale={scale} />
         <Crossbar initX={initX + sectionLength - 192 / scale} initY={initY - 1075 / scale} length={50 / scale} scale={scale} />
         <DownFiting initX={initX} initY={initY} scale={scale} />
-        <UpFiting initX={initX} initY={initY - 1100 / scale} scale={scale} />
+        {upFiting(initX, initY - 1100 / scale, scale)}
         {addedDownFiting}
         {addedUpFiting}
         <DimArrow

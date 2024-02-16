@@ -2,7 +2,6 @@ import StandTube88x58 from "../Profiles/StandTube88x58x3.5"
 import RailTube88x58 from '../Profiles/RailTube88x58x3.5'
 import Crossbar from "../Profiles/CrossbarTube40x40x3"
 import DownFiting from "../Profiles/DownFiting"
-import UpFiting from "../Profiles/UpFiting"
 import { IInitCoord } from "../../../Types/Types"
 import '../Drawing.css'
 import FillingTubesSet from "./FillingTubesSet"
@@ -12,7 +11,7 @@ interface IReducedSection extends IInitCoord {
   countOfReducedSections: number
 }
 
-export default function ReducedSection({initX, initY, scale=1, countOfReducedSections}:IReducedSection) {
+export default function ReducedSection({initX, initY, scale=1, countOfReducedSections, upFiting=()=>{}}:IReducedSection) {
   const sectionLength = 1000 / scale
 
   return (
@@ -23,7 +22,7 @@ export default function ReducedSection({initX, initY, scale=1, countOfReducedSec
         <StandTube88x58 initX={initX} initY={initY} length={1100 / scale} scale={scale} />
         <RailTube88x58 initX={initX} initY={initY - 1100 / scale} length={sectionLength} scale={scale} />
         <DownFiting initX={initX} initY={initY} scale={scale} />
-        <UpFiting initX={initX} initY={initY - 1100 / scale} scale={scale} />
+        {upFiting(initX, initY - 1100 / scale, scale)}
 
         <path className="base-line-fill"
           d={`M${initX + 350 / scale} ${initY + 150 /scale}
